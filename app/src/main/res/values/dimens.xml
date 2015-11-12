@@ -1,0 +1,17 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="button_text_size">20sp</dimen>
+
+    <!-- cashier alert dialog -->
+    <dimen name="dialog_alert_height">220dp</dimen>
+    <dimen name="dialog_alert_width">380dp</dimen>
+    <dimen name="dialog_alert_margin">20dp</dimen>
+    <dimen name="dialog_alert_btn_padding">20dp</dimen>
+    <dimen name="dialog_alert_btn_padding_small">10dp</dimen>
+    <dimen name="dialog_alert_title_text_size">25sp</dimen>
+    <dimen name="dialog_alert_content_text_size">21sp</dimen>
+    <dimen name="dialog_alert_del_btn_width_height">40dp</dimen>
+
+</resources>

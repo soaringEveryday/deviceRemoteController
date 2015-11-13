@@ -27,9 +27,9 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 
     protected AlertDialog mAlertDialog;
     private ProgressDialog mLoadingDialog;
-    private Activity mActivity;
-    private Context mContext;
-    private FragmentManager mFragMgr;
+    public Activity mActivity;
+    public Context mContext;
+    public FragmentManager mFragMgr;
 
     @Override
     public void onAttach(Context context) {

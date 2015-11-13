@@ -47,5 +47,7 @@
 
     <!-- toolbar -->
     <color name="toolbar_title">#ffffff</color>
+    <color name="list_title_bg">#e0e3e9</color>
+    <color name="list_bg">#ffffff</color>
 
 </resources>

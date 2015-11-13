@@ -111,7 +111,7 @@ public class RootActivity extends BaseActivity {
             setupViewPager(idViewpager);
         }
 
-        updateToolbar(POS_CONNECT);
+        clickTab(POS_CONNECT);
     }
 
     private void setupViewPager(ViewPager viewPager) {

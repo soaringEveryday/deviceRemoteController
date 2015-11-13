@@ -34,6 +34,15 @@
     <string name="tab_file">文件</string>
     <string name="tab_connect">联机</string>
 
+    <!-- 联机 -->
+    <string name="scan">扫描</string>
+    <string name="connect">连接</string>
+    <string name="disconnect">断开</string>
+    <string name="connect_list_no">序号</string>
+    <string name="connect_list_ip_addr">IP地址</string>
+    <string name="connect_list_device_name">设备名称</string>
+    <string name="connect_list_desc">描述</string>
+
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

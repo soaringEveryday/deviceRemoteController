@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">天天买物流</string>
+    <string name="app_name">控制助手</string>
     <string name="action_settings">Settings</string>
 
     <!-- common -->
@@ -28,4 +28,12 @@
     <string name="dialog_exit_confirm_content">正在操作，是否确定退出？</string>
     <string name="dialog_common_loading">正在加载&#8230;&#8230;&#8230;</string>
     <string name="dialog_common_submitting">正在提交&#8230;&#8230;&#8230;</string>
+
+    <string name="tab_setting">示教</string>
+    <string name="tab_run">运行</string>
+    <string name="tab_file">文件</string>
+    <string name="tab_connect">联机</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/id_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </android.support.v4.view.ViewPager>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tab_bar_height"
+        android:background="@drawable/tab_bg"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/id_indicator_one"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@color/transparent"
+            android:padding="5dp">
+            <ImageView
+                android:id="@+id/icon1"
+                android:layout_width="@dimen/tab_icon_size"
+                android:layout_height="@dimen/tab_icon_size"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                android:src="@drawable/iconfont_setting"
+                />
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="@dimen/tab_text_size"
+                android:text="@string/tab_setting"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/id_indicator_two"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@color/transparent"
+            android:padding="5dp">
+            <ImageView
+                android:id="@+id/icon2"
+                android:layout_width="@dimen/tab_icon_size"
+                android:layout_height="@dimen/tab_icon_size"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                android:src="@drawable/iconfont_iconplay"
+                />
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="@dimen/tab_text_size"
+                android:text="@string/tab_run"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/id_indicator_three"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@color/transparent"
+            android:padding="5dp">
+            <ImageView
+                android:id="@+id/icon3"
+                android:layout_width="@dimen/tab_icon_size"
+                android:layout_height="@dimen/tab_icon_size"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                android:src="@drawable/iconfont_file"
+                />
+            <TextView
+                android:id="@+id/text3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="@dimen/tab_text_size"
+                android:text="@string/tab_file"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/id_indicator_four"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@color/transparent"
+            android:padding="5dp">
+            <ImageView
+                android:id="@+id/icon4"
+                android:layout_width="@dimen/tab_icon_size"
+                android:layout_height="@dimen/tab_icon_size"
+                android:scaleType="fitCenter"
+                android:layout_gravity="center"
+                android:src="@drawable/iconfont_connect"
+                />
+            <TextView
+                android:id="@+id/text4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="@dimen/tab_text_size"
+                android:text="@string/tab_connect"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

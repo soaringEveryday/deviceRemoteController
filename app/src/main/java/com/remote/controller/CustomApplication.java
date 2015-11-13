@@ -1,4 +1,4 @@
-package com.qianmi.epos;
+package com.remote.controller;
 
 import android.app.Activity;
 import android.app.Application;
@@ -6,8 +6,8 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 
-import com.qianmi.epos.utils.CustomCrashHandler;
-import com.qianmi.epos.utils.L;
+import com.remote.controller.utils.CustomCrashHandler;
+import com.remote.controller.utils.L;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 

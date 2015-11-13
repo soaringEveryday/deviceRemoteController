@@ -1,4 +1,4 @@
-package com.qianmi.epos.utils;
+package com.remote.controller.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

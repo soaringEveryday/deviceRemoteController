@@ -1,4 +1,4 @@
-package com.qianmi.epos.widget;
+package com.remote.controller.widget;
 
 /**
  * Created by Chen Haitao on 2015/7/7.

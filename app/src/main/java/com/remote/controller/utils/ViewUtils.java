@@ -1,4 +1,4 @@
-package com.qianmi.epos.utils;
+package com.remote.controller.utils;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -11,8 +11,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.qianmi.epos.CustomApplication;
-import com.qianmi.epos.R;
+import com.remote.controller.CustomApplication;
+import com.remote.controller.R;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.qianmi.epos.utils;
+package com.remote.controller.utils;
 
 import android.app.Activity;
 import android.content.Context;

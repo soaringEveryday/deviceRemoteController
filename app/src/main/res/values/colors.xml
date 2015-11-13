@@ -28,7 +28,7 @@
     <color name="button_pressed_color_white">#fffff5fd</color>
     <color name="text_img_size_tip_color">#666666</color>
 
-    <color name="window_background">#222429</color>
+    <color name="window_background">#ffffff</color>
     <color name="text_button_login">#FFFFFF</color>
     <color name="text_hint_color">#a8a8a9</color>
     <color name="transparent">#00000000</color>

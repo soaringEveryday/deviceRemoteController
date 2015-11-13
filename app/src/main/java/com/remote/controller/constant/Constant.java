@@ -1,4 +1,4 @@
-package com.qianmi.epos.constant;
+package com.remote.controller.constant;
 
 /**
  * Created by Chen Haitao on 2015/7/7.

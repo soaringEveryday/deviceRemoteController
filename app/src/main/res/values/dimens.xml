@@ -14,4 +14,14 @@
     <dimen name="dialog_alert_content_text_size">21sp</dimen>
     <dimen name="dialog_alert_del_btn_width_height">40dp</dimen>
 
+    <!-- 主界面 -->
+    <dimen name="tab_bar_height">55dp</dimen>
+    <dimen name="tab_text_size">10sp</dimen>
+    <dimen name="tab_icon_size">30dp</dimen>
+    <dimen name="toolbar_title_text_size">17sp</dimen>
+    <dimen name="main_short_cut_height">100dp</dimen>
+    <dimen name="main_short_cut_icon_size">50dp</dimen>
+    <dimen name="main_short_cut_text_size">14sp</dimen>
+    <dimen name="short_cut_icon_size">46dp</dimen>
+    <dimen name="short_cut_text_size">14sp</dimen>
 </resources>

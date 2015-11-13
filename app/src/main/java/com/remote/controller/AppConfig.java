@@ -1,9 +1,9 @@
-package com.qianmi.epos;
+package com.remote.controller;
 
 
-import com.qianmi.epos.constant.Constant;
-import com.qianmi.epos.utils.SPUtils;
-import com.qianmi.epos.utils.StrUtils;
+import com.remote.controller.constant.Constant;
+import com.remote.controller.utils.SPUtils;
+import com.remote.controller.utils.StrUtils;
 
 /**
  * App配置类

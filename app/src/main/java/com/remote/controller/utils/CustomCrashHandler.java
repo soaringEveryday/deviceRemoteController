@@ -1,4 +1,4 @@
-package com.qianmi.epos.utils;
+package com.remote.controller.utils;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -10,8 +10,8 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.qianmi.epos.CustomApplication;
-import com.qianmi.epos.R;
+import com.remote.controller.CustomApplication;
+import com.remote.controller.R;
 
 import java.io.File;
 import java.io.FileOutputStream;

@@ -20,11 +20,23 @@
     <style name="Theme.Design" parent="Base.Theme.Design">
     </style>
 
-    <style name="Base.Theme.Design" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Remote.Theme.Design" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColorPrimary">#fff</item>
+        <item name="android:actionBarStyle">@style/CustomActionBar</item>
+    </style>
+
+    <style name="CustomActionBar" parent="Base.Widget.AppCompat.ActionBar">
+        <item name="android:titleTextStyle">@style/ActionBarTitle</item>
+    </style>
+    <style name="ActionBarTitle" parent="Base.TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@android:color/holo_blue_bright</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Base.Theme.Design" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/ColorPrimary</item>
         <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
         <item name="colorAccent">@color/ColorAccent</item>
-        <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@color/window_background</item>
         <item name="android:textColorHint">@color/text_hint_color</item>
     </style>
@@ -73,6 +85,11 @@
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/toolbar_title</item>
         <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="AppSplash" parent="android:Theme">
+        <item name="android:windowBackground">@drawable/shape_bg_launch</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
 </resources>

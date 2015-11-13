@@ -1,4 +1,4 @@
-package com.qianmi.epos.fragment;
+package com.remote.controller.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,9 +13,9 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.qianmi.epos.CustomApplication;
-import com.qianmi.epos.R;
-import com.qianmi.epos.utils.ScreenUtils;
+import com.remote.controller.CustomApplication;
+import com.remote.controller.R;
+import com.remote.controller.utils.ScreenUtils;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;

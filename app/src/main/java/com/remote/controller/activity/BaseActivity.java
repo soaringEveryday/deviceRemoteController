@@ -1,4 +1,4 @@
-package com.qianmi.epos.activity;
+package com.remote.controller.activity;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -24,9 +24,9 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
-import com.qianmi.epos.CustomApplication;
-import com.qianmi.epos.R;
-import com.qianmi.epos.utils.ScreenUtils;
+import com.remote.controller.CustomApplication;
+import com.remote.controller.R;
+import com.remote.controller.utils.ScreenUtils;
 
 import java.util.List;
 
@@ -118,13 +118,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         mContext = null;
         CustomApplication.getInstance().removeActivity(this);
     }
-
-    /**
-     * return true if want to use volley in this activity
-     *
-     * @return
-     */
-    public abstract boolean needInitRequestQueue();
 
     public void setViewClickListener(List<Integer> viewIds, View rootView) {
         for (int viewId : viewIds) {

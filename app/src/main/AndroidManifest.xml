@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.qianmi.epos" >
+    package="com.remote.controller" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -16,11 +16,13 @@
         android:name=".CustomApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/Theme.Design" >
+        android:theme="@style/Remote.Theme.Design"
+        android:label="@string/app_name">
         <activity
             android:name=".MainActivity"
-            android:label="@string/login_button_text" >
+            android:screenOrientation="portrait"
+            android:theme="@style/AppSplash"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,8 +30,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.LoginActivity"
-            android:label="login"
+            android:name=".activity.RootActivity"
+            android:label="root"
+            android:screenOrientation="portrait"
             android:launchMode="singleTask" >
         </activity>
     </application>

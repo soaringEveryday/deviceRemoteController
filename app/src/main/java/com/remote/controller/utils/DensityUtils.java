@@ -1,4 +1,4 @@
-package com.qianmi.epos.utils;
+package com.remote.controller.utils;
 
 import android.content.Context;
 import android.util.TypedValue;

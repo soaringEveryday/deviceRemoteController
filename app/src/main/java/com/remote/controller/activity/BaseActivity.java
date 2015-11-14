@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -197,15 +198,25 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * @param context
      */
     public void exitApplication(@NonNull Context context) {
-        showAlertDialog(context, R.string.dialog_exit_confirm_content, 0, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-                mAlertDialog = null;
-                CustomApplication application = (CustomApplication) getApplication();
-                application.exit();
-            }
-        });
+//        showAlertDialog(context, R.string.dialog_exit_confirm_content, 0, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mAlertDialog.dismiss();
+//                mAlertDialog = null;
+//                CustomApplication application = (CustomApplication) getApplication();
+//                application.exit();
+//            }
+//        });
+
+        new android.support.v7.app.AlertDialog.Builder(mContext).setTitle(R.string.dialog_exit_confirm_content)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        CustomApplication application = (CustomApplication) getApplication();
+                        application.exit();
+                    }
+                }).show();
     }
 
 

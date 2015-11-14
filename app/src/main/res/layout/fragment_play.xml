@@ -68,7 +68,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/status"
+        android:id="@+id/motions"
         android:orientation="vertical"
         android:layout_above="@id/btns"
         android:layout_width="match_parent"
@@ -156,7 +156,7 @@
 
     <include
         android:id="@+id/recv_pane"
-        android:layout_above="@id/status"
+        android:layout_above="@id/motions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"

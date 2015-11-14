@@ -152,6 +152,8 @@ public class RootActivity extends BaseActivity {
 
             }
         });
+        viewPager.setOffscreenPageLimit(4);
+
     }
 
     private String getFragmentTag(int pos) {

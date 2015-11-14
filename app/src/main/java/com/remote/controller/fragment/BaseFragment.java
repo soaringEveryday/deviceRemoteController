@@ -123,8 +123,8 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         mAlertDialog.setCanceledOnTouchOutside(false);
         mAlertDialog.show();
         WindowManager.LayoutParams params = mAlertDialog.getWindow().getAttributes();
-        params.width = ScreenUtils.dip2px(context, 400);
-        params.height = ScreenUtils.dip2px(context, 230);
+        params.width = ScreenUtils.dip2px(context, 200);
+        params.height = ScreenUtils.dip2px(context, 120);
         mAlertDialog.getWindow().setAttributes(params);
     }
 

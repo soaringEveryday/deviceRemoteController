@@ -42,6 +42,18 @@
     <string name="connect_list_ip_addr">IP地址</string>
     <string name="connect_list_device_name">设备名称</string>
     <string name="connect_list_desc">描述</string>
+    <string name="connect_hint">当前已经连接：</string>
+    <string name="select_hint">当前选择：</string>
+    <string name="not_select_hint">请先点选主机</string>
+    <!-- 文件 -->
+    <string name="file_new">新建</string>
+    <string name="file_open">打开</string>
+    <string name="file_save">保存</string>
+    <string name="file_save_as">另存</string>
+    <string name="file_list_no">序号</string>
+    <string name="file_list_cmd">指令</string>
+    <string name="file_list_param">参数</string>
+    <string name="file_list_memo">注释</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

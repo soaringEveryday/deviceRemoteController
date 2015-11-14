@@ -1,6 +1,8 @@
 package com.remote.controller.bean;
 
 /**
+ * 远端服务器
+ *
  * Created by Chen Haitao on 2015/11/13.
  */
 public class Device {

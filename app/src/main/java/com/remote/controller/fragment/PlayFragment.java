@@ -69,18 +69,15 @@ public class PlayFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_play, container, false);
         ButterKnife.bind(this, view);
-        initView(view);
-        return view;
-    }
 
-    private void initView(View view) {
         List<Integer> ids = new ArrayList<>();
-        ids.add(R.id.btn_new);
-        ids.add(R.id.btn_open);
-        ids.add(R.id.btn_save);
-        ids.add(R.id.btn_save_as);
+        ids.add(R.id.btn_launch);
+        ids.add(R.id.btn_pause);
+        ids.add(R.id.btn_stop);
+        ids.add(R.id.btn_reset);
         setViewClickListener(ids, view);
         mDatas = new ArrayList<>();
+        return view;
     }
 
     //根据runningStatus设置四个btn的有效性
@@ -101,7 +98,20 @@ public class PlayFragment extends BaseFragment {
 
     @Override
     public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_launch:
 
+                break;
+            case R.id.btn_pause:
+
+                break;
+            case R.id.btn_stop:
+
+                break;
+            case R.id.btn_reset:
+
+                break;
+        }
     }
 
     @Override

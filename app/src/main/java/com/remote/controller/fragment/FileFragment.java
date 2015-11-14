@@ -1,7 +1,6 @@
 package com.remote.controller.fragment;
 
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 文件主界面
  */
 public class FileFragment extends BaseFragment {
 

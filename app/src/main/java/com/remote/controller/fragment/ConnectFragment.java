@@ -1,7 +1,6 @@
 package com.remote.controller.fragment;
 
 
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -28,7 +27,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 联机主界面
  */
 public class ConnectFragment extends BaseFragment {
 

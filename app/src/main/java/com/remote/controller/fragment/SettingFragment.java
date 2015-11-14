@@ -2,7 +2,6 @@ package com.remote.controller.fragment;
 
 
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import com.remote.controller.R;
 import com.remote.controller.utils.L;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 示教主界面
  */
 public class SettingFragment extends BaseFragment {
 

@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:textSize="13sp"
+        android:textSize="15sp"
         android:textColor="#616a7b"
         android:text="@string/file_list_no"/>
 
@@ -21,7 +21,7 @@
         android:layout_height="match_parent"
         android:layout_weight="2"
         android:gravity="center"
-        android:textSize="13sp"
+        android:textSize="15sp"
         android:textColor="#616a7b"
         android:text="@string/file_list_cmd"/>
 
@@ -30,7 +30,7 @@
         android:layout_height="match_parent"
         android:layout_weight="2"
         android:gravity="center"
-        android:textSize="13sp"
+        android:textSize="15sp"
         android:textColor="#616a7b"
         android:text="@string/file_list_param"/>
 
@@ -39,7 +39,7 @@
         android:layout_height="match_parent"
         android:layout_weight="2"
         android:gravity="center"
-        android:textSize="13sp"
+        android:textSize="15sp"
         android:textColor="#616a7b"
         android:text="@string/file_list_memo"/>
 

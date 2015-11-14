@@ -67,4 +67,11 @@ public class Constant {
 
     public static final String TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
+    public static class RunningStatus {
+        public static final int NO_CONNECTION = 0;
+        public static final int IDLE = 1;
+        public static final int RUNNING = 2;
+        public static final int ERROR = 3;
+    }
+
 }

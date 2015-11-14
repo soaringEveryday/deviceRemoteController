@@ -152,7 +152,7 @@ public class RootActivity extends BaseActivity {
 
             }
         });
-        viewPager.setOffscreenPageLimit(4);
+        viewPager.setOffscreenPageLimit(PAGE_SIZE);
 
     }
 

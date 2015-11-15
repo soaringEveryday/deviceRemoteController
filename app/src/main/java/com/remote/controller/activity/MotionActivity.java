@@ -70,7 +70,7 @@ public class MotionActivity extends BaseActivity {
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(true);
             actionBar.setDisplayUseLogoEnabled(true);
-            actionBar.setTitle(R.string.setting_btn_motion);
+            actionBar.setTitle(R.string.setting_sub_motion);
         }
 
         Intent intent = getIntent();

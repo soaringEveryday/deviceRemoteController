@@ -17,7 +17,7 @@ public class IOActivity extends BaseActivity {
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(true);
             actionBar.setDisplayUseLogoEnabled(true);
-            actionBar.setTitle(R.string.setting_btn_io);
+            actionBar.setTitle(R.string.setting_sub_io);
         }
     }
 

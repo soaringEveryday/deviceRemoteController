@@ -7,7 +7,7 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/data1"
+        android:id="@+id/param_x"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -17,7 +17,7 @@
         android:textColor="#616a7b"/>
 
     <TextView
-        android:id="@+id/data2"
+        android:id="@+id/param_y"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -27,7 +27,7 @@
         android:textColor="#616a7b"/>
 
     <TextView
-        android:id="@+id/data3"
+        android:id="@+id/param_z"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -37,7 +37,7 @@
         android:textColor="#616a7b"/>
 
     <TextView
-        android:id="@+id/data4"
+        android:id="@+id/param_a"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

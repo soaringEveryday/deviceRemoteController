@@ -74,4 +74,16 @@ public class Constant {
         public static final int ERROR = 3;
     }
 
+    //运动指令参数 x, y, z, a, v , g
+    public static class Param {
+        public static final String X = "x";
+        public static final String Y = "y";
+        public static final String Z = "z";
+        public static final String A = "a";
+        public static final String V = "v";
+        public static final String G = "g";
+
+
+    }
+
 }

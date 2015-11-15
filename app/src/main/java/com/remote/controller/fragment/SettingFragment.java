@@ -19,6 +19,7 @@ import com.remote.controller.activity.DelayActivity;
 import com.remote.controller.activity.IOActivity;
 import com.remote.controller.activity.MotionActivity;
 import com.remote.controller.bean.FileLineItem;
+import com.remote.controller.constant.Constant;
 import com.remote.controller.utils.L;
 
 import java.util.ArrayList;
@@ -67,14 +68,14 @@ public class SettingFragment extends BaseFragment {
     RadioButton dis4;
     @Bind(R.id.distance_zone)
     RadioGroup distanceZone;
-    @Bind(R.id.data1)
-    TextView data1;
-    @Bind(R.id.data2)
-    TextView data2;
-    @Bind(R.id.data3)
-    TextView data3;
-    @Bind(R.id.data4)
-    TextView data4;
+    @Bind(R.id.param_x)
+    TextView paramX;
+    @Bind(R.id.param_y)
+    TextView paramY;
+    @Bind(R.id.param_z)
+    TextView paramZ;
+    @Bind(R.id.param_a)
+    TextView paramA;
     @Bind(R.id.list)
     ListView list;
 
@@ -107,9 +108,15 @@ public class SettingFragment extends BaseFragment {
 
     @Override
     public void onClick(View view) {
+        Intent intent = new Intent();
         switch (view.getId()) {
             case R.id.btn_motion:
-                startActivity(new Intent(mContext, MotionActivity.class));
+                intent.setClass(mContext, MotionActivity.class);
+                intent.putExtra(Constant.Param.X, Integer.parseInt(paramX.getText().toString()));
+                intent.putExtra(Constant.Param.Y, Integer.parseInt(paramY.getText().toString()));
+                intent.putExtra(Constant.Param.Z, Integer.parseInt(paramZ.getText().toString()));
+                intent.putExtra(Constant.Param.A, Integer.parseInt(paramA.getText().toString()));
+                startActivity(intent);
                 break;
             case R.id.btn_io:
                 startActivity(new Intent(mContext, IOActivity.class));

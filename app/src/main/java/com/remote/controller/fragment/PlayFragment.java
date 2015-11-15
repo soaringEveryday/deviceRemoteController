@@ -44,13 +44,13 @@ public class PlayFragment extends BaseFragment {
     TextView tvRunningStatus;
     @Bind(R.id.list)
     ListView list;
-    @Bind(R.id.data1)
+    @Bind(R.id.param_x)
     TextView data1;
-    @Bind(R.id.data2)
+    @Bind(R.id.param_y)
     TextView data2;
-    @Bind(R.id.data3)
+    @Bind(R.id.param_z)
     TextView data3;
-    @Bind(R.id.data4)
+    @Bind(R.id.param_a)
     TextView data4;
 
     private int runningStatus = Constant.RunningStatus.NO_CONNECTION;

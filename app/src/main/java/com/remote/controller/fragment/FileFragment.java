@@ -2,6 +2,9 @@ package com.remote.controller.fragment;
 
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +81,25 @@ public class FileFragment extends BaseFragment {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+        showCreateDialog();
+    }
+
+    private void showCreateDialog() {
+            FragmentTransaction ft = mFragMgr.beginTransaction();
+            Fragment fragment = mFragMgr.findFragmentByTag("dialog_duplicate");
+            if (null != fragment) {
+                ft.remove(fragment);
+                ft.commit();
+            }
+
+            CreateNewFileFragment dialogDuplicate = new CreateNewFileFragment();
+//            Bundle args = new Bundle();
+//            args.putString(CashierDialogDuplicateFragment.ARG_GOOD_CODE, code);
+//            Gson gson = new Gson();
+//            args.putString(CashierDialogDuplicateFragment.ARG_GOODS_LIST, gson.toJson(dataList));
+//            dialogDuplicate.setArguments(args);
+            dialogDuplicate.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+            dialogDuplicate.show(mFragMgr, "create_new_file");
     }
 
     private void saveAsFile() {

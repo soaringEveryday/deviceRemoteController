@@ -8,10 +8,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.remote.controller.R;
+import com.remote.controller.utils.CSVUtils;
 import com.remote.controller.utils.ScreenUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -28,6 +31,8 @@ public class CreateNewFileFragment extends BaseDialogFragment {
     Button btnOk;
     @Bind(R.id.btn_cancel)
     Button btnCancel;
+    @Bind(R.id.et_file_name)
+    EditText etFileName;
 
     private ArrayList<Integer> viewIds = new ArrayList<>();
 
@@ -94,12 +99,36 @@ public class CreateNewFileFragment extends BaseDialogFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_ok:
-                this.dismiss();
+                if (createNewFile() == 0) {
+                    Toast.makeText(getActivity(), "创建成功", Toast.LENGTH_SHORT).show();
+                    this.dismiss();
+                } else {
+                    Toast.makeText(getActivity(), "创建失败", Toast.LENGTH_SHORT).show();
+
+                }
                 break;
 
             case R.id.btn_cancel:
                 this.dismiss();
                 break;
         }
+    }
+
+    private int createNewFile() {
+        String version = etVersion.getText().toString();
+        String description = etDesc.getText().toString();
+        String fileName = etFileName.getText().toString();
+        if (version.isEmpty() || description.isEmpty()|| fileName.isEmpty()) {
+            Toast.makeText(getActivity(), R.string.create_new_error, Toast.LENGTH_SHORT).show();
+            return -1;
+        }
+        try {
+            CSVUtils.getInstance().create("csvTest" + ".csv", version, description);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return -1;
+        }
+
+        return 0;
     }
 }

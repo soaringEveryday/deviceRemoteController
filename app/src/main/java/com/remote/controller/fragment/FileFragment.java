@@ -73,7 +73,11 @@ public class FileFragment extends BaseFragment {
     }
 
     private void newFile() {
-
+//        try {
+//            CSVUtils.getInstance().create();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void saveAsFile() {

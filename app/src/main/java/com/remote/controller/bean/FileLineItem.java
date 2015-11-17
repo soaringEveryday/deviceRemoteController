@@ -1,11 +1,13 @@
 package com.remote.controller.bean;
 
+import java.io.Serializable;
+
 /**
  * csv文件中的一行
  *
  * Created by Chen Haitao on 2015/11/14.
  */
-public class FileLineItem {
+public class FileLineItem implements Serializable {
 
     /**
      * 序号
@@ -64,5 +66,11 @@ public class FileLineItem {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+
+    @Override
+    public String toString() {
+        return "FileLineItem [no=" + no + ", command=" + command + ", parameter=" + parameter + ", memo=" + memo + "]";
     }
 }

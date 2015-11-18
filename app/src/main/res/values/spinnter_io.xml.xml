@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="port">
+    <string-array name="port_input">
         <item>无</item>
         <item>DI 0</item>
         <item>DI 1</item>
@@ -34,6 +34,39 @@
         <item>DI 29</item>
         <item>DI 30</item>
         <item>DI 31</item>
-        <item>DI 32</item>
+    </string-array>
+    <string-array name="port_output">
+        <item>DI 0</item>
+        <item>DI 1</item>
+        <item>DI 2</item>
+        <item>DI 3</item>
+        <item>DI 4</item>
+        <item>DI 5</item>
+        <item>DI 6</item>
+        <item>DI 7</item>
+        <item>DI 8</item>
+        <item>DI 9</item>
+        <item>DI 10</item>
+        <item>DI 11</item>
+        <item>DI 12</item>
+        <item>DI 13</item>
+        <item>DI 14</item>
+        <item>DI 15</item>
+        <item>DI 16</item>
+        <item>DI 17</item>
+        <item>DI 18</item>
+        <item>DI 19</item>
+        <item>DI 20</item>
+        <item>DI 21</item>
+        <item>DI 22</item>
+        <item>DI 23</item>
+        <item>DI 24</item>
+        <item>DI 25</item>
+        <item>DI 26</item>
+        <item>DI 27</item>
+        <item>DI 28</item>
+        <item>DI 29</item>
+        <item>DI 30</item>
+        <item>DI 31</item>
     </string-array>
 </resources>

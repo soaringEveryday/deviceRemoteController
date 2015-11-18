@@ -66,7 +66,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:entries="@array/port"
+                    android:entries="@array/port_input"
                     />
                 <Spinner
                     android:id="@+id/status1"
@@ -94,7 +94,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:entries="@array/port"
+                    android:entries="@array/port_input"
                     />
                 <Spinner
                     android:id="@+id/status2"
@@ -122,7 +122,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:entries="@array/port"
+                    android:entries="@array/port_input"
                     />
                 <Spinner
                     android:id="@+id/status3"
@@ -150,7 +150,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:entries="@array/port"
+                    android:entries="@array/port_input"
                     />
                 <Spinner
                     android:id="@+id/status4"
@@ -170,12 +170,16 @@
 
             <Button
                 android:id="@+id/btn_output"
-                android:layout_width="100dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="输出"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/black"
                 android:enabled="false"
+                android:textSize="22sp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:layout_marginBottom="5dp"
                 />
 
             <RadioGroup

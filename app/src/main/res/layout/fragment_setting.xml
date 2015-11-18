@@ -182,19 +182,19 @@
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:text="1mm"/>
+            android:text="x100"/>
         <RadioButton
             android:id="@+id/dis_3"
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:text="0.1mm"/>
+            android:text="x10"/>
         <RadioButton
             android:id="@+id/dis_4"
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:text="0.01mm"/>
+            android:text="x1"/>
 
     </RadioGroup>
 

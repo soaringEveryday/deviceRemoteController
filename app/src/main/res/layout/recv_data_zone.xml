@@ -12,8 +12,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="3228"
-        android:textSize="14sp"
+        android:text="-1073741824"
+        android:textSize="12sp"
         android:textColor="#616a7b"/>
 
     <TextView
@@ -22,8 +22,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:textSize="14sp"
-        android:text="3228"
+        android:textSize="12sp"
+        android:text="-1073741824"
         android:textColor="#616a7b"/>
 
     <TextView
@@ -32,8 +32,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:textSize="14sp"
-        android:text="3228"
+        android:textSize="12sp"
+        android:text="-1073741824"
         android:textColor="#616a7b"/>
 
     <TextView
@@ -42,8 +42,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="3228"
-        android:textSize="14sp"
+        android:text="-1073741824"
+        android:textSize="12sp"
         android:textColor="#616a7b"/>
 
 </LinearLayout>

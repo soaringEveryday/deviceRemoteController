@@ -76,12 +76,12 @@
     <!-- 示教 -->
     <string name="setting_btn_motion">运动</string>
     <string name="setting_btn_io">IO</string>
-    <string name="setting_btn_delay">延迟</string>
+    <string name="setting_btn_delay">延时</string>
     <string name="setting_btn_del">删除</string>
 
     <string name="setting_sub_motion">插入运动指令</string>
     <string name="setting_sub_io">插入IO指令</string>
-    <string name="setting_sub_delay">插入延迟指令</string>
+    <string name="setting_sub_delay">插入延时指令</string>
 
     <string name="create_new_error">请填写完全</string>
 

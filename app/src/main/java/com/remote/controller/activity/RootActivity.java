@@ -78,7 +78,6 @@ public class RootActivity extends BaseActivity {
             actionBar.setDisplayShowTitleEnabled(true);
             actionBar.setDisplayUseLogoEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.senavi
         }
         initView();
     }

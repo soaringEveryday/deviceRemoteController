@@ -54,7 +54,8 @@ public class IOActivity extends BaseActivity {
     RadioButton radioOutput;
 
 
-    private String[] ports;
+    private String[] ports_input;
+    private String[] ports_output;
     private String[] status;
     private ArrayList<Integer> viewIds = new ArrayList<>();
     private ArrayAdapter<String> portsAdapter;
@@ -90,8 +91,21 @@ public class IOActivity extends BaseActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     btnOutput.setEnabled(false);
+                    portsAdapter = new ArrayAdapter<String>(IOActivity.this, android.R.layout.simple_spinner_dropdown_item, ports_input);
+                    port1.setAdapter(portsAdapter);
+                    port2.setAdapter(portsAdapter);
+                    port3.setAdapter(portsAdapter);
+                    port4.setAdapter(portsAdapter);
+                    portsAdapter.notifyDataSetChanged();
+
                 } else {
                     btnOutput.setEnabled(true);
+                    portsAdapter = new ArrayAdapter<String>(IOActivity.this, android.R.layout.simple_spinner_dropdown_item, ports_output);
+                    port1.setAdapter(portsAdapter);
+                    port2.setAdapter(portsAdapter);
+                    port3.setAdapter(portsAdapter);
+                    port4.setAdapter(portsAdapter);
+                    portsAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -100,9 +114,10 @@ public class IOActivity extends BaseActivity {
     private void initViews() {
         bindViewClicks();
 
-        ports = getResources().getStringArray(R.array.port);
+        ports_input = getResources().getStringArray(R.array.port_input);
+        ports_output = getResources().getStringArray(R.array.port_output);
         status = getResources().getStringArray(R.array.status);
-        portsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, ports);
+        portsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, ports_input);
         statusAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, status);
 
         port1.setAdapter(portsAdapter);

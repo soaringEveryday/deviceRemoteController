@@ -9,6 +9,8 @@
     <string name="cancel">取消</string>
     <string name="ok">确认</string>
 
+    <string name="company_name">深圳市施美森科技有限公司</string>
+
     <!-- 网络和请求相关 -->
     <string name="netConnectedError">网络异常，请稍后再试！</string>
     <string name="requestError">请求发生错误</string>

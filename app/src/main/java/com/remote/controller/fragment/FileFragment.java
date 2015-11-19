@@ -1,6 +1,8 @@
 package com.remote.controller.fragment;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -14,8 +16,10 @@ import android.widget.ListView;
 
 import com.remote.controller.R;
 import com.remote.controller.bean.FileLineItem;
+import com.remote.controller.filechooser.ipaulpro.afilechooser.utils.FileUtils;
 import com.remote.controller.utils.L;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,10 +47,14 @@ public class FileFragment extends BaseFragment {
     private BaseAdapter mAdaper;
 
 
-    public FileFragment() {
-        // Required empty public constructor
-    }
-
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        // Create the ACTION_GET_CONTENT Intent
+//        Intent getContentIntent = FileUtils.createGetContentIntent();
+//        Intent intent = Intent.createChooser(getContentIntent, "Select a file");
+//        startActivityForResult(intent, REQUEST_CHOOSER);
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,6 +75,16 @@ public class FileFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    public FileFragment() {
+        // Required empty public constructor
+    }
+
 
     private void openFile() {
     }
@@ -81,7 +99,15 @@ public class FileFragment extends BaseFragment {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        showCreateDialog();
+//
+//
+//
+// showCreateDialog();
+
+        Intent getContentIntent = FileUtils.createGetContentIntent();
+        Intent intent = Intent.createChooser(getContentIntent, "Select a file");
+        startActivityForResult(intent, REQUEST_CHOOSER);
+
     }
 
     private void showCreateDialog() {
@@ -127,9 +153,23 @@ public class FileFragment extends BaseFragment {
         }
     }
 
+    private static final int REQUEST_CHOOSER = 1234;
+
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CHOOSER:
+//                if (resultCode == RESULT_OK) {
+                    final Uri uri = data.getData();
+                    // Get the File path from the Uri
+                    String path = FileUtils.getPath(mActivity, uri);
+                    // Alternatively, use FileUtils.getFile(Context, Uri)
+                    if (path != null && FileUtils.isLocal(path)) {
+                        File file = new File(path);
+                    }
+//                }
+                break;
+        }
     }
+
 }

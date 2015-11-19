@@ -32,6 +32,11 @@ public class RootActivity extends BaseActivity {
 
     @Bind(R.id.id_viewpager)
     ViewPager idViewpager;
+    @Bind(R.id.tab_bar)
+    LinearLayout tabBar;
+    @Bind(R.id.rl_root)
+    LinearLayout rlRoot;
+
     @Bind(R.id.icon1)
     ImageView icon1;
     @Bind(R.id.id_indicator_one)

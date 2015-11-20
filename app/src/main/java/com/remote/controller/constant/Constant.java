@@ -88,4 +88,9 @@ public class Constant {
         public static final int VERION_CSV = 1;
     }
 
+    public static class SPKEY {
+        public static final String FILE_NAME = "key_file_name";
+        public static final String FILE_DESC = "key_file_desc";
+
+    }
 }

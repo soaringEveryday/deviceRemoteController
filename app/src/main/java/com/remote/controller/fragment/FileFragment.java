@@ -26,6 +26,7 @@ import com.remote.controller.filechooser.ipaulpro.afilechooser.utils.FileUtils;
 import com.remote.controller.message.MessageEvent;
 import com.remote.controller.utils.CSVUtils;
 import com.remote.controller.utils.L;
+import com.remote.controller.utils.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,6 +160,8 @@ public class FileFragment extends BaseFragment {
         currentFileName = "";
         currentFileDesc = "";
 
+        isOpenOld = false;
+
         Toast.makeText(mActivity, "新建成功", Toast.LENGTH_SHORT).show();
 
         refreshFileInfo();
@@ -233,14 +236,7 @@ public class FileFragment extends BaseFragment {
     }
 
     private int saveCsvFile() {
-        try {
-            CSVUtils.getInstance().create(currentFileName, Constant.FileFormat.VERION_CSV, currentFileDesc, columns, mDatas);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
-
-        return 0;
+        return createCsvFile(currentFileName, currentFileDesc);
     }
 
     private void insertCommand() {
@@ -290,7 +286,7 @@ public class FileFragment extends BaseFragment {
                 // Alternatively, use FileUtils.getFile(Context, Uri)
                 if (path != null && FileUtils.isLocal(path)) {
                     L.d("path :" + path);
-                    ArrayList<FileLineItem> temp = CSVUtils.getInstance().read(path);
+                    ArrayList<FileLineItem> temp = CSVUtils.getInstance().read(mContext, path);
                     if (temp != null) {
                         L.d("打开文件" + path + "成功");
                         Toast.makeText(mActivity, "打开文件" + path + "成功", Toast.LENGTH_SHORT).show();
@@ -298,6 +294,10 @@ public class FileFragment extends BaseFragment {
                         mDatas.addAll(temp);
                         mAdaper.notifyDataSetChanged();
                         isOpenOld = true;
+                        currentFileName = (String) SPUtils.get(mContext, Constant.SPKEY.FILE_NAME, "");
+                        currentFileDesc = (String) SPUtils.get(mContext, Constant.SPKEY.FILE_DESC, "");
+
+                        refreshFileInfo();
                     } else {
                         Toast.makeText(mActivity, "打开文件" + path + "失败", Toast.LENGTH_SHORT).show();
                     }

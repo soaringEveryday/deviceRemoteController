@@ -1,5 +1,6 @@
 package com.remote.controller.utils;
 
+import android.content.Context;
 import android.os.Environment;
 
 import com.opencsv.CSVReader;
@@ -94,7 +95,7 @@ public class CSVUtils {
      * @param path
      * @return
      */
-    public ArrayList<FileLineItem> read(String path) {
+    public ArrayList<FileLineItem> read(Context context, String path) {
         InputStreamReader in;
         try {
             in = new InputStreamReader(new FileInputStream(path), Charset.forName("GBK"));
@@ -103,13 +104,30 @@ public class CSVUtils {
             L.e("找不到文件");
             return null;
         }
-        CSVReader reader = new CSVReader(in, ',', '"', 3);
+        CSVReader reader = new CSVReader(in, ',', '"', 1);
 
         ArrayList<FileLineItem> commands = new ArrayList<>();
         FileLineItem command;
 
         String[] nextLine;
+        String fileDesc;
+
         try {
+            if ((nextLine = reader.readNext()) != null) {
+                // nextLine[] is an array of values from the line
+                L.d(nextLine[0] + ";" + nextLine[1]);
+                fileDesc = nextLine[1];
+                SPUtils.put(context, Constant.SPKEY.FILE_DESC, fileDesc);
+                File tempFile = new File(path);
+                SPUtils.put(context, Constant.SPKEY.FILE_NAME, tempFile.getName().substring(0,path.lastIndexOf(".")));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            reader.readNext();
             while ((nextLine = reader.readNext()) != null) {
                 // nextLine[] is an array of values from the line
                 L.d(nextLine[0] + ";" + nextLine[1] + ";" + nextLine[2] + ";" + nextLine[3]);
@@ -123,6 +141,8 @@ public class CSVUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
 
         try {
             in.close();

@@ -82,8 +82,10 @@ public class Constant {
         public static final String A = "a";
         public static final String V = "v";
         public static final String G = "g";
+    }
 
-
+    public static class FileFormat {
+        public static final int VERION_CSV = 1;
     }
 
 }

@@ -3,6 +3,7 @@ package com.remote.controller.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,6 +104,13 @@ public class SettingFragment extends BaseFragment {
         setViewClickListener(ids, view);
         mDatas = new ArrayList<>();
         return view;
+    }
+
+    public void onEvent(final Message msg) {
+        int msgEvent = msg.what;
+        switch (msgEvent) {
+
+        }
     }
 
 

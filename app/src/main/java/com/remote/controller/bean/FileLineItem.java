@@ -1,5 +1,7 @@
 package com.remote.controller.bean;
 
+import com.orm.SugarRecord;
+
 import java.io.Serializable;
 
 /**
@@ -7,7 +9,7 @@ import java.io.Serializable;
  *
  * Created by Chen Haitao on 2015/11/14.
  */
-public class FileLineItem implements Serializable {
+public class FileLineItem extends SugarRecord implements Serializable {
 
     /**
      * 序号
@@ -29,12 +31,12 @@ public class FileLineItem implements Serializable {
      */
     private String memo;
 
-    public FileLineItem(int no, String command, String parameter, String memo) {
-        this.no = no;
-        this.command = command;
-        this.parameter = parameter;
-        this.memo = memo;
-    }
+//    public FileLineItem(int no, String command, String parameter, String memo) {
+//        this.no = no;
+//        this.command = command;
+//        this.parameter = parameter;
+//        this.memo = memo;
+//    }
 
     public int getNo() {
         return no;
@@ -67,7 +69,6 @@ public class FileLineItem implements Serializable {
     public void setMemo(String memo) {
         this.memo = memo;
     }
-
 
     @Override
     public String toString() {

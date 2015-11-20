@@ -1,12 +1,14 @@
 package com.remote.controller.bean;
 
+import com.orm.SugarRecord;
+
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Chen Haitao on 2015/11/17.
  */
-public class CmdFile implements Serializable{
+public class CmdFile extends SugarRecord implements Serializable {
 
     /**
      * 版本
@@ -28,12 +30,12 @@ public class CmdFile implements Serializable{
      */
     private List<FileLineItem> commands;
 
-    public CmdFile(int version, String description, String[] columnTitles, List<FileLineItem> commands) {
-        this.version = version;
-        this.description = description;
-        this.columnTitles = columnTitles;
-        this.commands = commands;
-    }
+
+    /**
+     * 文件名
+     */
+    private String fileName;
+
 
     public int getVersion() {
         return version;
@@ -65,6 +67,14 @@ public class CmdFile implements Serializable{
 
     public void setCommands(List<FileLineItem> commands) {
         this.commands = commands;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     @Override

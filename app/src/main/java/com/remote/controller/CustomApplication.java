@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 
+import com.orm.SugarContext;
 import com.remote.controller.utils.CustomCrashHandler;
 import com.remote.controller.utils.L;
 import com.squareup.leakcanary.LeakCanary;
@@ -50,6 +51,8 @@ public class CustomApplication extends Application{
         //tencent bugly
 //        CrashReport.initCrashReport(this, "900009289", true);
 
+        SugarContext.init(this);
+
         LeakCanary.install(this);
 
         // 获取crash信息并写日志;
@@ -61,6 +64,7 @@ public class CustomApplication extends Application{
     @Override
     public void onTerminate() {
         super.onTerminate();
+        SugarContext.terminate();
     }
 
     private void setAppFont() {

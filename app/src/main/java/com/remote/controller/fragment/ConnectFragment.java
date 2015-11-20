@@ -3,6 +3,7 @@ package com.remote.controller.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,6 +107,13 @@ public class ConnectFragment extends BaseFragment {
         });
 
 
+    }
+
+    public void onEvent(final Message msg) {
+        int msgEvent = msg.what;
+        switch (msgEvent) {
+
+        }
     }
 
 

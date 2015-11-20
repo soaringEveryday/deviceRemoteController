@@ -3,10 +3,15 @@ package com.remote.controller.utils;
 import android.os.Environment;
 
 import com.opencsv.CSVWriter;
+import com.remote.controller.bean.FileLineItem;
+import com.remote.controller.constant.Constant;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 
 /**
  * Created by Chen Haitao on 2015/11/17.
@@ -26,46 +31,55 @@ public class CSVUtils{
         return instance;
     }
 
-    public void create(String fileName, String version, String description) throws IOException {
+    public void create(String fileName, int version, String description, ArrayList<String> columns, ArrayList<FileLineItem> lines) throws IOException {
 
         if (fileName == null || fileName.isEmpty()) {
             return;
         }
 
         File extDir = Environment.getExternalStorageDirectory();
-        File fullFilename = new File(extDir, fileName);
-
-        try {
-            fullFilename.createNewFile();
-            fullFilename.setWritable(Boolean.TRUE);
-        } catch (IOException e) {
-            e.printStackTrace();
+        File fullFilename;
+        if (version == Constant.FileFormat.VERION_CSV) {
+            fullFilename = new File(extDir, fileName + ".csv");
+        } else {
+            fullFilename = new File(extDir, fileName);
         }
 
+//        try {
+//            fullFilename.createNewFile();
+//            fullFilename.setWritable(Boolean.TRUE);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-        CSVWriter writer = new CSVWriter(new FileWriter(fullFilename), ',');
-        String[] entries = new String[]{"版本", version};
-        writer.writeNext(entries);
+        OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(fullFilename), Charset.forName("GBK"));
+
+//        CSVWriter writer = new CSVWriter(new FileWriter(fullFilename), ',');
+        CSVWriter writer = new CSVWriter(out, ',');
+        String[] entries;
+        entries = new String[]{"版本", String.valueOf(version)};
+        writer.writeNext(entries);//写入版本信息，默认1为csv格式
+        
         entries = new String[]{"文件描述", description};
-        writer.writeNext(entries);
+        writer.writeNext(entries);//写入文件描述
+
+        entries = new String[columns.size()];
+        for (int i = 0; i < columns.size(); i++) {
+            entries[i] = columns.get(i);
+        }
+        writer.writeNext(entries);//写入栏信息
+
+        String[] temp = new String[columns.size()];
+        for (FileLineItem item : lines) {
+            temp[0] = String.valueOf(item.getNo());
+            temp[1] = item.getCommand();
+            temp[2] = item.getParameter();
+            temp[3] = item.getMemo();
+            writer.writeNext(temp);//写入所有行的指令
+        }
+
         writer.close();
 
-//        File tempFile = File.createTempFile("csvWriterTest", ".csv");
-//        tempFile.deleteOnExit();
-//        CSVWriter writer = new CSVWriter(new FileWriter(tempFile));
-//
-//        ColumnPositionMappingStrategy strat = new ColumnPositionMappingStrategy();
-//        strat.setType(FileLineItem.class);
-//        String[] columns = new String[] {"no", "command", "parameter", "memo"};
-//        strat.setColumnMapping(columns);
-//
-//        List<FileLineItem> datas = new ArrayList<>();
-//        datas.add(new FileLineItem(1, "LineTo", "100", ""));
-//        datas.add(new FileLineItem(1, "MoveTo", "1100", ""));
-//
-//
-//        BeanToCsv<FileLineItem> btc = new BeanToCsv<>();
-//        btc.write(strat, writer, datas);
     }
 
     public void read() {

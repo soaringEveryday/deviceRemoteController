@@ -20,6 +20,8 @@ import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * Created by Chen Haitao on 2015/8/8.
  */
@@ -37,6 +39,9 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         mActivity = getActivity();
         mContext = context;
         mFragMgr = getActivity().getSupportFragmentManager();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this, 1);
+        }
     }
 
     @Override
@@ -55,6 +60,9 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     @Override
     public void onDetach() {
         super.onDetach();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
         mContext = null;
         mFragMgr = null;
         mActivity = null;

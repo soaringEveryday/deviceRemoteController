@@ -1,6 +1,7 @@
 package com.remote.controller.fragment;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,23 +9,20 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.remote.controller.R;
-import com.remote.controller.utils.CSVUtils;
+import com.remote.controller.message.MessageEvent;
 import com.remote.controller.utils.ScreenUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 public class CreateNewFileFragment extends BaseDialogFragment {
 
 
-    @Bind(R.id.et_version)
-    EditText etVersion;
     @Bind(R.id.et_desc)
     EditText etDesc;
     @Bind(R.id.btn_ok)
@@ -68,28 +66,6 @@ public class CreateNewFileFragment extends BaseDialogFragment {
 
     private void initViewData(View view) {
 
-//        Bundle args = getArguments();
-//
-//        if (args != null) {
-//            String goodsStr = args.getString(ARG_GOODS_LIST);
-//            Gson gson = new Gson();
-//            mDataList = gson.fromJson(goodsStr, new TypeToken<List<GoodsUnitRel>>(){}.getType());
-//            CashierDuplicateListAdapter adapter = new CashierDuplicateListAdapter(getActivity(), mDataList);
-//            mList.setAdapter(adapter);
-//            mCode.setText(getString(R.string.duplicate_code) + " " + args.getString(ARG_GOOD_CODE));
-//        }
-//        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                GoodsUnitRel good = mDataList.get(position);
-//                Message msg = Message.obtain();
-//                msg.what = MessageEvent.MSG_DUPLICATE_SCAN_GOODS_SELECTED;
-//                msg.obj = good;
-//                EventBus.getDefault().post(msg);
-//                dismiss();
-//            }
-//        });
-
         viewIds.add(R.id.btn_ok);
         viewIds.add(R.id.btn_cancel);
         setViewClickListener(viewIds, view);
@@ -99,13 +75,8 @@ public class CreateNewFileFragment extends BaseDialogFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_ok:
-                if (createNewFile() == 0) {
-                    Toast.makeText(getActivity(), "创建成功", Toast.LENGTH_SHORT).show();
-                    this.dismiss();
-                } else {
-                    Toast.makeText(getActivity(), "创建失败", Toast.LENGTH_SHORT).show();
-
-                }
+                sendOutFileInfo();
+                this.dismiss();
                 break;
 
             case R.id.btn_cancel:
@@ -114,21 +85,14 @@ public class CreateNewFileFragment extends BaseDialogFragment {
         }
     }
 
-    private int createNewFile() {
-        String version = etVersion.getText().toString();
+    private void sendOutFileInfo() {
         String description = etDesc.getText().toString();
         String fileName = etFileName.getText().toString();
-        if (version.isEmpty() || description.isEmpty()|| fileName.isEmpty()) {
-            Toast.makeText(getActivity(), R.string.create_new_error, Toast.LENGTH_SHORT).show();
-            return -1;
-        }
-        try {
-            CSVUtils.getInstance().create("csvTest" + ".csv", version, description);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return -1;
-        }
+        String sendStr = fileName + "&" + description;
 
-        return 0;
+        Message msg = Message.obtain();
+        msg.what = MessageEvent.MSG_CREATE_NEW_FILE_SUCCESS;
+        msg.obj = sendStr;
+        EventBus.getDefault().post(msg);
     }
 }

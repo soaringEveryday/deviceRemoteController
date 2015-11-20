@@ -58,6 +58,9 @@ public class FileFragment extends BaseFragment {
     private BaseAdapter mAdaper;
     private static final int REQUEST_CHOOSER = 1234;
     private boolean isOpenOld = false;
+    private String currentFileName = "";
+    private String currentFileDesc = "";
+    ArrayList<String> columns = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,11 @@ public class FileFragment extends BaseFragment {
         setViewClickListener(ids, view);
 
         initListView();
+
+        columns.add(getString(R.string.file_list_no));
+        columns.add(getString(R.string.file_list_cmd));
+        columns.add(getString(R.string.file_list_param));
+        columns.add(getString(R.string.file_list_memo));
 
         return view;
     }
@@ -110,7 +118,9 @@ public class FileFragment extends BaseFragment {
 
 
     private void openFile() {
-
+        Intent getContentIntent = FileUtils.createGetContentIntent();
+        Intent intent = Intent.createChooser(getContentIntent, "Select a file");
+        startActivityForResult(intent, REQUEST_CHOOSER);
     }
 
     private void saveFile() {
@@ -122,6 +132,14 @@ public class FileFragment extends BaseFragment {
 
         if (isOpenOld) {
             //保存当前打开的文件
+
+            if (saveCsvFile() < 0) {
+                Toast.makeText(mActivity, "保存成功", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(mActivity, "保存失败", Toast.LENGTH_SHORT).show();
+
+            }
+
         } else {
             //表明示新创建的文件
             showCreateDialog();
@@ -138,20 +156,17 @@ public class FileFragment extends BaseFragment {
         }
         mAdaper.notifyDataSetChanged();
 
+        currentFileName = "";
+        currentFileDesc = "";
+
         Toast.makeText(mActivity, "新建成功", Toast.LENGTH_SHORT).show();
 
         refreshFileInfo();
-//        try {
-//            CSVUtils.getInstance().create();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
+    }
 
-//        Intent getContentIntent = FileUtils.createGetContentIntent();
-//        Intent intent = Intent.createChooser(getContentIntent, "Select a file");
-//        startActivityForResult(intent, REQUEST_CHOOSER);
 
+    private void saveAsFile() {
+        insertCommand();
     }
 
     private void showCreateDialog() {
@@ -167,18 +182,10 @@ public class FileFragment extends BaseFragment {
         dialogDuplicate.show(mFragMgr, "create_new_file");
     }
 
-    private void saveAsFile() {
-        insertCommand();
-    }
 
     private void refreshFileInfo() {
-//        CmdFile file = CmdFile.findById(CmdFile.class, 1);
-//        if (file != null) {
-//            fileDesc.setText(file.getDescription());
-//        } else {
-//            L.d("文件不存在");
-//            Toast.makeText(mActivity, "文件不存在", Toast.LENGTH_SHORT).show();
-//        }
+        fileDesc.setText(currentFileDesc);
+        fileName.setText(currentFileName);
     }
 
     public void onEvent(final Message msg) {
@@ -194,6 +201,9 @@ public class FileFragment extends BaseFragment {
                 String[] strs = fileStr.split("&");
                 if (createCsvFile(strs[0], strs[1]) < 0) {
                     Toast.makeText(mActivity, "保存文件失败", Toast.LENGTH_SHORT).show();
+                    currentFileName = strs[0];
+                    currentFileDesc = strs[1];
+                    refreshFileInfo();
                 } else {
                     Toast.makeText(mActivity, "保存文件成功", Toast.LENGTH_SHORT).show();
 
@@ -202,14 +212,15 @@ public class FileFragment extends BaseFragment {
         }
     }
 
+    /**
+     * 创建新文件
+     * @param fileName
+     * @param desc
+     * @return
+     */
     private int createCsvFile(String fileName, String desc) {
         L.d("文件名：" + fileName);
         L.d("文件描述：" + desc);
-        ArrayList<String> columns = new ArrayList<>();
-        columns.add(getString(R.string.file_list_no));
-        columns.add(getString(R.string.file_list_cmd));
-        columns.add(getString(R.string.file_list_param));
-        columns.add(getString(R.string.file_list_memo));
 
         try {
             CSVUtils.getInstance().create(fileName, Constant.FileFormat.VERION_CSV, desc, columns, mDatas);
@@ -219,7 +230,17 @@ public class FileFragment extends BaseFragment {
         }
 
         return 0;
+    }
 
+    private int saveCsvFile() {
+        try {
+            CSVUtils.getInstance().create(currentFileName, Constant.FileFormat.VERION_CSV, currentFileDesc, columns, mDatas);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+
+        return 0;
     }
 
     private void insertCommand() {
@@ -257,7 +278,11 @@ public class FileFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
+            //读取文件返回
             case REQUEST_CHOOSER:
+                if (data == null) {
+                    return;
+                }
 //                if (resultCode == RESULT_OK) {
                 final Uri uri = data.getData();
                 // Get the File path from the Uri
@@ -265,7 +290,17 @@ public class FileFragment extends BaseFragment {
                 // Alternatively, use FileUtils.getFile(Context, Uri)
                 if (path != null && FileUtils.isLocal(path)) {
                     L.d("path :" + path);
-//                        File file = new File(path);
+                    ArrayList<FileLineItem> temp = CSVUtils.getInstance().read(path);
+                    if (temp != null) {
+                        L.d("打开文件" + path + "成功");
+                        Toast.makeText(mActivity, "打开文件" + path + "成功", Toast.LENGTH_SHORT).show();
+                        mDatas.clear();
+                        mDatas.addAll(temp);
+                        mAdaper.notifyDataSetChanged();
+                        isOpenOld = true;
+                    } else {
+                        Toast.makeText(mActivity, "打开文件" + path + "失败", Toast.LENGTH_SHORT).show();
+                    }
                 }
 //                }
                 break;

@@ -2,13 +2,17 @@ package com.remote.controller.utils;
 
 import android.os.Environment;
 
+import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.remote.controller.bean.FileLineItem;
 import com.remote.controller.constant.Constant;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -16,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by Chen Haitao on 2015/11/17.
  */
-public class CSVUtils{
+public class CSVUtils {
 
     private CSVUtils() {
 
@@ -44,6 +48,9 @@ public class CSVUtils{
         } else {
             fullFilename = new File(extDir, fileName);
         }
+        if (fullFilename.exists()) {
+            fullFilename.delete();
+        }
 
 //        try {
 //            fullFilename.createNewFile();
@@ -59,7 +66,7 @@ public class CSVUtils{
         String[] entries;
         entries = new String[]{"版本", String.valueOf(version)};
         writer.writeNext(entries);//写入版本信息，默认1为csv格式
-        
+
         entries = new String[]{"文件描述", description};
         writer.writeNext(entries);//写入文件描述
 
@@ -78,12 +85,53 @@ public class CSVUtils{
             writer.writeNext(temp);//写入所有行的指令
         }
 
+        out.close();
         writer.close();
 
     }
 
-    public void read() {
+    /**
+     * @param path
+     * @return
+     */
+    public ArrayList<FileLineItem> read(String path) {
+        InputStreamReader in;
+        try {
+            in = new InputStreamReader(new FileInputStream(path), Charset.forName("GBK"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            L.e("找不到文件");
+            return null;
+        }
+        CSVReader reader = new CSVReader(in, ',', '"', 3);
 
+        ArrayList<FileLineItem> commands = new ArrayList<>();
+        FileLineItem command;
+
+        String[] nextLine;
+        try {
+            while ((nextLine = reader.readNext()) != null) {
+                // nextLine[] is an array of values from the line
+                L.d(nextLine[0] + ";" + nextLine[1] + ";" + nextLine[2] + ";" + nextLine[3]);
+                command = new FileLineItem();
+                command.setNo(Integer.parseInt(nextLine[0]));
+                command.setCommand(nextLine[1]);
+                command.setParameter(nextLine[2]);
+                command.setMemo(nextLine[3]);
+                commands.add(command);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            in.close();
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return commands;
     }
 
     public void close() {

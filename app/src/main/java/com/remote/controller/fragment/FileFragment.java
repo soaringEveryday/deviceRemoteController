@@ -135,9 +135,9 @@ public class FileFragment extends BaseFragment {
             //保存当前打开的文件
 
             if (saveCsvFile() < 0) {
-                Toast.makeText(mActivity, "保存成功", Toast.LENGTH_SHORT).show();
-            } else {
                 Toast.makeText(mActivity, "保存失败", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(mActivity, "保存成功", Toast.LENGTH_SHORT).show();
 
             }
 

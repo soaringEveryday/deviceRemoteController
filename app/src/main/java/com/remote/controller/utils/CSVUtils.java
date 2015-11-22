@@ -42,6 +42,8 @@ public class CSVUtils {
             return;
         }
 
+        L.d("1");
+
         File extDir = Environment.getExternalStorageDirectory();
         File fullFilename;
         if (version == Constant.FileFormat.VERION_CSV) {
@@ -49,9 +51,15 @@ public class CSVUtils {
         } else {
             fullFilename = new File(extDir, fileName);
         }
+
+        L.d("2");
+
         if (fullFilename.exists()) {
             fullFilename.delete();
         }
+
+        L.d("3");
+
 
 //        try {
 //            fullFilename.createNewFile();
@@ -68,14 +76,21 @@ public class CSVUtils {
         entries = new String[]{"版本", String.valueOf(version)};
         writer.writeNext(entries);//写入版本信息，默认1为csv格式
 
+        L.d("4");
+
+
         entries = new String[]{"文件描述", description};
         writer.writeNext(entries);//写入文件描述
+
+        L.d("5");
 
         entries = new String[columns.size()];
         for (int i = 0; i < columns.size(); i++) {
             entries[i] = columns.get(i);
         }
         writer.writeNext(entries);//写入栏信息
+
+        L.d("6");
 
         String[] temp = new String[columns.size()];
         for (FileLineItem item : lines) {
@@ -85,6 +100,8 @@ public class CSVUtils {
             temp[3] = item.getMemo();
             writer.writeNext(temp);//写入所有行的指令
         }
+        L.d("7");
+
 
         out.close();
         writer.close();
@@ -119,7 +136,12 @@ public class CSVUtils {
                 fileDesc = nextLine[1];
                 SPUtils.put(context, Constant.SPKEY.FILE_DESC, fileDesc);
                 File tempFile = new File(path);
-                SPUtils.put(context, Constant.SPKEY.FILE_NAME, tempFile.getName().substring(0,path.lastIndexOf(".")));
+                if (tempFile != null) {
+                    String fullName = tempFile.getName();
+                    SPUtils.put(context, Constant.SPKEY.FILE_NAME, StrUtils.getFileNameNoEx(fullName));
+                } else {
+                    L.e("create temp file fail");
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -141,7 +163,6 @@ public class CSVUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
 
         try {

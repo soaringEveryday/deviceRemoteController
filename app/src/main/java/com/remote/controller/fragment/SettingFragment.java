@@ -19,8 +19,11 @@ import com.remote.controller.R;
 import com.remote.controller.activity.DelayActivity;
 import com.remote.controller.activity.IOActivity;
 import com.remote.controller.activity.MotionActivity;
+import com.remote.controller.adapter.CommonAdapter;
+import com.remote.controller.adapter.ViewHolder;
 import com.remote.controller.bean.FileLineItem;
 import com.remote.controller.constant.Constant;
+import com.remote.controller.message.MessageEvent;
 import com.remote.controller.utils.L;
 
 import java.util.ArrayList;
@@ -87,6 +90,21 @@ public class SettingFragment extends BaseFragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mDatas = new ArrayList<>();
+        mAdaper = new CommonAdapter<FileLineItem>(mContext, mDatas, R.layout.file_list_item) {
+            @Override
+            public void convert(ViewHolder helper, FileLineItem item, int position) {
+                helper.setText(R.id.no, String.valueOf(item.getNo()));
+                helper.setText(R.id.command, item.getCommand());
+                helper.setText(R.id.parameter, item.getParameter());
+                helper.setText(R.id.memo, item.getMemo());
+            }
+        };
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -102,14 +120,22 @@ public class SettingFragment extends BaseFragment {
         ids.add(R.id.btn_delay);
         ids.add(R.id.btn_delete);
         setViewClickListener(ids, view);
-        mDatas = new ArrayList<>();
+        initListView();
         return view;
+    }
+
+    private void initListView() {
+        list.setAdapter(mAdaper);
     }
 
     public void onEvent(final Message msg) {
         int msgEvent = msg.what;
         switch (msgEvent) {
-
+            case MessageEvent.MSG_COMMAND_UPDATE:
+                mDatas.clear();
+                mDatas = (ArrayList<FileLineItem>) msg.obj;
+                mAdaper.notifyDataSetChanged();
+                break;
         }
     }
 

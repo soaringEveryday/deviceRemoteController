@@ -13,8 +13,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.remote.controller.R;
+import com.remote.controller.adapter.CommonAdapter;
+import com.remote.controller.adapter.ViewHolder;
 import com.remote.controller.bean.FileLineItem;
 import com.remote.controller.constant.Constant;
+import com.remote.controller.message.MessageEvent;
 import com.remote.controller.utils.L;
 
 import java.util.ArrayList;
@@ -63,6 +66,21 @@ public class PlayFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mDatas = new ArrayList<>();
+        mAdaper = new CommonAdapter<FileLineItem>(mContext, mDatas, R.layout.file_list_item) {
+            @Override
+            public void convert(ViewHolder helper, FileLineItem item, int position) {
+                helper.setText(R.id.no, String.valueOf(item.getNo()));
+                helper.setText(R.id.command, item.getCommand());
+                helper.setText(R.id.parameter, item.getParameter());
+                helper.setText(R.id.memo, item.getMemo());
+            }
+        };
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         L.d("onCreateView --> PlayFragment");
@@ -77,8 +95,12 @@ public class PlayFragment extends BaseFragment {
         ids.add(R.id.btn_stop);
         ids.add(R.id.btn_reset);
         setViewClickListener(ids, view);
-        mDatas = new ArrayList<>();
+        initListView();
         return view;
+    }
+
+    private void initListView() {
+        list.setAdapter(mAdaper);
     }
 
     //根据runningStatus设置四个btn的有效性
@@ -98,10 +120,34 @@ public class PlayFragment extends BaseFragment {
     }
 
     public void onEvent(final Message msg) {
+        L.d("play onEvent");
         int msgEvent = msg.what;
+        L.d("what:" + msgEvent);
         switch (msgEvent) {
-
+            case MessageEvent.MSG_COMMAND_UPDATE:
+                mDatas = (ArrayList<FileLineItem>) msg.obj;
+                for (FileLineItem item : mDatas) {
+                    L.v("" + item.getNo() + "," + item.getCommand() + "," + item.getParameter() + "," + item.getMemo());
+                }
+                if (mDatas != null) {
+                    L.d("data size : " + mDatas.size());
+                } else {
+                    L.d("data is null");
+                }
+                mAdaper.notifyDataSetChanged();
+                break;
         }
+    }
+
+    private void insertCommand() {
+        L.d("insertCommand");
+        FileLineItem command = new FileLineItem();
+        command.setCommand("LineTo");
+        command.setParameter("100,500");
+        command.setNo(1);
+        command.setMemo("无");
+        mDatas.add(command);
+        mAdaper.notifyDataSetChanged();
     }
 
 
@@ -109,7 +155,7 @@ public class PlayFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_launch:
-
+                insertCommand();
                 break;
             case R.id.btn_pause:
 

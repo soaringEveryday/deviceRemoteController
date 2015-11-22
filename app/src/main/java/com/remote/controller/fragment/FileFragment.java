@@ -33,6 +33,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 /**
  * 文件主界面
@@ -66,6 +67,16 @@ public class FileFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDatas = new ArrayList<>();
+        mAdaper = new CommonAdapter<FileLineItem>(mContext, mDatas, R.layout.file_list_item) {
+            @Override
+            public void convert(ViewHolder helper, FileLineItem item, int position) {
+                helper.setText(R.id.no, String.valueOf(item.getNo()));
+                helper.setText(R.id.command, item.getCommand());
+                helper.setText(R.id.parameter, item.getParameter());
+                helper.setText(R.id.memo, item.getMemo());
+            }
+        };
     }
 
     @Override
@@ -95,16 +106,7 @@ public class FileFragment extends BaseFragment {
     }
 
     private void initListView() {
-        mDatas = new ArrayList<>();
-        listView.setAdapter(mAdaper = new CommonAdapter<FileLineItem>(mContext, mDatas, R.layout.file_list_item) {
-            @Override
-            public void convert(ViewHolder helper, FileLineItem item, int position) {
-                helper.setText(R.id.no, String.valueOf(item.getNo()));
-                helper.setText(R.id.command, item.getCommand());
-                helper.setText(R.id.parameter, item.getParameter());
-                helper.setText(R.id.memo, item.getMemo());
-            }
-        });
+        listView.setAdapter(mAdaper);
     }
 
     @Override
@@ -156,6 +158,10 @@ public class FileFragment extends BaseFragment {
             mDatas.clear();
         }
         mAdaper.notifyDataSetChanged();
+        Message msg = Message.obtain();
+        msg.obj = mDatas;
+        msg.what = MessageEvent.MSG_COMMAND_UPDATE;
+        EventBus.getDefault().post(msg);
 
         currentFileName = "";
         currentFileDesc = "";
@@ -248,6 +254,10 @@ public class FileFragment extends BaseFragment {
         command.setMemo("无");
         mDatas.add(command);
         mAdaper.notifyDataSetChanged();
+//        Message msg = Message.obtain();
+//        msg.obj = mDatas;
+//        msg.what = MessageEvent.MSG_COMMAND_UPDATE;
+//        EventBus.getDefault().post(msg);
     }
 
     @Override
@@ -293,6 +303,10 @@ public class FileFragment extends BaseFragment {
                         mDatas.clear();
                         mDatas.addAll(temp);
                         mAdaper.notifyDataSetChanged();
+                        Message msg = Message.obtain();
+                        msg.obj = mDatas;
+                        msg.what = MessageEvent.MSG_COMMAND_UPDATE;
+                        EventBus.getDefault().post(msg);
                         isOpenOld = true;
                         currentFileName = (String) SPUtils.get(mContext, Constant.SPKEY.FILE_NAME, "");
                         currentFileDesc = (String) SPUtils.get(mContext, Constant.SPKEY.FILE_DESC, "");

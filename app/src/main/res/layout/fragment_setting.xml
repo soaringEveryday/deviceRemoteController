@@ -86,8 +86,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/right"
-                android:scaleType="fitCenter"
+                android:src="@drawable/motion_1"
+                android:scaleType="fitXY"
                 android:padding="8dp"
                 />
             <ImageButton
@@ -95,8 +95,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/right"
-                android:scaleType="fitCenter"
+                android:src="@drawable/motion_2"
+                android:scaleType="fitXY"
                 android:padding="8dp"
                 />
             <ImageButton
@@ -104,8 +104,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/right"
-                android:scaleType="fitCenter"
+                android:src="@drawable/motion_3"
+                android:scaleType="fitXY"
                 android:padding="8dp"
                 />
             <ImageButton
@@ -113,8 +113,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/right"
-                android:scaleType="fitCenter"
+                android:src="@drawable/motion_4"
+                android:scaleType="fitXY"
                 android:padding="8dp"
                 />
         </LinearLayout>
@@ -128,8 +128,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/left"
-                android:scaleType="fitCenter"
+                android:src="@drawable/motion_5"
+                android:scaleType="fitXY"
                 android:padding="8dp"
                 />
             <ImageButton
@@ -137,8 +137,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/left"
-                android:scaleType="fitCenter"
+                android:src="@drawable/motion_6"
+                android:scaleType="fitXY"
                 android:padding="8dp"
                 />
             <ImageButton
@@ -146,8 +146,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/left"
-                android:scaleType="fitCenter"
+                android:src="@drawable/motion_7"
+                android:scaleType="fitXY"
                 android:padding="8dp"
                 />
             <ImageButton
@@ -155,8 +155,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/left"
-                android:scaleType="fitCenter"
+                android:src="@drawable/motion_8"
+                android:scaleType="fitXY"
                 android:padding="8dp"
                 />
         </LinearLayout>

@@ -1,6 +1,7 @@
 package com.remote.controller.activity;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -10,11 +11,15 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 
 import com.remote.controller.R;
+import com.remote.controller.bean.FileLineItem;
+import com.remote.controller.constant.Constant;
+import com.remote.controller.message.MessageEvent;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 public class IOActivity extends BaseActivity {
 
@@ -112,7 +117,6 @@ public class IOActivity extends BaseActivity {
     }
 
     private void initViews() {
-        bindViewClicks();
 
         ports_input = getResources().getStringArray(R.array.port_input);
         ports_output = getResources().getStringArray(R.array.port_output);
@@ -134,6 +138,7 @@ public class IOActivity extends BaseActivity {
         pcStatus3.setAdapter(statusAdapter);
         pcStatus4.setAdapter(statusAdapter);
 
+        bindViewClicks();
 
     }
 
@@ -143,6 +148,7 @@ public class IOActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.btn_ok:
                 insertIOCmd();
+                finish();
                 break;
 
             case R.id.btn_cancel:
@@ -157,7 +163,62 @@ public class IOActivity extends BaseActivity {
     }
 
     private void insertIOCmd() {
+        String param = "";
+        FileLineItem command = new FileLineItem();
+        int pos1 = port1.getSelectedItemPosition();
+        int pos2 = port2.getSelectedItemPosition();
+        int pos3 = port3.getSelectedItemPosition();
+        int pos4 = port4.getSelectedItemPosition();
+        int s1 = status1.getSelectedItemPosition();
+        int s2 = status2.getSelectedItemPosition();
+        int s3 = status3.getSelectedItemPosition();
+        int s4 = status4.getSelectedItemPosition();
+        if (radioInput.isChecked()) {
+            //插入等待输入指令
+            command.setCommand(Constant.Command.WAIT_DI);
 
+            if (pos1 != 0 && s1 != 0) {
+                //等待输入状态下，端口位置为0表示无效
+                param = param + String.valueOf(pos1 - 1) + "," + String.valueOf(s1 - 1) + ",";
+            }
+            if (pos2 != 0 && s2 != 0) {
+                param = param + String.valueOf(pos2 - 1) + "," + String.valueOf(s2 - 1) + ",";
+            }
+            if (pos3 != 0 && s3 != 0) {
+                param = param + String.valueOf(pos3 - 1) + "," + String.valueOf(s3 - 1) + ",";
+            }
+            if (pos4 != 0 && s4 != 0) {
+                param = param + String.valueOf(pos4 - 1) + "," + String.valueOf(s4 - 1) + ",";
+            }
+
+        } else {
+            //插入设置输出指令
+            command.setCommand(Constant.Command.SET_DO);
+            if (s1 != 0) {
+                //等待输入状态下，端口位置为0表示无效
+                param = param + String.valueOf(pos1) + "," + String.valueOf(s1 - 1) + ",";
+            }
+            if (s2 != 0) {
+                param = param + String.valueOf(pos2) + "," + String.valueOf(s2 - 1) + ",";
+            }
+            if (s3 != 0) {
+                param = param + String.valueOf(pos3) + "," + String.valueOf(s3 - 1) + ",";
+            }
+            if (s4 != 0) {
+                param = param + String.valueOf(pos4) + "," + String.valueOf(s4 - 1) + ",";
+            }
+        }
+        //去掉末尾的","
+        param = param.substring(0, param.length() - 1);
+
+        command.setParameter(param);
+        command.setNo(1);
+        command.setMemo("none");
+
+        Message msg = Message.obtain();
+        msg.what = MessageEvent.MSG_COMMAND_UPDATE;
+        msg.obj = command;
+        EventBus.getDefault().post(msg);
     }
 
     private void sendOutput() {

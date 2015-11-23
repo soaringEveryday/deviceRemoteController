@@ -97,7 +97,7 @@ public class SettingFragment extends BaseFragment {
         mAdaper = new CommonAdapter<FileLineItem>(mContext, mDatas, R.layout.file_list_item) {
             @Override
             public void convert(ViewHolder helper, FileLineItem item, int position) {
-                helper.setText(R.id.no, String.valueOf(item.getNo()));
+                helper.setText(R.id.no, String.valueOf(position));
                 helper.setText(R.id.command, item.getCommand());
                 helper.setText(R.id.parameter, item.getParameter());
                 helper.setText(R.id.memo, item.getMemo());

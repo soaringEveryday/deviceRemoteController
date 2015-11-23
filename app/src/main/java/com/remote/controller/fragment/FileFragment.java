@@ -71,7 +71,7 @@ public class FileFragment extends BaseFragment {
         mAdaper = new CommonAdapter<FileLineItem>(mContext, mDatas, R.layout.file_list_item) {
             @Override
             public void convert(ViewHolder helper, FileLineItem item, int position) {
-                helper.setText(R.id.no, String.valueOf(item.getNo()));
+                helper.setText(R.id.no, String.valueOf(position));
                 helper.setText(R.id.command, item.getCommand());
                 helper.setText(R.id.parameter, item.getParameter());
                 helper.setText(R.id.memo, item.getMemo());
@@ -218,6 +218,12 @@ public class FileFragment extends BaseFragment {
 
                 }
                 break;
+
+            case MessageEvent.MSG_COMMAND_UPDATE:
+                FileLineItem item = (FileLineItem) msg.obj;
+                mDatas.add(item);
+                mAdaper.notifyDataSetChanged();
+                break;
         }
     }
 
@@ -299,8 +305,6 @@ public class FileFragment extends BaseFragment {
                         L.d("打开文件" + path + "成功");
                         Toast.makeText(mActivity, "打开文件" + path + "成功", Toast.LENGTH_SHORT).show();
                         mDatas.clear();
-                        mDatas.addAll(temp);
-                        mAdaper.notifyDataSetChanged();
 
                         //发送数据到别的fragment
                         Message msg = Message.obtain();

@@ -84,6 +84,17 @@ public class Constant {
         public static final String G = "g";
     }
 
+    //指令类型
+    public static class Command {
+        public static final String LINE_TO = "LineTo";
+        public static final String MOVE_TO = "MoveTo";
+        public static final String SET_DO = "SetDO";
+        public static final String WAIT_DI = "WaitDI";
+        public static final String DELAY = "Delay";
+        public static final String LINE_TO_VEL = "LineToVel";
+        public static final String MOVE_TO_VEL = "MoveToVel";
+    }
+
     public static class FileFormat {
         public static final int VERION_CSV = 1;
     }

@@ -1,19 +1,25 @@
 package com.remote.controller.activity;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.remote.controller.R;
+import com.remote.controller.bean.FileLineItem;
+import com.remote.controller.constant.Constant;
+import com.remote.controller.message.MessageEvent;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 public class DelayActivity extends BaseActivity {
 
@@ -66,6 +72,7 @@ public class DelayActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.btn_ok:
                 insertDelayCmd();
+                finish();
                 break;
 
             case R.id.btn_cancel:
@@ -75,6 +82,20 @@ public class DelayActivity extends BaseActivity {
     }
 
     private void insertDelayCmd() {
+        long time = Long.parseLong(etTime.getText().toString());
+        if (time <= 0) {
+            Toast.makeText(DelayActivity.this, "延时时间不可小于0", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        FileLineItem command = new FileLineItem();
+        command.setCommand(Constant.Command.DELAY);
+        command.setParameter(String.valueOf(time) + "," + String.valueOf(spinnerUnit.getSelectedItemPosition()));
+        command.setNo(1);
+        command.setMemo("none");
 
+        Message msg = Message.obtain();
+        msg.what = MessageEvent.MSG_COMMAND_UPDATE;
+        msg.obj = command;
+        EventBus.getDefault().post(msg);
     }
 }

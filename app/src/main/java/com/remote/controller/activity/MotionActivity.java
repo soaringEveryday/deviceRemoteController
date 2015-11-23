@@ -15,7 +15,6 @@ import com.remote.controller.R;
 import com.remote.controller.bean.FileLineItem;
 import com.remote.controller.constant.Constant;
 import com.remote.controller.message.MessageEvent;
-import com.remote.controller.utils.L;
 
 import java.util.ArrayList;
 
@@ -113,9 +112,9 @@ public class MotionActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (!b) {
-                    etX.setEnabled(true);
+                    etY.setEnabled(true);
                 } else {
-                    etX.setEnabled(false);
+                    etY.setEnabled(false);
                 }
             }
         });
@@ -124,9 +123,9 @@ public class MotionActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (!b) {
-                    etX.setEnabled(true);
+                    etZ.setEnabled(true);
                 } else {
-                    etX.setEnabled(false);
+                    etZ.setEnabled(false);
                 }
             }
         });
@@ -135,9 +134,9 @@ public class MotionActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (!b) {
-                    etX.setEnabled(true);
+                    etA.setEnabled(true);
                 } else {
-                    etX.setEnabled(false);
+                    etA.setEnabled(false);
                 }
             }
         });
@@ -167,15 +166,18 @@ public class MotionActivity extends BaseActivity {
     }
 
     private void insertMotionCmd() {
-        String cmdStr = "";
+        String param = "";
+        FileLineItem command = new FileLineItem();
         if (radioLine.isChecked()) {
             //直线运动
             if (checkVG.isChecked()) {
                 //速度默认
-                cmdStr = "LineTo , (" + etX.getText() + "," + etY.getText() + "," + etZ.getText() + "," + etA.getText() + ") ";
+                command.setCommand(Constant.Command.LINE_TO);
+                param = etX.getText() + "," + etY.getText() + "," + etZ.getText() + "," + etA.getText();
             } else {
                 //速度不默认
-                cmdStr = "LineToVel , (" + etX.getText() + "," + etY.getText() + "," + etZ.getText() + "," + etA.getText() + "," + etV.getText() + "," +etG.getText() + ")";
+                command.setCommand(Constant.Command.LINE_TO_VEL);
+                param = etX.getText() + "," + etY.getText() + "," + etZ.getText() + "," + etA.getText() + "," + etV.getText() + "," +etG.getText();
 
             }
 
@@ -183,22 +185,21 @@ public class MotionActivity extends BaseActivity {
             //点位运动
             if (checkVG.isChecked()) {
                 //速度默认
-                cmdStr = "MoveTo , (" + etX.getText() + "," + etY.getText() + "," + etZ.getText() + "," + etA.getText() + ") ";
+                command.setCommand(Constant.Command.MOVE_TO);
+                param = etX.getText() + "," + etY.getText() + "," + etZ.getText() + "," + etA.getText();
             } else {
                 //速度不默认
-                cmdStr = "MoveToVel , (" + etX.getText() + "," + etY.getText() + "," + etZ.getText() + "," + etA.getText() + "," + etV.getText() + "," +etG.getText() + ")";
+                command.setCommand(Constant.Command.MOVE_TO_VEL);
+                param = etX.getText() + "," + etY.getText() + "," + etZ.getText() + "," + etA.getText() + "," + etV.getText() + "," +etG.getText();
 
             }
         }
+        command.setParameter(param);
 
-        L.v("insert motion command : \n " + cmdStr);
         Message msg = Message.obtain();
         msg.what = MessageEvent.MSG_COMMAND_UPDATE;
-        FileLineItem command = new FileLineItem();
-        command.setCommand("LineTo");
-        command.setParameter("100,500");
         command.setNo(1);
-        command.setMemo("无");
+        command.setMemo("none");
         msg.obj = command;
         EventBus.getDefault().post(msg);
 
@@ -209,6 +210,7 @@ public class MotionActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.btn_ok:
                 insertMotionCmd();
+                finish();
                 break;
 
             case R.id.btn_cancel:

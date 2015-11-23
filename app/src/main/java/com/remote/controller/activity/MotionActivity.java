@@ -2,6 +2,7 @@ package com.remote.controller.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.widget.Button;
@@ -11,13 +12,16 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 
 import com.remote.controller.R;
+import com.remote.controller.bean.FileLineItem;
 import com.remote.controller.constant.Constant;
+import com.remote.controller.message.MessageEvent;
 import com.remote.controller.utils.L;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 public class MotionActivity extends BaseActivity {
 
@@ -188,6 +192,15 @@ public class MotionActivity extends BaseActivity {
         }
 
         L.v("insert motion command : \n " + cmdStr);
+        Message msg = Message.obtain();
+        msg.what = MessageEvent.MSG_COMMAND_UPDATE;
+        FileLineItem command = new FileLineItem();
+        command.setCommand("LineTo");
+        command.setParameter("100,500");
+        command.setNo(1);
+        command.setMemo("无");
+        msg.obj = command;
+        EventBus.getDefault().post(msg);
 
     }
 

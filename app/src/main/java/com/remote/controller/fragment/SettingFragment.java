@@ -129,11 +129,18 @@ public class SettingFragment extends BaseFragment {
     }
 
     public void onEvent(final Message msg) {
+        L.d("setting onEvent");
         int msgEvent = msg.what;
+        L.d("what:" + msgEvent);
         switch (msgEvent) {
             case MessageEvent.MSG_COMMAND_UPDATE:
+                FileLineItem item = (FileLineItem) msg.obj;
+                mDatas.add(item);
+                mAdaper.notifyDataSetChanged();
+                break;
+
+            case MessageEvent.MSG_COMMAND_CLEAR:
                 mDatas.clear();
-                mDatas = (ArrayList<FileLineItem>) msg.obj;
                 mAdaper.notifyDataSetChanged();
                 break;
         }

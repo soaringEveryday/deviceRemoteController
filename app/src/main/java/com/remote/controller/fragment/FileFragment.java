@@ -158,10 +158,6 @@ public class FileFragment extends BaseFragment {
             mDatas.clear();
         }
         mAdaper.notifyDataSetChanged();
-        Message msg = Message.obtain();
-        msg.obj = mDatas;
-        msg.what = MessageEvent.MSG_COMMAND_UPDATE;
-        EventBus.getDefault().post(msg);
 
         currentFileName = "";
         currentFileDesc = "";
@@ -169,6 +165,10 @@ public class FileFragment extends BaseFragment {
         isOpenOld = false;
 
         Toast.makeText(mActivity, "新建成功", Toast.LENGTH_SHORT).show();
+
+        Message msg = Message.obtain();
+        msg.what = MessageEvent.MSG_COMMAND_CLEAR;
+        EventBus.getDefault().post(msg);
 
         refreshFileInfo();
     }
@@ -246,18 +246,16 @@ public class FileFragment extends BaseFragment {
     }
 
     private void insertCommand() {
-        L.d("insertCommand");
+
+        Message msg = Message.obtain();
+        msg.what = MessageEvent.MSG_COMMAND_UPDATE;
         FileLineItem command = new FileLineItem();
         command.setCommand("LineTo");
         command.setParameter("100,500");
         command.setNo(1);
         command.setMemo("无");
-        mDatas.add(command);
-        mAdaper.notifyDataSetChanged();
-//        Message msg = Message.obtain();
-//        msg.obj = mDatas;
-//        msg.what = MessageEvent.MSG_COMMAND_UPDATE;
-//        EventBus.getDefault().post(msg);
+        msg.obj = command;
+        EventBus.getDefault().post(msg);
     }
 
     @Override
@@ -303,10 +301,15 @@ public class FileFragment extends BaseFragment {
                         mDatas.clear();
                         mDatas.addAll(temp);
                         mAdaper.notifyDataSetChanged();
+
+                        //发送数据到别的fragment
                         Message msg = Message.obtain();
-                        msg.obj = mDatas;
                         msg.what = MessageEvent.MSG_COMMAND_UPDATE;
-                        EventBus.getDefault().post(msg);
+
+                        for (FileLineItem item : temp) {
+                            msg.obj = item;
+                            EventBus.getDefault().post(msg);
+                        }
                         isOpenOld = true;
                         currentFileName = (String) SPUtils.get(mContext, Constant.SPKEY.FILE_NAME, "");
                         currentFileDesc = (String) SPUtils.get(mContext, Constant.SPKEY.FILE_DESC, "");

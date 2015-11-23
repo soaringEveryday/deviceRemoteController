@@ -13,5 +13,6 @@ public class MessageEvent {
 
     public static final int MSG_CREATE_NEW_FILE_SUCCESS = 100;    //创建新文件信息获得文件描述、文件名等信息
     public static final int MSG_COMMAND_UPDATE = 101;               //指令数据集更新
+    public static final int MSG_COMMAND_CLEAR = 102;               //指令数据集清空通知，用于新建文件时
 
 }

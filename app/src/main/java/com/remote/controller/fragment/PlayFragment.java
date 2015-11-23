@@ -125,37 +125,22 @@ public class PlayFragment extends BaseFragment {
         L.d("what:" + msgEvent);
         switch (msgEvent) {
             case MessageEvent.MSG_COMMAND_UPDATE:
-                mDatas = (ArrayList<FileLineItem>) msg.obj;
-                for (FileLineItem item : mDatas) {
-                    L.v("" + item.getNo() + "," + item.getCommand() + "," + item.getParameter() + "," + item.getMemo());
-                }
-                if (mDatas != null) {
-                    L.d("data size : " + mDatas.size());
-                } else {
-                    L.d("data is null");
-                }
+                FileLineItem item = (FileLineItem) msg.obj;
+                mDatas.add(item);
+                mAdaper.notifyDataSetChanged();
+                break;
+
+            case MessageEvent.MSG_COMMAND_CLEAR:
+                mDatas.clear();
                 mAdaper.notifyDataSetChanged();
                 break;
         }
     }
 
-    private void insertCommand() {
-        L.d("insertCommand");
-        FileLineItem command = new FileLineItem();
-        command.setCommand("LineTo");
-        command.setParameter("100,500");
-        command.setNo(1);
-        command.setMemo("无");
-        mDatas.add(command);
-        mAdaper.notifyDataSetChanged();
-    }
-
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_launch:
-                insertCommand();
                 break;
             case R.id.btn_pause:
 

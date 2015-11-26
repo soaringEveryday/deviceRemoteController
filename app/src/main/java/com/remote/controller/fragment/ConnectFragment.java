@@ -19,6 +19,7 @@ import com.remote.controller.R;
 import com.remote.controller.adapter.CommonAdapter;
 import com.remote.controller.adapter.ViewHolder;
 import com.remote.controller.bean.Device;
+import com.remote.controller.network.ControllerManager;
 import com.remote.controller.utils.L;
 
 import java.util.ArrayList;
@@ -124,13 +125,17 @@ public class ConnectFragment extends BaseFragment {
                 connectDevice();
                 break;
             case R.id.btn_scan:
-
+                scanDevice();
                 break;
 
             case R.id.disconnect:
 
                 break;
         }
+    }
+
+    private void scanDevice() {
+        ControllerManager.getInstance(mContext).scanDevice();
     }
 
     private void connectDevice() {

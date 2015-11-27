@@ -47,7 +47,7 @@ public class ClientThread extends Thread {
         try {
             L.d("connecting : " + ip + ":" + port);
             s = new Socket(ip, port);
-            s.setSoTimeout(10000);// 设置阻塞时间
+//            s.setSoTimeout(10000);// 设置阻塞时间
             s.setKeepAlive(true);
             L.d("connect successfully, then create client thread");
             init();
@@ -103,7 +103,7 @@ public class ClientThread extends Thread {
             }
             int bytesRead = -1;
             while (isRun) {
-                while ((bytesRead = in.read(data)) != -1) {
+                if ((bytesRead = in.read(data)) != -1) {
                     L.d("recieve " + bytesRead + "bytes data");
                     String text = new String(data).trim();
                     dispatchMessage(text);
@@ -167,6 +167,7 @@ public class ClientThread extends Thread {
      * 关闭连接
      */
     public void close() {
+        isRun = false;
         try {
             L.d("stopping connection");
             if (in != null) {

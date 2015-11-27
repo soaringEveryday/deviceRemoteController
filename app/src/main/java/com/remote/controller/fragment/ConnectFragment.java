@@ -130,12 +130,14 @@ public class ConnectFragment extends BaseFragment {
                     e.printStackTrace();
                 }
                 ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DEVICE_DESC, null));
+                showAlertDialog("已连接");
                 break;
 
             case MessageEvent.MSG_SOCKET_DISCONNECTED:
                 //断开连接成功
                 ControllerManager.getInstance(mContext).setConnected(false);
                 refreshRemoteDeviceInfo();
+                showAlertDialog("已断开");
                 break;
 
             case MessageEvent.MSG_SOCKET_RECEIVE_DATA:

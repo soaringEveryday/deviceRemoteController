@@ -84,8 +84,8 @@ public class RootActivity extends BaseActivity {
         actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(true);
-            actionBar.setDisplayUseLogoEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayUseLogoEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(false);
         }
         initView();
         if (!EventBus.getDefault().isRegistered(this)) {

@@ -1,10 +1,8 @@
 package com.remote.controller.fragment;
 
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Message;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +17,7 @@ import com.remote.controller.R;
 import com.remote.controller.adapter.CommonAdapter;
 import com.remote.controller.adapter.ViewHolder;
 import com.remote.controller.bean.Device;
+import com.remote.controller.message.MessageEvent;
 import com.remote.controller.network.ControllerManager;
 import com.remote.controller.utils.L;
 
@@ -44,8 +43,12 @@ public class ConnectFragment extends BaseFragment {
     LinearLayout btns;
     @Bind(R.id.list)
     ListView listView;
-    @Bind(R.id.hint)
-    TextView hint;
+    @Bind(R.id.connect_ip)
+    TextView connectIp;
+    @Bind(R.id.connect_name)
+    TextView connectName;
+    @Bind(R.id.connect_desc)
+    TextView connectDesc;
 
     private ArrayList<Device> mDatas;
     private BaseAdapter mAdaper;
@@ -113,6 +116,18 @@ public class ConnectFragment extends BaseFragment {
     public void onEvent(final Message msg) {
         int msgEvent = msg.what;
         switch (msgEvent) {
+            case MessageEvent.MSG_SOCKET_CONNECTED:
+                //连接成功回调
+                ControllerManager.getInstance(mContext).setConnected(true);
+                //TODO 更新设备名称和描述
+                refreshRemoteDeviceInfo();
+                break;
+
+            case MessageEvent.MSG_SOCKET_DISCONNECTED:
+                //断开连接成功
+                ControllerManager.getInstance(mContext).setConnected(false);
+                refreshRemoteDeviceInfo();
+                break;
 
         }
     }
@@ -129,28 +144,51 @@ public class ConnectFragment extends BaseFragment {
                 break;
 
             case R.id.disconnect:
-
+                disconnect();
                 break;
         }
     }
 
+    private void disconnect() {
+        if (!ControllerManager.getInstance(mContext).isConnected()) {
+            showAlertDialog("尚未连接任何设备");
+        }
+        ControllerManager.getInstance(mContext).stop();
+    }
+
     private void scanDevice() {
-        ControllerManager.getInstance(mContext).scanDevice();
+//        ControllerManager.getInstance(mContext).scanDevice();
+
+        byte[] data = new byte[5];
+        data[0] = 0x3;
+        data[1] = 0x2;
+        data[2] = 0x0;
+        data[3] = 0x1;
+        data[4] = 0x6;
+        ControllerManager.getInstance(mContext).sendData(data);
     }
 
     private void connectDevice() {
-        if (mCurrentDevice == null || mCurrentPos < 0) {
-            new AlertDialog.Builder(mContext).setTitle(R.string.not_select_hint).setMessage(R.string.not_select_hint)
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    }).show();
+//        if (mCurrentDevice == null || mCurrentPos < 0) {
+//            new AlertDialog.Builder(mContext).setTitle(R.string.not_select_hint).setMessage(R.string.not_select_hint)
+//                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            dialogInterface.dismiss();
+//                        }
+//                    }).show();
+//        }
+
+        if (ControllerManager.getInstance(mContext).isConnected()) {
+            showAlertDialog("已连接设备，请先断开");
+            return;
         }
+
+        ControllerManager.getInstance(mContext).connectServer("172.19.6.92", 3000);
     }
 
-    private void updateHint() {
+
+    private void refreshRemoteDeviceInfo() {
 
     }
 

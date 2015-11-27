@@ -364,4 +364,14 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         params.height = ScreenUtils.dip2px(context, 220);
         mAlertDialog.getWindow().setAttributes(params);
     }
+
+    public void showAlertDialog(String content) {
+        new AlertDialog.Builder(mContext).setTitle(content).setMessage(content)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).show();
+    }
 }

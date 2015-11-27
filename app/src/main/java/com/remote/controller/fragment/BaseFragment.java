@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -175,5 +176,15 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         params.width = ScreenUtils.dip2px(context, 400);
         params.height = ScreenUtils.dip2px(context, 220);
         mAlertDialog.getWindow().setAttributes(params);
+    }
+
+    public void showAlertDialog(String content) {
+        new AlertDialog.Builder(mContext).setTitle(content).setMessage(content)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).show();
     }
 }

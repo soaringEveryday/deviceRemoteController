@@ -1,6 +1,7 @@
 package com.remote.controller.activity;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -17,6 +18,7 @@ import com.remote.controller.fragment.ConnectFragment;
 import com.remote.controller.fragment.FileFragment;
 import com.remote.controller.fragment.PlayFragment;
 import com.remote.controller.fragment.SettingFragment;
+import com.remote.controller.message.MessageEvent;
 import com.remote.controller.utils.L;
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Chen Haitao on 2015/11/13.
@@ -85,11 +88,17 @@ public class RootActivity extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         initView();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this, 1);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
 
@@ -279,6 +288,15 @@ public class RootActivity extends BaseActivity {
         @Override
         public int getCount() {
             return mFragments.size();
+        }
+    }
+
+    public void onEvent(final Message msg) {
+        int msgEvent = msg.what;
+        switch (msgEvent) {
+            case MessageEvent.MSG_SOCKET_TIMEOUT:
+                showAlertDialog("连接超时");
+                break;
         }
     }
 }

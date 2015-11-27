@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 
 import de.greenrobot.event.EventBus;
 
@@ -154,7 +155,7 @@ public class ClientThread extends Thread {
                 if (ou != null) {
                     ou.write(buffer);
                     ou.flush();
-                    L.d("sent to server : " + new String(buffer).trim());
+                    L.d("sent to server : " + Arrays.toString(buffer));
                 } else {
                     L.e("ou is null");
                 }

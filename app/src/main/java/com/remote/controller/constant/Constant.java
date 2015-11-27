@@ -104,4 +104,30 @@ public class Constant {
         public static final String FILE_DESC = "key_file_desc";
 
     }
+
+    public static class EventCode {
+        public static final int READ_DEVICE_NAME = 1;
+        public static final int READ_DEVICE_DESC = 2;
+        public static final int READ_RUNNING_STATE = 3;
+        public static final int READ_DATA_ON_SETTING = 4;
+        public static final int READ_DATA_ON_PLAY = 5;
+        public static final int READ_PLAY_TIMES = 6;
+        public static final int READ_INPUT = 7;
+        public static final int READ_OUTPUT = 8;
+        public static final int BTN_DOWN_SETTING_BUTTON= 9;
+        public static final int BTN_UP_SETTING_BUTTON = 10;
+        public static final int BTN_DOWN_IO_OUTPUT = 11;
+        public static final int BTN_PLAY_LAUNCH = 12;
+        public static final int BTN_PLAY_PAUSE = 13;
+        public static final int BTN_PLAY_FINISH = 14;
+        public static final int BTN_PLAY_RESET = 15;
+    }
+
+    public static class Type {
+        public static final int FILE_REQ = 2;
+        public static final int EVENT_REQ = 3;
+        public static final int EVENT_REMOTE_RES = 6;
+        public static final int FILE_REMOTE_RES = 7;
+
+    }
 }

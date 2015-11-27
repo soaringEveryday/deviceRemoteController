@@ -17,8 +17,10 @@ import com.remote.controller.R;
 import com.remote.controller.adapter.CommonAdapter;
 import com.remote.controller.adapter.ViewHolder;
 import com.remote.controller.bean.Device;
+import com.remote.controller.constant.Constant;
 import com.remote.controller.message.MessageEvent;
 import com.remote.controller.network.ControllerManager;
+import com.remote.controller.network.EventGenerator;
 import com.remote.controller.utils.L;
 
 import java.util.ArrayList;
@@ -165,7 +167,14 @@ public class ConnectFragment extends BaseFragment {
         data[2] = 0x0;
         data[3] = 0x1;
         data[4] = 0x6;
-        ControllerManager.getInstance(mContext).sendData(data);
+        ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DEVICE_NAME, null));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DEVICE_DESC, null));
+
     }
 
     private void connectDevice() {

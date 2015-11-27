@@ -19,10 +19,7 @@ public class EventParser {
 
     private static EventParser sInstance;
 
-    private byte[] data;
-
     public EventParser() {
-        data = new byte[MAX_DATA_LEN];
     }
 
     public static EventParser getInstance() {
@@ -42,36 +39,42 @@ public class EventParser {
 
         //检查类型
         int type = byte2int(data[0]);
-        if (type != Constant.Type.EVENT_REMOTE_RES) {
+        //目前仅解析该两种返回类型
+        if (type != Constant.Type.EVENT_REMOTE_RES && type != Constant.Type.FILE_REMOTE_RES) {
             L.e("服务器返回类型错误:" + type);
             return;
         }
 
-        //获取长度
-        byte[] lengthByte = new byte[4];
-        lengthByte[0] = data[1];
-        lengthByte[1] = data[2];
-        lengthByte[2] = 0x0;
-        lengthByte[3] = 0x0;
-        int lengthLeft = byte2int(lengthByte);
-        L.d("lengthLeft : " + lengthLeft);
+        if (type == Constant.Type.EVENT_REMOTE_RES) {
+            //事件数据包返回
+            //获取长度
+            byte[] lengthByte = new byte[4];
+            lengthByte[0] = data[1];
+            lengthByte[1] = data[2];
+            lengthByte[2] = 0x0;
+            lengthByte[3] = 0x0;
+            int lengthLeft = byte2int(lengthByte);
+            L.d("lengthLeft : " + lengthLeft);
 
-        //获得返回功能码
-        int funcCode = byte2int(data[3]);
-        L.d("funcCode : " + funcCode);
+            //获得返回功能码
+            int funcCode = byte2int(data[3]);
+            L.d("funcCode : " + funcCode);
 
-        //获得执行结果
-        int result = byte2int(data[4]);
-        if (result != 0) {
-            L.e("error response, code : " + result);
-            return;
+            //获得执行结果
+            int result = byte2int(data[4]);
+            if (result != 0) {
+                L.e("error response, code : " + result);
+                return;
+            }
+
+            //获得返回数据
+            byte[] resultData = Arrays.copyOfRange(data, 5, 5 + lengthLeft - 4);
+            L.d("result data :\n" + Arrays.toString(resultData));
+
+            dispatchResponse(funcCode, resultData);
+        } else {
+            //文件传送返回
         }
-
-        //获得返回数据
-        byte[] resultData = Arrays.copyOfRange(data, 5, 5 + lengthLeft - 4);
-        L.d("result data :\n" + Arrays.toString(resultData));
-
-        dispatchResponse(funcCode, resultData);
 
     }
 

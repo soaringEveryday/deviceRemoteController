@@ -22,6 +22,7 @@ import com.remote.controller.message.MessageEvent;
 import com.remote.controller.network.ControllerManager;
 import com.remote.controller.network.EventGenerator;
 import com.remote.controller.utils.L;
+import com.remote.controller.utils.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,14 +116,20 @@ public class ConnectFragment extends BaseFragment {
 
     }
 
-    public void onEvent(final Message msg) {
+    public void onEventMainThread(final Message msg) {
         int msgEvent = msg.what;
         switch (msgEvent) {
             case MessageEvent.MSG_SOCKET_CONNECTED:
                 //连接成功回调
                 ControllerManager.getInstance(mContext).setConnected(true);
-                //TODO 更新设备名称和描述
-                refreshRemoteDeviceInfo();
+                //请求设备名和描述
+                ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DEVICE_NAME, null));
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DEVICE_DESC, null));
                 break;
 
             case MessageEvent.MSG_SOCKET_DISCONNECTED:
@@ -130,6 +137,18 @@ public class ConnectFragment extends BaseFragment {
                 ControllerManager.getInstance(mContext).setConnected(false);
                 refreshRemoteDeviceInfo();
                 break;
+
+            case MessageEvent.MSG_SOCKET_RECEIVE_DATA:
+                //收到服务器回应
+                int funcCode = msg.arg1;
+                byte[] data = (byte[]) msg.obj;
+                if (funcCode == Constant.EventCode.READ_DEVICE_NAME) {
+                    connectName.setText(new String(data).trim());
+                    connectIp.setText((String) SPUtils.get(mContext, "ip", ""));
+                }
+                if (funcCode == Constant.EventCode.READ_DEVICE_DESC) {
+                    connectDesc.setText(new String(data).trim());
+                }
 
         }
     }
@@ -161,12 +180,6 @@ public class ConnectFragment extends BaseFragment {
     private void scanDevice() {
 //        ControllerManager.getInstance(mContext).scanDevice();
 
-        byte[] data = new byte[5];
-        data[0] = 0x3;
-        data[1] = 0x2;
-        data[2] = 0x0;
-        data[3] = 0x1;
-        data[4] = 0x6;
         ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DEVICE_NAME, null));
         try {
             Thread.sleep(1000);
@@ -198,7 +211,9 @@ public class ConnectFragment extends BaseFragment {
 
 
     private void refreshRemoteDeviceInfo() {
-
+        connectDesc.setText("");
+        connectIp.setText("");
+        connectName.setText("");
     }
 
     @Override

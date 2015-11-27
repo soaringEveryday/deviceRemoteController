@@ -1,7 +1,14 @@
 package com.remote.controller.network;
 
+import android.os.Message;
+
 import com.remote.controller.constant.Constant;
+import com.remote.controller.message.MessageEvent;
 import com.remote.controller.utils.L;
+
+import java.util.Arrays;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Chen Haitao on 2015/11/27.
@@ -26,6 +33,7 @@ public class EventParser {
     }
 
     public void parse(byte[] data) {
+        L.d("parse, check enter : \n" + Arrays.toString(data));
         int length = data.length;
         if (length <= 0) {
             L.e("parsed data is empty");
@@ -39,9 +47,40 @@ public class EventParser {
             return;
         }
 
+        //获取长度
+        byte[] lengthByte = new byte[4];
+        lengthByte[0] = data[1];
+        lengthByte[1] = data[2];
+        lengthByte[2] = 0x0;
+        lengthByte[3] = 0x0;
+        int lengthLeft = byte2int(lengthByte);
+        L.d("lengthLeft : " + lengthLeft);
 
+        //获得返回功能码
+        int funcCode = byte2int(data[3]);
+        L.d("funcCode : " + funcCode);
 
+        //获得执行结果
+        int result = byte2int(data[4]);
+        if (result != 0) {
+            L.e("error response, code : " + result);
+            return;
+        }
 
+        //获得返回数据
+        byte[] resultData = Arrays.copyOfRange(data, 5, 5 + lengthLeft - 4);
+        L.d("result data :\n" + Arrays.toString(resultData));
+
+        dispatchResponse(funcCode, resultData);
+
+    }
+
+    private void dispatchResponse(int funcCode, byte[] data) {
+        Message msg = Message.obtain();
+        msg.what = MessageEvent.MSG_SOCKET_RECEIVE_DATA;
+        msg.arg1 = funcCode;
+        msg.obj = data;
+        EventBus.getDefault().postSticky(msg);
     }
 
     private int byte2int(byte[] res) {

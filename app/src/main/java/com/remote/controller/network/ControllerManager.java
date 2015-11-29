@@ -34,13 +34,6 @@ public class ControllerManager {
         return sInstance;
     }
 
-    public void scanDevice() {
-        L.d("ControllerManager -> scanDevice");
-
-        ServerLocal searchLocal = new ServerLocal();
-        searchLocal.ConnectDevice();
-    }
-
     public void connectServer(String i, int p) {
         if (i.isEmpty()) {
             L.e("ip is empty");

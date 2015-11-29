@@ -21,6 +21,7 @@ import com.remote.controller.message.MessageEvent;
 import com.remote.controller.utils.L;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -119,7 +120,7 @@ public class PlayFragment extends BaseFragment {
 
     }
 
-    public void onEvent(final Message msg) {
+    public void onEventMainThread(final Message msg) {
         L.d("play onEvent");
         int msgEvent = msg.what;
         L.d("what:" + msgEvent);
@@ -134,8 +135,45 @@ public class PlayFragment extends BaseFragment {
                 mDatas.clear();
                 mAdaper.notifyDataSetChanged();
                 break;
+
+            case MessageEvent.MSG_SOCKET_DISCONNECTED:
+                //断开连接成功
+                tvRunningStatus.setText("未连接");
+                data1.setText("null");
+                data2.setText("null");
+                data3.setText("null");
+                data4.setText("null");
+                updateRunningStatus(Constant.RunningStatus.NO_CONNECTION);
+                break;
+
+            case MessageEvent.MSG_SOCKET_RECEIVE_DATA:
+                //收到服务器回应
+                int funcCode = msg.arg1;
+                byte[] data = (byte[]) msg.obj;
+                if (funcCode == Constant.EventCode.READ_RUNNING_STATE) {
+                    int runningState = byte2int(data[0]);
+                    switch (runningState) {
+                        case Constant.RunningStatus.IDLE:
+                            tvRunningStatus.setText("空闲");
+                            break;
+                        case Constant.RunningStatus.RUNNING:
+                            tvRunningStatus.setText("运行中");
+                            break;
+                        case Constant.RunningStatus.ERROR:
+                            tvRunningStatus.setText("出错");
+                            break;
+                    }
+                    updateRunningStatus(runningState);
+                } else if (funcCode == Constant.EventCode.READ_DATA_ON_PLAY) {
+                    data1.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 0, 4))));
+                    data2.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 4, 8))));
+                    data3.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 8, 12))));
+                    data4.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 12, 16))));
+                }
+                break;
         }
     }
+
 
     @Override
     public void onClick(View view) {
@@ -161,7 +199,39 @@ public class PlayFragment extends BaseFragment {
     }
 
     //用event bus通知运行状态，更新其他界面的按钮有效性
-    private void updateRunningStatus() {
+    private void updateRunningStatus(int state) {
+        switch (state) {
+            case Constant.RunningStatus.NO_CONNECTION:
+            case Constant.RunningStatus.ERROR:
+                btnLaunch.setEnabled(false);
+                btnPause.setEnabled(false);
+                btnStop.setEnabled(false);
+                btnReset.setEnabled(true);
+                break;
+            case Constant.RunningStatus.IDLE:
+                btnLaunch.setEnabled(true);
+                btnPause.setEnabled(false);
+                btnStop.setEnabled(false);
+                btnReset.setEnabled(true);
+                break;
+            case Constant.RunningStatus.RUNNING:
+                btnLaunch.setEnabled(false);
+                btnPause.setEnabled(true);
+                btnStop.setEnabled(true);
+                btnReset.setEnabled(false);
+                break;
+        }
+    }
 
+    private int byte2int(byte b) {
+        return  b & 0xff;
+    }
+
+    private int byte2int(byte[] res) {
+        // 一个byte数据左移24位变成0x??000000，再右移8位变成0x00??0000
+
+        int targets = (res[0] & 0xff) | ((res[1] << 8) & 0xff00) // | 表示安位或
+                | ((res[2] << 24) >>> 8) | (res[3] << 24);
+        return targets;
     }
 }

@@ -17,7 +17,7 @@ public class L {
     }
 
     public static boolean isDebug = true;
-    private static final String TAG = "remote";
+    private static final String TAG = "remoteController";
 
     /**
      * android logback logger

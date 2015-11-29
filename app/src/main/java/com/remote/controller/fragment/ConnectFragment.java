@@ -1,6 +1,7 @@
 package com.remote.controller.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import com.remote.controller.constant.Constant;
 import com.remote.controller.message.MessageEvent;
 import com.remote.controller.network.ControllerManager;
 import com.remote.controller.network.EventGenerator;
+import com.remote.controller.service.SyncService;
 import com.remote.controller.utils.L;
 import com.remote.controller.utils.SPUtils;
 
@@ -131,6 +133,10 @@ public class ConnectFragment extends BaseFragment {
                 }
                 ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DEVICE_DESC, null));
                 showAlertDialog("已连接");
+
+                //启动后台定时服务
+                Intent serviceIntent = new Intent(mActivity, SyncService.class);
+                mActivity.startService(serviceIntent);
                 break;
 
             case MessageEvent.MSG_SOCKET_DISCONNECTED:
@@ -138,6 +144,10 @@ public class ConnectFragment extends BaseFragment {
                 ControllerManager.getInstance(mContext).setConnected(false);
                 refreshRemoteDeviceInfo();
                 showAlertDialog("已断开");
+
+                //停止后台定时服务
+                Intent stopServiceIntent = new Intent(mActivity, SyncService.class);
+                mActivity.stopService(stopServiceIntent);
                 break;
 
             case MessageEvent.MSG_SOCKET_RECEIVE_DATA:
@@ -182,13 +192,14 @@ public class ConnectFragment extends BaseFragment {
     private void scanDevice() {
 //        ControllerManager.getInstance(mContext).scanDevice();
 
-        ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DEVICE_NAME, null));
+        //读取设备运行状态
+        ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DATA_ON_SETTING, null));
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DEVICE_DESC, null));
 
     }
 
@@ -208,7 +219,7 @@ public class ConnectFragment extends BaseFragment {
             return;
         }
 
-        ControllerManager.getInstance(mContext).connectServer("172.19.6.92", 3000);
+        ControllerManager.getInstance(mContext).connectServer("172.19.6.19", 3000);
     }
 
 

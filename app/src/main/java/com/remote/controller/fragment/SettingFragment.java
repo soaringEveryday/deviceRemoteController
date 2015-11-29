@@ -27,6 +27,7 @@ import com.remote.controller.message.MessageEvent;
 import com.remote.controller.utils.L;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -128,7 +129,7 @@ public class SettingFragment extends BaseFragment {
         list.setAdapter(mAdaper);
     }
 
-    public void onEvent(final Message msg) {
+    public void onEventMainThread(final Message msg) {
         L.d("setting onEvent");
         int msgEvent = msg.what;
         L.d("what:" + msgEvent);
@@ -142,6 +143,18 @@ public class SettingFragment extends BaseFragment {
             case MessageEvent.MSG_COMMAND_CLEAR:
                 mDatas.clear();
                 mAdaper.notifyDataSetChanged();
+                break;
+
+            case MessageEvent.MSG_SOCKET_RECEIVE_DATA:
+                //收到服务器回应
+                int funcCode = msg.arg1;
+                byte[] data = (byte[]) msg.obj;
+                if (funcCode == Constant.EventCode.READ_DATA_ON_SETTING) {
+                    paramX.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 0, 4))));
+                    paramY.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 4, 8))));
+                    paramZ.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 8, 12))));
+                    paramA.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 12, 16))));
+                }
                 break;
         }
     }
@@ -175,5 +188,17 @@ public class SettingFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    private int byte2int(byte b) {
+        return  b & 0xff;
+    }
+
+    private int byte2int(byte[] res) {
+        // 一个byte数据左移24位变成0x??000000，再右移8位变成0x00??0000
+
+        int targets = (res[0] & 0xff) | ((res[1] << 8) & 0xff00) // | 表示安位或
+                | ((res[2] << 24) >>> 8) | (res[3] << 24);
+        return targets;
     }
 }

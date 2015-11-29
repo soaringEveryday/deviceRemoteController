@@ -68,20 +68,33 @@ public class EventParser {
             }
 
             //获得返回数据
-            byte[] resultData = Arrays.copyOfRange(data, 5, 5 + lengthLeft - 4);
-            L.d("result data :\n" + Arrays.toString(resultData));
+            if (lengthLeft == 4) {
+                //说明返回数据只有一个字节
+                byte[] resultData = new byte[2];
+                resultData[0] = data[5];
+                resultData[1] = 0x0;
+                dispatchResponse(funcCode, resultData, 1);
+            }else if (lengthLeft > 4) {
+                //说明返回数据大于一个字节
+                byte[] resultData = Arrays.copyOfRange(data, 5, 5 + lengthLeft - 3);
+                L.d("result data :\n" + Arrays.toString(resultData));
 
-            dispatchResponse(funcCode, resultData);
+                dispatchResponse(funcCode, resultData, resultData.length);
+            } else {
+                //返回数据为0字节
+            }
+
         } else {
             //文件传送返回
         }
 
     }
 
-    private void dispatchResponse(int funcCode, byte[] data) {
+    private void dispatchResponse(int funcCode, byte[] data, int length) {
         Message msg = Message.obtain();
         msg.what = MessageEvent.MSG_SOCKET_RECEIVE_DATA;
         msg.arg1 = funcCode;
+        msg.arg2 = length;
         msg.obj = data;
         EventBus.getDefault().postSticky(msg);
     }

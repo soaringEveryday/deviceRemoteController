@@ -67,14 +67,10 @@ public class Constant {
 
     public static final String TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    public static class RunningStatus {
-        public static final int NO_CONNECTION = 0;
-        public static final int IDLE = 1;
-        public static final int RUNNING = 2;
-        public static final int ERROR = 3;
-    }
 
-    //运动指令参数 x, y, z, a, v , g
+    /**
+     * 运动指令参数 x, y, z, a, v , g
+     */
     public static class Param {
         public static final String X = "x";
         public static final String Y = "y";
@@ -84,7 +80,9 @@ public class Constant {
         public static final String G = "g";
     }
 
-    //指令类型
+    /**
+     * 指令类型
+     */
     public static class Command {
         public static final String LINE_TO = "LineTo";
         public static final String MOVE_TO = "MoveTo";
@@ -95,10 +93,16 @@ public class Constant {
         public static final String MOVE_TO_VEL = "MoveToVel";
     }
 
+    /**
+     * 文件类型版本
+     */
     public static class FileFormat {
         public static final int VERION_CSV = 1;
     }
 
+    /**
+     * 存储文件用share preference key
+     */
     public static class SPKEY {
         public static final String FILE_NAME = "key_file_name";
         public static final String FILE_DESC = "key_file_desc";
@@ -123,11 +127,33 @@ public class Constant {
         public static final int BTN_PLAY_RESET = 15;
     }
 
+    /**
+     * 类型码
+     */
     public static class Type {
-        public static final int FILE_REQ = 2;
-        public static final int EVENT_REQ = 3;
-        public static final int EVENT_REMOTE_RES = 6;
-        public static final int FILE_REMOTE_RES = 7;
+        public static final int FILE_REQ = 2; // 文件发送请求
+        public static final int EVENT_REQ = 3;//事件发送请求
+        public static final int EVENT_REMOTE_RES = 6;//事件数据PC端回复
+        public static final int FILE_REMOTE_RES = 7;//文件PC端回复
 
     }
+
+    /**
+     * 设备状态
+     * 0 未连接
+     * 1 空闲
+     * 2 运行中
+     * 3 出错
+     */
+    public static class RunningStatus {
+        public static final int NO_CONNECTION = 0;
+        public static final int IDLE = 1;
+        public static final int RUNNING = 2;
+        public static final int ERROR = 3;
+    }
+
+    /**
+     * 同步时间频率 （ms）
+     */
+    public static int SYNC_SEQ_TIME = 10000;
 }

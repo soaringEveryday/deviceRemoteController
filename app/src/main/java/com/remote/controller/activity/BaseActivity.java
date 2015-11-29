@@ -135,6 +135,10 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case android.R.id.home:
+
+                finish();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

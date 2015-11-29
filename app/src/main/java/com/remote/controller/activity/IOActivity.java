@@ -76,6 +76,7 @@ public class IOActivity extends BaseActivity {
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(true);
             actionBar.setDisplayUseLogoEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(R.string.setting_sub_io);
         }
 

@@ -86,7 +86,7 @@ public class SettingFragment extends BaseFragment {
 
     private ArrayList<FileLineItem> mDatas;
     private BaseAdapter mAdaper;
-
+    private int runningStatus = Constant.RunningStatus.NO_CONNECTION;
     public SettingFragment() {
         // Required empty public constructor
     }
@@ -145,17 +145,52 @@ public class SettingFragment extends BaseFragment {
                 mAdaper.notifyDataSetChanged();
                 break;
 
+            case MessageEvent.MSG_SOCKET_DISCONNECTED:
+                //断开连接成功
+//                paramX.setText("null");
+//                paramY.setText("null");
+//                paramZ.setText("null");
+//                paramA.setText("null");
+                updateRunningStatus(Constant.RunningStatus.NO_CONNECTION);
+                break;
+
             case MessageEvent.MSG_SOCKET_RECEIVE_DATA:
                 //收到服务器回应
                 int funcCode = msg.arg1;
                 byte[] data = (byte[]) msg.obj;
-                if (funcCode == Constant.EventCode.READ_DATA_ON_SETTING) {
+                if (funcCode == Constant.EventCode.READ_RUNNING_STATE) {
+                    int runningState = byte2int(data[0]);
+                    updateRunningStatus(runningState);
+                } else if (funcCode == Constant.EventCode.READ_DATA_ON_SETTING) {
                     paramX.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 0, 4))));
                     paramY.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 4, 8))));
                     paramZ.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 8, 12))));
                     paramA.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 12, 16))));
                 }
                 break;
+        }
+    }
+
+    private void updateRunningStatus(int state) {
+        runningStatus = state;
+        if (state == Constant.RunningStatus.NO_CONNECTION) {
+            motionBtn1.setEnabled(false);
+            motionBtn2.setEnabled(false);
+            motionBtn3.setEnabled(false);
+            motionBtn4.setEnabled(false);
+            motionBtn5.setEnabled(false);
+            motionBtn6.setEnabled(false);
+            motionBtn7.setEnabled(false);
+            motionBtn8.setEnabled(false);
+        } else {
+            motionBtn1.setEnabled(true);
+            motionBtn2.setEnabled(true);
+            motionBtn3.setEnabled(true);
+            motionBtn4.setEnabled(true);
+            motionBtn5.setEnabled(true);
+            motionBtn6.setEnabled(true);
+            motionBtn7.setEnabled(true);
+            motionBtn8.setEnabled(true);
         }
     }
 
@@ -166,10 +201,12 @@ public class SettingFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.btn_motion:
                 intent.setClass(mContext, MotionActivity.class);
-                intent.putExtra(Constant.Param.X, Integer.parseInt(paramX.getText().toString()));
-                intent.putExtra(Constant.Param.Y, Integer.parseInt(paramY.getText().toString()));
-                intent.putExtra(Constant.Param.Z, Integer.parseInt(paramZ.getText().toString()));
-                intent.putExtra(Constant.Param.A, Integer.parseInt(paramA.getText().toString()));
+                if (runningStatus != Constant.RunningStatus.NO_CONNECTION) {
+                    intent.putExtra(Constant.Param.X, Integer.parseInt(paramX.getText().toString()));
+                    intent.putExtra(Constant.Param.Y, Integer.parseInt(paramY.getText().toString()));
+                    intent.putExtra(Constant.Param.Z, Integer.parseInt(paramZ.getText().toString()));
+                    intent.putExtra(Constant.Param.A, Integer.parseInt(paramA.getText().toString()));
+                }
                 startActivity(intent);
                 break;
             case R.id.btn_io:
@@ -191,7 +228,7 @@ public class SettingFragment extends BaseFragment {
     }
 
     private int byte2int(byte b) {
-        return  b & 0xff;
+        return b & 0xff;
     }
 
     private int byte2int(byte[] res) {

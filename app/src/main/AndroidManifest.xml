@@ -36,9 +36,11 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activity.MotionActivity" >
+        <activity android:name=".activity.MotionActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged|adjustResize" >
         </activity>
-        <activity android:name=".activity.IOActivity" >
+        <activity android:name=".activity.IOActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged|adjustResize" >
         </activity>
         <activity android:name=".activity.DelayActivity" >
         </activity>

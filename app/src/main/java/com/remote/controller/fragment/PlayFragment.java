@@ -140,6 +140,11 @@ public class PlayFragment extends BaseFragment {
                 mAdaper.notifyDataSetChanged();
                 break;
 
+            case MessageEvent.MSG_SOCKET_CONNECTED:
+                updateRunningStatus(Constant.RunningStatus.IDLE);
+
+                break;
+
             case MessageEvent.MSG_SOCKET_DISCONNECTED:
                 //断开连接成功
                 tvRunningStatus.setText("未连接");
@@ -156,17 +161,6 @@ public class PlayFragment extends BaseFragment {
                 byte[] data = (byte[]) msg.obj;
                 if (funcCode == Constant.EventCode.READ_RUNNING_STATE) {
                     int runningState = byte2int(data[0]);
-                    switch (runningState) {
-                        case Constant.RunningStatus.IDLE:
-                            tvRunningStatus.setText("空闲");
-                            break;
-                        case Constant.RunningStatus.RUNNING:
-                            tvRunningStatus.setText("运行中");
-                            break;
-                        case Constant.RunningStatus.ERROR:
-                            tvRunningStatus.setText("出错");
-                            break;
-                    }
                     updateRunningStatus(runningState);
                 } else if (funcCode == Constant.EventCode.READ_DATA_ON_PLAY) {
                     data1.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 0, 4))));
@@ -217,25 +211,35 @@ public class PlayFragment extends BaseFragment {
 
     //用event bus通知运行状态，更新其他界面的按钮有效性
     private void updateRunningStatus(int state) {
+        runningStatus = state;
         switch (state) {
             case Constant.RunningStatus.NO_CONNECTION:
+                btnLaunch.setEnabled(false);
+                btnPause.setEnabled(false);
+                btnStop.setEnabled(false);
+                btnReset.setEnabled(true);
+                tvRunningStatus.setText("未连接");
+                break;
             case Constant.RunningStatus.ERROR:
                 btnLaunch.setEnabled(false);
                 btnPause.setEnabled(false);
                 btnStop.setEnabled(false);
                 btnReset.setEnabled(true);
+                tvRunningStatus.setText("出错");
                 break;
             case Constant.RunningStatus.IDLE:
                 btnLaunch.setEnabled(true);
                 btnPause.setEnabled(false);
                 btnStop.setEnabled(false);
                 btnReset.setEnabled(true);
+                tvRunningStatus.setText("空闲");
                 break;
             case Constant.RunningStatus.RUNNING:
                 btnLaunch.setEnabled(false);
                 btnPause.setEnabled(true);
                 btnStop.setEnabled(true);
                 btnReset.setEnabled(false);
+                tvRunningStatus.setText("运行中");
                 break;
         }
     }

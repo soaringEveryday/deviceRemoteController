@@ -18,6 +18,8 @@ import com.remote.controller.adapter.ViewHolder;
 import com.remote.controller.bean.FileLineItem;
 import com.remote.controller.constant.Constant;
 import com.remote.controller.message.MessageEvent;
+import com.remote.controller.network.ControllerManager;
+import com.remote.controller.network.EventGenerator;
 import com.remote.controller.utils.L;
 
 import java.util.ArrayList;
@@ -102,6 +104,8 @@ public class PlayFragment extends BaseFragment {
 
     private void initListView() {
         list.setAdapter(mAdaper);
+        //TODO open
+//        updateRunningStatus(Constant.RunningStatus.NO_CONNECTION);
     }
 
     //根据runningStatus设置四个btn的有效性
@@ -179,14 +183,27 @@ public class PlayFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_launch:
-                break;
-            case R.id.btn_pause:
+                String str = etTimesRunTotal.getText().toString();
+                if (str.isEmpty()) {
+                    showAlertDialog("请输入运行次数");
+                    return;
+                }
+                int runTimes = Integer.parseInt(str);
+                L.d("请求运行" + runTimes + "次");
+                ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.BTN_PLAY_LAUNCH, runTimes));
+
+                //TODO 发送文件数据包
 
                 break;
+            case R.id.btn_pause:
+                ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.BTN_PLAY_PAUSE, null));
+
             case R.id.btn_stop:
+                ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.BTN_PLAY_STOP, null));
 
                 break;
             case R.id.btn_reset:
+                ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.BTN_PLAY_RESET, null));
 
                 break;
         }

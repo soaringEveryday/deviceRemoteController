@@ -1,7 +1,6 @@
 package com.remote.controller.fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -22,7 +21,6 @@ import com.remote.controller.constant.Constant;
 import com.remote.controller.message.MessageEvent;
 import com.remote.controller.network.ControllerManager;
 import com.remote.controller.network.EventGenerator;
-import com.remote.controller.service.SyncService;
 import com.remote.controller.utils.L;
 import com.remote.controller.utils.SPUtils;
 
@@ -134,9 +132,9 @@ public class ConnectFragment extends BaseFragment {
                 ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DEVICE_DESC, null));
                 showAlertDialog("已连接");
 
-                //启动后台定时服务
-                Intent serviceIntent = new Intent(mActivity, SyncService.class);
-                mActivity.startService(serviceIntent);
+//                //启动后台定时服务
+//                Intent serviceIntent = new Intent(mActivity, SyncService.class);
+//                mActivity.startService(serviceIntent);
                 break;
 
             case MessageEvent.MSG_SOCKET_DISCONNECTED:
@@ -145,9 +143,9 @@ public class ConnectFragment extends BaseFragment {
                 refreshRemoteDeviceInfo();
                 showAlertDialog("已断开");
 
-                //停止后台定时服务
-                Intent stopServiceIntent = new Intent(mActivity, SyncService.class);
-                mActivity.stopService(stopServiceIntent);
+//                //停止后台定时服务
+//                Intent stopServiceIntent = new Intent(mActivity, SyncService.class);
+//                mActivity.stopService(stopServiceIntent);
                 break;
 
             case MessageEvent.MSG_SOCKET_RECEIVE_DATA:

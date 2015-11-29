@@ -50,6 +50,12 @@ public class ClientThread extends Thread {
             s = new Socket(ip, port);
 //            s.setSoTimeout(10000);// 设置阻塞时间
             s.setKeepAlive(true);
+            // 防止粘包，即两条指令数据合并到一起后才发送出去
+            // 发送数据包，默认为 false，即客户端发送数据采用 Nagle 算法；
+            // 但是对于实时交互性高的程序，建议其改为 true，即关闭 Nagle 算法，客户端每发送一次数据，无论数据包大小都会将这些数据发送出去
+            s.setTcpNoDelay(true);
+            //写数据不放人缓冲
+//            s.sendUrgentData(0x44);//"D" s
             L.d("connect successfully, then create client thread");
             init();
         } catch (UnknownHostException e) {
@@ -158,19 +164,17 @@ public class ClientThread extends Thread {
      * 发送数据
      *
      */
-    public void send(byte[] buffer) {
-        synchronized (this) {
-            try {
-                if (ou != null) {
-                    ou.write(buffer);
-                    ou.flush();
-                    L.d("sent to server : " + Arrays.toString(buffer));
-                } else {
-                    L.e("ou is null");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+    public synchronized void send(byte[] buffer) {
+        try {
+            if (ou != null) {
+                ou.write(buffer);
+                ou.flush();
+                L.d("sent to server : " + Arrays.toString(buffer));
+            } else {
+                L.e("ou is null");
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

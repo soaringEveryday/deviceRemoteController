@@ -18,5 +18,6 @@ public class MessageEvent {
     public static final int MSG_SOCKET_TIMEOUT =  104;              //超时
     public static final int MSG_SOCKET_CONNECTED =  105;              //连接成功
     public static final int MSG_SOCKET_DISCONNECTED =  106;              //断开成功
+    public static final int MSG_SCAN_PAIR = 107;                    //扫描匹配成功
 
 }

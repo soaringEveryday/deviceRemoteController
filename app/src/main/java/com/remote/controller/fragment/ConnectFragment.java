@@ -1,6 +1,9 @@
 package com.remote.controller.fragment;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -19,8 +22,10 @@ import com.remote.controller.adapter.ViewHolder;
 import com.remote.controller.bean.Device;
 import com.remote.controller.constant.Constant;
 import com.remote.controller.message.MessageEvent;
+import com.remote.controller.network.BroadCastUdpThread;
 import com.remote.controller.network.ControllerManager;
 import com.remote.controller.network.EventGenerator;
+import com.remote.controller.service.SyncService;
 import com.remote.controller.utils.L;
 import com.remote.controller.utils.SPUtils;
 
@@ -55,7 +60,7 @@ public class ConnectFragment extends BaseFragment {
 
     private ArrayList<Device> mDatas;
     private BaseAdapter mAdaper;
-    private int mCurrentPos;
+    private int mCurrentPos = -1;
     private Device mCurrentDevice = null;
 
     public ConnectFragment() {
@@ -90,10 +95,10 @@ public class ConnectFragment extends BaseFragment {
 
     private void refreshList() {
 
-        //TODO test code
-        mDatas.add(new Device("192.168.1.1", "device 1", "desc"));
-        mDatas.add(new Device("192.168.1.2", "device 2", "desc"));
-        mDatas.add(new Device("192.168.1.3", "device 3", "desc"));
+//        //TODO test code
+//        mDatas.add(new Device("192.168.1.1", "device 1", "desc"));
+//        mDatas.add(new Device("192.168.1.2", "device 2", "desc"));
+//        mDatas.add(new Device("192.168.1.3", "device 3", "desc"));
 
         listView.setAdapter(mAdaper = new CommonAdapter<Device>(mContext, mDatas, R.layout.connect_list) {
             @Override
@@ -109,7 +114,8 @@ public class ConnectFragment extends BaseFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                listView.setSelection(i);
+                mCurrentPos = i;
             }
         });
 
@@ -119,6 +125,14 @@ public class ConnectFragment extends BaseFragment {
     public void onEventMainThread(final Message msg) {
         int msgEvent = msg.what;
         switch (msgEvent) {
+            case MessageEvent.MSG_SCAN_PAIR:
+                String ip = (String) msg.obj;
+                if (!ip.isEmpty()) {
+                    mDatas.add(new Device(ip, "", ""));
+                    mAdaper.notifyDataSetChanged();
+                }
+                break;
+
             case MessageEvent.MSG_SOCKET_CONNECTED:
                 //连接成功回调
                 ControllerManager.getInstance(mContext).setConnected(true);
@@ -132,9 +146,9 @@ public class ConnectFragment extends BaseFragment {
                 ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DEVICE_DESC, null));
                 showAlertDialog("已连接");
 
-//                //启动后台定时服务
-//                Intent serviceIntent = new Intent(mActivity, SyncService.class);
-//                mActivity.startService(serviceIntent);
+                //启动后台定时服务
+                Intent serviceIntent = new Intent(mActivity, SyncService.class);
+                mActivity.startService(serviceIntent);
                 break;
 
             case MessageEvent.MSG_SOCKET_DISCONNECTED:
@@ -143,9 +157,9 @@ public class ConnectFragment extends BaseFragment {
                 refreshRemoteDeviceInfo();
                 showAlertDialog("已断开");
 
-//                //停止后台定时服务
-//                Intent stopServiceIntent = new Intent(mActivity, SyncService.class);
-//                mActivity.stopService(stopServiceIntent);
+                //停止后台定时服务
+                Intent stopServiceIntent = new Intent(mActivity, SyncService.class);
+                mActivity.stopService(stopServiceIntent);
                 break;
 
             case MessageEvent.MSG_SOCKET_RECEIVE_DATA:
@@ -159,6 +173,8 @@ public class ConnectFragment extends BaseFragment {
                 if (funcCode == Constant.EventCode.READ_DEVICE_DESC) {
                     connectDesc.setText(new String(data).trim());
                 }
+
+                break;
 
         }
     }
@@ -188,7 +204,14 @@ public class ConnectFragment extends BaseFragment {
     }
 
     private void scanDevice() {
-        ControllerManager.getInstance(mContext).scanDevice();
+        mCurrentPos = -1;
+        mDatas.clear();
+        mAdaper.notifyDataSetChanged();
+//        showLoadingDialog(mContext);
+
+        BroadCastUdpThread udpThread = new BroadCastUdpThread(Constant.ScanText.REQ);
+        udpThread.start();
+//        ControllerManager.getInstance(mContext).scanDevice();
 
         //读取设备运行状态
 //        ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DATA_ON_SETTING, null));
@@ -202,22 +225,30 @@ public class ConnectFragment extends BaseFragment {
     }
 
     private void connectDevice() {
-//        if (mCurrentDevice == null || mCurrentPos < 0) {
-//            new AlertDialog.Builder(mContext).setTitle(R.string.not_select_hint).setMessage(R.string.not_select_hint)
-//                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            dialogInterface.dismiss();
-//                        }
-//                    }).show();
-//        }
+        if (mCurrentPos < 0) {
+            new AlertDialog.Builder(mContext).setTitle(R.string.not_select_hint).setMessage(R.string.not_select_hint)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).show();
+
+            return;
+        }
 
         if (ControllerManager.getInstance(mContext).isConnected()) {
             showAlertDialog("已连接设备，请先断开");
             return;
         }
 
-        ControllerManager.getInstance(mContext).connectServer("172.19.6.19", 3000);
+        Device device = mDatas.get(mCurrentPos);
+        if (device != null) {
+            ControllerManager.getInstance(mContext).connectServer(device.getIp(), 3000);
+        }
+
+
+//        ControllerManager.getInstance(mContext).connectServer("192.168.1.100", 3000);
     }
 
 

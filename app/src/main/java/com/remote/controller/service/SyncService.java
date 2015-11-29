@@ -57,20 +57,20 @@ public class SyncService extends Service {
             //读取设备运行状态
             ControllerManager.getInstance(context).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_RUNNING_STATE, null));
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
 
             //示教界面读数据， 返回四个32位数据
             ControllerManager.getInstance(context).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DATA_ON_SETTING, null));
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
 
 
                 //运行界面读数据， 返回四个32位数据

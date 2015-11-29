@@ -155,5 +155,10 @@ public class Constant {
     /**
      * 同步时间频率 （ms）
      */
-    public static int SYNC_SEQ_TIME = 10000;
+    public static int SYNC_SEQ_TIME = 5000;
+
+    public static class ScanText {
+        public static final String REQ = "Searching C4_Robot...";
+        public static final String RES = "This is C4_Robot.";
+    }
 }

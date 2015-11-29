@@ -188,16 +188,16 @@ public class ConnectFragment extends BaseFragment {
     }
 
     private void scanDevice() {
-//        ControllerManager.getInstance(mContext).scanDevice();
+        ControllerManager.getInstance(mContext).scanDevice();
 
         //读取设备运行状态
-        ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DATA_ON_SETTING, null));
+//        ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DATA_ON_SETTING, null));
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
     }
 

@@ -159,6 +159,7 @@ public class ClientThread extends Thread {
      *
      */
     public void send(byte[] buffer) {
+        synchronized (this) {
             try {
                 if (ou != null) {
                     ou.write(buffer);
@@ -170,6 +171,7 @@ public class ClientThread extends Thread {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
     }
 
     /**

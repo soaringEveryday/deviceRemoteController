@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -58,6 +59,8 @@ public class IOActivity extends BaseActivity {
     @Bind(R.id.radio_output)
     RadioButton radioOutput;
 
+    private final int MODE_INPUT = 1;
+    private final int MODE_OUTPUT = 2;
 
     private String[] ports_input;
     private String[] ports_output;
@@ -65,6 +68,7 @@ public class IOActivity extends BaseActivity {
     private ArrayList<Integer> viewIds = new ArrayList<>();
     private ArrayAdapter<String> portsAdapter;
     private ArrayAdapter<String> statusAdapter;
+    private int mode = MODE_INPUT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +107,7 @@ public class IOActivity extends BaseActivity {
                     port3.setAdapter(portsAdapter);
                     port4.setAdapter(portsAdapter);
                     portsAdapter.notifyDataSetChanged();
+                    mode = MODE_INPUT;
 
                 } else {
                     btnOutput.setEnabled(true);
@@ -112,6 +117,7 @@ public class IOActivity extends BaseActivity {
                     port3.setAdapter(portsAdapter);
                     port4.setAdapter(portsAdapter);
                     portsAdapter.notifyDataSetChanged();
+                    mode = MODE_OUTPUT;
                 }
             }
         });
@@ -138,6 +144,106 @@ public class IOActivity extends BaseActivity {
         pcStatus2.setAdapter(statusAdapter);
         pcStatus3.setAdapter(statusAdapter);
         pcStatus4.setAdapter(statusAdapter);
+
+
+        port1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0) {
+                    status1.setSelection(0);
+                    pcStatus1.setSelection(0);
+                    status1.setEnabled(false);
+                    pcStatus1.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        port1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0) {
+                    status1.setSelection(0);
+                    pcStatus1.setSelection(0);
+                    status1.setEnabled(false);
+                    pcStatus1.setEnabled(false);
+                } else {
+                    status1.setEnabled(true);
+                    pcStatus1.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        port2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0) {
+                    status2.setSelection(0);
+                    pcStatus2.setSelection(0);
+                    status2.setEnabled(false);
+                    pcStatus2.setEnabled(false);
+                } else {
+                    status2.setEnabled(true);
+                    pcStatus2.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        port3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0) {
+                    status3.setSelection(0);
+                    pcStatus3.setSelection(0);
+                    status3.setEnabled(false);
+                    pcStatus3.setEnabled(false);
+                } else {
+                    status3.setEnabled(true);
+                    pcStatus3.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        port4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0) {
+                    status4.setSelection(0);
+                    pcStatus4.setSelection(0);
+                    status4.setEnabled(false);
+                    pcStatus4.setEnabled(false);
+                } else {
+                    status4.setEnabled(true);
+                    pcStatus4.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
 
         bindViewClicks();
 

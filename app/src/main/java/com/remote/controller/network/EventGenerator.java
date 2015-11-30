@@ -103,6 +103,39 @@ public class EventGenerator {
         return Arrays.copyOf(data, 5 + parameterLength);
     }
 
+    public byte[] generateFile(String fileData) {
+        reset();
+        data[0] = (byte) (Constant.Type.FILE_REQ & 0xff);//类型 2
+
+        byte[] parameterBytes = new byte[2048];
+        int parameterLength = 0;
+        if (fileData != null) {
+            parameterBytes = fileData.getBytes();
+            parameterLength = parameterBytes.length;
+        }
+
+        int length = parameterLength + 1; //参数长度 + 检验和长度
+
+        data[1] = (byte) (length & 0xff);
+        data[2] = (byte) ((length >> 8) & 0xff);//长度
+
+        //参数
+        if (parameterLength > 0) {
+            //TODO 参数字节掉转， 低位在前
+            for (int i = 0; i < parameterLength; i++) {
+                data[i + 3] = parameterBytes[i];
+            }
+        }
+
+        //检验和
+        byte sum = 0;
+        for (int i = 0 ; i <3 + parameterLength ; i++) {
+            sum += data[i];
+        }
+        data[3 + parameterLength] = sum;
+
+        return Arrays.copyOf(data, 4 + parameterLength);
+    }
 
     private byte[] int2byte(int res) {
         byte[] targets = new byte[4];

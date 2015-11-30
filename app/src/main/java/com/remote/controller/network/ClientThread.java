@@ -112,10 +112,9 @@ public class ClientThread extends Thread {
             while (isRun) {
                 if ((bytesRead = in.read(data)) != -1) {
                     L.d("recieve " + bytesRead + "bytes data\n");
-                    L.v("" + Arrays.toString(data));
                     String text = new String(data).trim();
 //                    dispatchMessage(text);
-                    dispatchMessage(data);
+                    dispatchMessage(data, bytesRead);
                 } // while
             }
 
@@ -146,9 +145,9 @@ public class ClientThread extends Thread {
         EventBus.getDefault().postSticky(msg);
     }
 
-    private void dispatchMessage(byte[] data) {
+    private void dispatchMessage(byte[] data, int length) {
         L.v("dispatch text from server socket : " + Arrays.toString(data));
-        EventParser.getInstance().parse(data);
+        EventParser.getInstance().parse(data, length);
     }
 
     private void dispatchMessage(String text) {
@@ -157,7 +156,7 @@ public class ClientThread extends Thread {
 //        msg.what = MessageEvent.MSG_SOCKET_RECEIVE_DATA;
 //        msg.obj = text;
 //        EventBus.getDefault().postSticky(msg);
-        EventParser.getInstance().parse(text.getBytes());
+        EventParser.getInstance().parse(text.getBytes(), text.getBytes().length);
     }
 
     /**

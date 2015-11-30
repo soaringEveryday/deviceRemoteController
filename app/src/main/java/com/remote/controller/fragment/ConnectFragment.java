@@ -252,7 +252,7 @@ public class ConnectFragment extends BaseFragment {
     //TODO test code
     private void connectDevice() {
 
-        ControllerManager.getInstance(mContext).connectServer("172.19.6.19", 3000);
+        ControllerManager.getInstance(mContext).connectServer("172.19.6.122", 3000);
     }
 
 

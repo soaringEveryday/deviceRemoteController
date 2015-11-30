@@ -29,63 +29,80 @@ public class EventParser {
         return sInstance;
     }
 
-    public void parse(byte[] data) {
+    public synchronized void parse(byte[] data, int length) {
         L.d("parse, check enter : \n" + Arrays.toString(data));
-        int length = data.length;
         if (length <= 0) {
             L.e("parsed data is empty");
             return;
         }
 
-        //检查类型
-        int type = byte2int(data[0]);
-        //目前仅解析该两种返回类型
-        if (type != Constant.Type.EVENT_REMOTE_RES && type != Constant.Type.FILE_REMOTE_RES) {
-            L.e("服务器返回类型错误:" + type);
-            return;
-        }
+        int cursor = 0;
 
-        if (type == Constant.Type.EVENT_REMOTE_RES) {
-            //事件数据包返回
-            //获取长度
-            byte[] lengthByte = new byte[4];
-            lengthByte[0] = data[1];
-            lengthByte[1] = data[2];
-            lengthByte[2] = 0x0;
-            lengthByte[3] = 0x0;
-            int lengthLeft = byte2int(lengthByte);
-            L.d("lengthLeft : " + lengthLeft);
-
-            //获得返回功能码
-            int funcCode = byte2int(data[3]);
-            L.d("funcCode : " + funcCode);
-
-            //获得执行结果
-            int result = byte2int(data[4]);
-            if (result != 0) {
-                L.e("error response, code : " + result);
+        while (cursor < length - 1) {
+            //检查类型
+            int type = byte2int(data[cursor++]);//cursor after = 1
+            //目前仅解析该两种返回类型
+            if (type != Constant.Type.EVENT_REMOTE_RES && type != Constant.Type.FILE_REMOTE_RES) {
+                L.e("服务器返回类型错误:" + type);
                 return;
             }
 
-            //获得返回数据
-            if (lengthLeft == 4) {
-                //说明返回数据只有一个字节
-                byte[] resultData = new byte[2];
-                resultData[0] = data[5];
-                resultData[1] = 0x0;
-                dispatchResponse(funcCode, resultData, 1);
-            }else if (lengthLeft > 4) {
-                //说明返回数据大于一个字节
-                byte[] resultData = Arrays.copyOfRange(data, 5, 5 + lengthLeft - 3);
-                L.d("result data :\n" + Arrays.toString(resultData));
+            if (type == Constant.Type.EVENT_REMOTE_RES) {
+                //事件数据包返回
+                //获取长度
+                byte[] lengthByte = new byte[4];
+                lengthByte[0] = data[cursor++];//cursor after = 2
+                lengthByte[1] = data[cursor++];//cursor after = 3
+                lengthByte[2] = 0x0;
+                lengthByte[3] = 0x0;
+                int lengthLeft = byte2int(lengthByte);
+                L.d("lengthLeft : " + lengthLeft);
 
-                dispatchResponse(funcCode, resultData, resultData.length);
+                //获得返回功能码
+                int funcCode = byte2int(data[cursor++]);//cursor after = 4
+                L.d("funcCode : " + funcCode);
+
+                //获得执行结果
+                int result = byte2int(data[cursor++]);////cursor after = 5
+                if (result != 0) {
+                    L.e("error response, code : " + result);
+                    return;
+                }
+
+                //获得返回数据
+                if (lengthLeft == 4) {
+                    L.d("a");
+                    //说明返回数据只有一个字节
+                    byte[] resultData = new byte[2];
+                    resultData[0] = data[cursor++];//cursor after = 6
+                    resultData[1] = 0x0;
+                    dispatchResponse(funcCode, resultData, 1);
+                    L.d("cursor : " + cursor);
+                    cursor++; // 跳过一个检验和
+                    L.d("cursor : " + cursor);
+                } else if (lengthLeft > 4) {
+                    L.d("b");
+                    //说明返回数据大于一个字节
+                    byte[] resultData = Arrays.copyOfRange(data, cursor, cursor + lengthLeft - 3);
+                    L.d("result data :\n" + Arrays.toString(resultData));
+
+                    dispatchResponse(funcCode, resultData, resultData.length);
+
+                    L.d("cursor : " + cursor);
+
+                    cursor += resultData.length + 1; // 跳过返回数据和一个字节检验和长度
+
+                    L.d("cursor : " + cursor);
+
+                } else {
+                    L.d("c");
+                    //返回数据为0字节
+                    cursor++; // 跳过一个检验和
+                }
+
             } else {
-                //返回数据为0字节
+                //文件传送返回
             }
-
-        } else {
-            //文件传送返回
         }
 
     }
@@ -108,7 +125,7 @@ public class EventParser {
     }
 
     private int byte2int(byte b) {
-        return  b & 0xff;
+        return b & 0xff;
     }
 
 

@@ -167,6 +167,8 @@ public class PlayFragment extends BaseFragment {
                     data2.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 4, 8))));
                     data3.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 8, 12))));
                     data4.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 12, 16))));
+                } else if (funcCode == Constant.EventCode.READ_PLAY_TIMES) {
+                    tvFinishedTimes.setText(byte2int(data));
                 }
                 break;
         }

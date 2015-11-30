@@ -76,6 +76,10 @@ public class SyncService extends Service {
                 //运行界面读数据， 返回四个32位数据
             ControllerManager.getInstance(context).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DATA_ON_PLAY, null));
 
+
+            //运行界面读运行次数
+            ControllerManager.getInstance(context).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_PLAY_TIMES, null));
+
         }
     }
 }

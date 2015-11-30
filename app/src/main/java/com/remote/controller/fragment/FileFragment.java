@@ -140,7 +140,9 @@ public class FileFragment extends BaseFragment {
                 Toast.makeText(mActivity, "保存失败", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(mActivity, "保存成功", Toast.LENGTH_SHORT).show();
-
+                Message m = Message.obtain();
+                m.what = MessageEvent.MSG_FILE_SAVED;
+                EventBus.getDefault().postSticky(m);
             }
 
         } else {
@@ -215,7 +217,9 @@ public class FileFragment extends BaseFragment {
                     refreshFileInfo();
                 } else {
                     Toast.makeText(mActivity, "保存文件成功", Toast.LENGTH_SHORT).show();
-
+                    Message m = Message.obtain();
+                    m.what = MessageEvent.MSG_FILE_SAVED;
+                    EventBus.getDefault().postSticky(m);
                 }
                 break;
 
@@ -304,6 +308,7 @@ public class FileFragment extends BaseFragment {
                     if (temp != null) {
                         L.d("打开文件" + path + "成功");
                         Toast.makeText(mActivity, "打开文件" + path + "成功", Toast.LENGTH_SHORT).show();
+                        SPUtils.put(mActivity, Constant.SPKEY.FILE_PATH, path);
                         mDatas.clear();
 
                         //发送数据到别的fragment

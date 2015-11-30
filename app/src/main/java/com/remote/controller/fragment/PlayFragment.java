@@ -21,7 +21,12 @@ import com.remote.controller.message.MessageEvent;
 import com.remote.controller.network.ControllerManager;
 import com.remote.controller.network.EventGenerator;
 import com.remote.controller.utils.L;
+import com.remote.controller.utils.SPUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,6 +68,7 @@ public class PlayFragment extends BaseFragment {
     private int runningStatus = Constant.RunningStatus.NO_CONNECTION;
     private ArrayList<FileLineItem> mDatas;
     private BaseAdapter mAdaper;
+    private boolean isNewFile = true;
 
     public PlayFragment() {
         // Required empty public constructor
@@ -133,11 +139,17 @@ public class PlayFragment extends BaseFragment {
                 FileLineItem item = (FileLineItem) msg.obj;
                 mDatas.add(item);
                 mAdaper.notifyDataSetChanged();
+                isNewFile = true;
                 break;
 
             case MessageEvent.MSG_COMMAND_CLEAR:
                 mDatas.clear();
                 mAdaper.notifyDataSetChanged();
+                isNewFile = true;
+                break;
+
+            case MessageEvent.MSG_FILE_SAVED:
+                isNewFile = false;
                 break;
 
             case MessageEvent.MSG_SOCKET_CONNECTED:
@@ -168,7 +180,6 @@ public class PlayFragment extends BaseFragment {
                     data3.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 8, 12))));
                     data4.setText(String.valueOf(byte2int(Arrays.copyOfRange(data, 12, 16))));
                 } else if (funcCode == Constant.EventCode.READ_PLAY_TIMES) {
-                    L.d("recieve READ_PLAY_TIMES : " + String.valueOf(byte2int(data)));
                     tvFinishedTimes.setText(String.valueOf(byte2int(data)));
                 }
                 break;
@@ -185,11 +196,36 @@ public class PlayFragment extends BaseFragment {
                     showAlertDialog("请输入运行次数");
                     return;
                 }
+                if (isNewFile) {
+                    showAlertDialog("请先到文件界面保存文件");
+                    return;
+                }
+
                 int runTimes = Integer.parseInt(str);
                 L.d("请求运行" + runTimes + "次");
                 ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.BTN_PLAY_LAUNCH, runTimes));
 
-                //TODO 发送文件数据包
+                //发送文件数据包
+                String path = (String) SPUtils.get(mContext, Constant.SPKEY.FILE_PATH, "");
+                if (path == null || path.isEmpty()) {
+                    L.e("file path is empty");
+                    showAlertDialog("文件路径保存有误");
+                    return;
+                }
+
+                File tempFile = new File(path);
+                if (tempFile != null) {
+                    byte data[] = getBytesFromFile(tempFile);
+                    if (data == null) {
+                        showAlertDialog("文件数据读取错误");
+                        return;
+                    }
+                    L.i("file data length : " + data.length);
+                    ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateFile(data));
+
+                } else {
+                    L.e("create temp file fail");
+                }
 
                 break;
             case R.id.btn_pause:
@@ -257,5 +293,29 @@ public class PlayFragment extends BaseFragment {
         int targets = (res[0] & 0xff) | ((res[1] << 8) & 0xff00) // | 表示安位或
                 | ((res[2] << 24) >>> 8) | (res[3] << 24);
         return targets;
+    }
+
+    private static byte[] getBytesFromFile(File file) {
+        byte[] ret = null;
+        try {
+            if (file == null) {
+                // log.error("helper:the file is null!");
+                return null;
+            }
+            FileInputStream in = new FileInputStream(file);
+            ByteArrayOutputStream out = new ByteArrayOutputStream(4096);
+            byte[] b = new byte[4096];
+            int n;
+            while ((n = in.read(b)) != -1) {
+                out.write(b, 0, n);
+            }
+            in.close();
+            out.close();
+            ret = out.toByteArray();
+        } catch (IOException e) {
+            // log.error("helper:get bytes from file process error!");
+            e.printStackTrace();
+        }
+        return ret;
     }
 }

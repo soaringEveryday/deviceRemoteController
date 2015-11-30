@@ -10,14 +10,17 @@ import java.util.Arrays;
  */
 public class EventGenerator {
 
-    private final int MAX_DATA_LEN = 128;
+    private final int MAX_DATA_LEN = 256;
+    private final int MAX_DATA_FILE_LEN = 2048;
 
     private static EventGenerator sInstance;
 
     private byte[] data;
+    private byte[] fileBytes;
 
     public EventGenerator() {
         data = new byte[MAX_DATA_LEN];
+        fileBytes = new byte[MAX_DATA_FILE_LEN];
     }
 
     public static EventGenerator getInstance() {
@@ -104,8 +107,8 @@ public class EventGenerator {
     }
 
     public byte[] generateFile(String fileData) {
-        reset();
-        data[0] = (byte) (Constant.Type.FILE_REQ & 0xff);//类型 2
+        resetFile();
+        fileBytes[0] = (byte) (Constant.Type.FILE_REQ & 0xff);//类型 2
 
         byte[] parameterBytes = new byte[2048];
         int parameterLength = 0;
@@ -116,25 +119,57 @@ public class EventGenerator {
 
         int length = parameterLength + 1; //参数长度 + 检验和长度
 
-        data[1] = (byte) (length & 0xff);
-        data[2] = (byte) ((length >> 8) & 0xff);//长度
+        fileBytes[1] = (byte) (length & 0xff);
+        fileBytes[2] = (byte) ((length >> 8) & 0xff);//长度
 
         //参数
         if (parameterLength > 0) {
             //TODO 参数字节掉转， 低位在前
             for (int i = 0; i < parameterLength; i++) {
-                data[i + 3] = parameterBytes[i];
+                fileBytes[i + 3] = parameterBytes[i];
             }
         }
 
         //检验和
         byte sum = 0;
         for (int i = 0 ; i <3 + parameterLength ; i++) {
-            sum += data[i];
+            sum += fileBytes[i];
         }
-        data[3 + parameterLength] = sum;
+        fileBytes[3 + parameterLength] = sum;
 
-        return Arrays.copyOf(data, 4 + parameterLength);
+        return Arrays.copyOf(fileBytes, 4 + parameterLength);
+    }
+
+    public byte[] generateFile(byte[] parameterBytes) {
+        resetFile();
+        fileBytes[0] = (byte) (Constant.Type.FILE_REQ & 0xff);//类型 2
+
+        int parameterLength = 0;
+        if (parameterBytes != null) {
+            parameterLength = parameterBytes.length;
+        }
+
+        int length = parameterLength + 1; //参数长度 + 检验和长度
+
+        fileBytes[1] = (byte) (length & 0xff);
+        fileBytes[2] = (byte) ((length >> 8) & 0xff);//长度
+
+        //参数
+        if (parameterLength > 0) {
+            //TODO 参数字节掉转， 低位在前
+            for (int i = 0; i < parameterLength; i++) {
+                fileBytes[i + 3] = parameterBytes[i];
+            }
+        }
+
+        //检验和
+        byte sum = 0;
+        for (int i = 0 ; i <3 + parameterLength ; i++) {
+            sum += fileBytes[i];
+        }
+        fileBytes[3 + parameterLength] = sum;
+
+        return Arrays.copyOf(fileBytes, 4 + parameterLength);
     }
 
     private byte[] int2byte(int res) {
@@ -157,6 +192,12 @@ public class EventGenerator {
         for (int i = 0 ; i<lengh ; i++) {
             data[0] = 0x0;
         }
+    }
 
+    private void resetFile() {
+        int lengh = fileBytes.length;
+        for (int i = 0 ; i<lengh ; i++) {
+            fileBytes[0] = 0x0;
+        }
     }
 }

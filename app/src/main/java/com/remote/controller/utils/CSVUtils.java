@@ -121,6 +121,7 @@ public class CSVUtils {
             L.e("找不到文件");
             return null;
         }
+
         CSVReader reader = new CSVReader(in, ',', '"', 1);
 
         ArrayList<FileLineItem> commands = new ArrayList<>();
@@ -139,6 +140,7 @@ public class CSVUtils {
                 if (tempFile != null) {
                     String fullName = tempFile.getName();
                     SPUtils.put(context, Constant.SPKEY.FILE_NAME, StrUtils.getFileNameNoEx(fullName));
+                    SPUtils.put(context, Constant.SPKEY.FILE_PATH, path);
                 } else {
                     L.e("create temp file fail");
                 }
@@ -175,6 +177,10 @@ public class CSVUtils {
         return commands;
     }
 
+    public byte[] readBytes(Context context, String path) {
+
+        return null;
+    }
 
     public void close() {
 

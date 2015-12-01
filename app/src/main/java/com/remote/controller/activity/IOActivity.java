@@ -17,6 +17,7 @@ import com.remote.controller.constant.Constant;
 import com.remote.controller.message.MessageEvent;
 import com.remote.controller.network.ControllerManager;
 import com.remote.controller.network.EventGenerator;
+import com.remote.controller.utils.SPUtils;
 
 import java.util.ArrayList;
 
@@ -91,6 +92,8 @@ public class IOActivity extends BaseActivity {
         }
 
         initViews();
+
+        SPUtils.put(this, Constant.SPKEY.SYNC_IO_CMD, 1);//默认进入开始获取输入实时数据
     }
 
     @Override
@@ -99,6 +102,8 @@ public class IOActivity extends BaseActivity {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        SPUtils.put(this, Constant.SPKEY.SYNC_IO_CMD, 0);//默认进入开始获取输入实时数据
+
     }
 
     private void bindViewClicks() {
@@ -121,6 +126,7 @@ public class IOActivity extends BaseActivity {
                     port4.setAdapter(portsAdapter);
                     portsAdapter.notifyDataSetChanged();
                     mode = MODE_INPUT;
+                    SPUtils.put(IOActivity.this, Constant.SPKEY.SYNC_IO_CMD, 1);
 
                 } else {
                     btnOutput.setEnabled(true);
@@ -131,6 +137,7 @@ public class IOActivity extends BaseActivity {
                     port4.setAdapter(portsAdapter);
                     portsAdapter.notifyDataSetChanged();
                     mode = MODE_OUTPUT;
+                    SPUtils.put(IOActivity.this, Constant.SPKEY.SYNC_IO_CMD, 2);
                 }
             }
         });

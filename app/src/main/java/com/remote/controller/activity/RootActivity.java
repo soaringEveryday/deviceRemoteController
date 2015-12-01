@@ -14,12 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.remote.controller.R;
+import com.remote.controller.constant.Constant;
 import com.remote.controller.fragment.ConnectFragment;
 import com.remote.controller.fragment.FileFragment;
 import com.remote.controller.fragment.PlayFragment;
 import com.remote.controller.fragment.SettingFragment;
 import com.remote.controller.message.MessageEvent;
 import com.remote.controller.utils.L;
+import com.remote.controller.utils.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -220,27 +222,34 @@ public class RootActivity extends BaseActivity {
                 icon2.setImageResource(R.drawable.iconfont_iconplay);
                 icon3.setImageResource(R.drawable.iconfont_file);
                 icon4.setImageResource(R.drawable.iconfont_connect);
+                SPUtils.put(this, Constant.SPKEY.SYNC_SETTING_CMD, true);
+                SPUtils.put(this, Constant.SPKEY.SYNC_PLAY_CMD, false);
                 break;
             case POS_PLAY:
                 icon1.setImageResource(R.drawable.iconfont_setting);
                 icon2.setImageResource(R.drawable.iconfont_iconplay_select);
                 icon3.setImageResource(R.drawable.iconfont_file);
                 icon4.setImageResource(R.drawable.iconfont_connect);
+                SPUtils.put(this, Constant.SPKEY.SYNC_SETTING_CMD, false);
+                SPUtils.put(this, Constant.SPKEY.SYNC_PLAY_CMD, true);
                 break;
             case POS_FILE:
                 icon1.setImageResource(R.drawable.iconfont_setting);
                 icon2.setImageResource(R.drawable.iconfont_iconplay);
                 icon3.setImageResource(R.drawable.iconfont_file_select);
                 icon4.setImageResource(R.drawable.iconfont_connect);
+                SPUtils.put(this, Constant.SPKEY.SYNC_SETTING_CMD, false);
+                SPUtils.put(this, Constant.SPKEY.SYNC_PLAY_CMD, false);
                 break;
             case POS_CONNECT:
                 icon1.setImageResource(R.drawable.iconfont_setting);
                 icon2.setImageResource(R.drawable.iconfont_iconplay);
                 icon3.setImageResource(R.drawable.iconfont_file);
                 icon4.setImageResource(R.drawable.iconfont_connect_select);
+                SPUtils.put(this, Constant.SPKEY.SYNC_SETTING_CMD, false);
+                SPUtils.put(this, Constant.SPKEY.SYNC_PLAY_CMD, false);
                 break;
         }
-
         updateToolbar(tabType);
     }
 

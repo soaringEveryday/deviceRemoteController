@@ -8,6 +8,7 @@ import android.os.IBinder;
 import com.remote.controller.constant.Constant;
 import com.remote.controller.network.ControllerManager;
 import com.remote.controller.network.EventGenerator;
+import com.remote.controller.utils.SPUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -63,22 +64,28 @@ public class SyncService extends Service {
 //                e.printStackTrace();
 //            }
 
-            //示教界面读数据， 返回四个32位数据
-            ControllerManager.getInstance(context).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DATA_ON_SETTING, null));
+            boolean isOnSettingView = (boolean) SPUtils.get(getApplicationContext(), Constant.SPKEY.SYNC_SETTING_CMD, false);
+            if (isOnSettingView) {
+                //示教界面读数据， 返回四个32位数据
+                ControllerManager.getInstance(context).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DATA_ON_SETTING, null));
+            }
 
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-
-
+            boolean isOnPlayView = (boolean) SPUtils.get(getApplicationContext(), Constant.SPKEY.SYNC_PLAY_CMD, false);
+            if (isOnPlayView) {
                 //运行界面读数据， 返回四个32位数据
-            ControllerManager.getInstance(context).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DATA_ON_PLAY, null));
+                ControllerManager.getInstance(context).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_DATA_ON_PLAY, null));
+                //运行界面读运行次数
+                ControllerManager.getInstance(context).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_PLAY_TIMES, null));
+            }
 
 
-            //运行界面读运行次数
-            ControllerManager.getInstance(context).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_PLAY_TIMES, null));
+            int IOkey = (int) SPUtils.get(getApplicationContext(), Constant.SPKEY.SYNC_IO_CMD, 0);
+            if (IOkey == 1) {
+                ControllerManager.getInstance(getApplicationContext()).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_INPUT, null));
+            } else if (IOkey == 2) {
+                ControllerManager.getInstance(getApplicationContext()).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_OUTPUT, null));
+
+            }
 
         }
     }

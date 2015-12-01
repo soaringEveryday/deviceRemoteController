@@ -107,7 +107,9 @@ public class Constant {
         public static final String FILE_NAME = "key_file_name";
         public static final String FILE_DESC = "key_file_desc";
         public static final String FILE_PATH = "key_file_path";
-
+        public static final String SYNC_IO_CMD = "key_sync_io_cmd";// int值, 0：当前没有在IO插入指令界面，后台不需要获取数据；1：获取输入数据；2：获取输出数据
+        public static final String SYNC_SETTING_CMD = "key_sync_setting_cmd";// boolean 值，true表示在当前界面，需要获取服务器值，false表示离开了当前界面，不需要获取服务器值
+        public static final String SYNC_PLAY_CMD = "key_sync_setting_cmd";// boolean 值，true表示在当前界面，需要获取服务器值，false表示离开了当前界面，不需要获取服务器值
     }
 
     public static class EventCode {
@@ -156,7 +158,7 @@ public class Constant {
     /**
      * 同步时间频率 （ms）
      */
-    public static int SYNC_SEQ_TIME = 5000;
+    public static int SYNC_SEQ_TIME = 500;
 
     public static class ScanText {
         public static final String REQ = "Searching C4_Robot...";

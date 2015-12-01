@@ -47,6 +47,7 @@
     <string name="connect_hint">当前已经连接：</string>
     <string name="select_hint">当前选择：</string>
     <string name="not_select_hint">请先点选主机</string>
+    <string name="no_host_hint">尚未扫描到设备</string>
 
     <!-- 文件 -->
     <string name="file_new">新建</string>

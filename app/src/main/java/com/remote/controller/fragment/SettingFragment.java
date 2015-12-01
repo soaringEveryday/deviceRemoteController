@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -24,6 +25,8 @@ import com.remote.controller.adapter.ViewHolder;
 import com.remote.controller.bean.FileLineItem;
 import com.remote.controller.constant.Constant;
 import com.remote.controller.message.MessageEvent;
+import com.remote.controller.network.ControllerManager;
+import com.remote.controller.network.EventGenerator;
 import com.remote.controller.utils.L;
 
 import java.util.ArrayList;
@@ -122,7 +125,187 @@ public class SettingFragment extends BaseFragment {
         ids.add(R.id.btn_delete);
         setViewClickListener(ids, view);
         initListView();
+        bindBtnClickAction();
+        updateRunningStatus(Constant.RunningStatus.NO_CONNECTION);
         return view;
+    }
+
+    private int getSelectId() {
+        //获取单选择数据
+        int selectDistance = 1;
+        int id = distanceZone.getCheckedRadioButtonId();
+        switch (id) {
+            case R.id.dis_1:
+                selectDistance = 1;
+                break;
+            case R.id.dis_2:
+                selectDistance = 2;
+                break;
+            case R.id.dis_3:
+                selectDistance = 3;
+                break;
+            case R.id.dis_4:
+                selectDistance = 4;
+                break;
+        }
+
+        L.d("单选：" + selectDistance);
+        return selectDistance;
+    }
+
+    private void bindBtnClickAction() {
+        //设置示教界面按钮1-8的按下抬起事件
+        motionBtn1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int action = motionEvent.getAction();
+                if (action == MotionEvent.ACTION_DOWN) {
+                    byte[] data = new byte[2];
+                    data[0] = int2OneByte(1);
+                    data[1] = int2OneByte(getSelectId());
+                    ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_DOWN_SETTING_BUTTON, data));
+
+                } else if (action == MotionEvent.ACTION_UP) {
+                    byte[] data = new byte[1];
+                    data[0] = int2OneByte(1);
+                    ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_UP_SETTING_BUTTON, data));
+                }
+                return true;
+            }
+        });
+
+        motionBtn2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int action = motionEvent.getAction();
+                if (action == MotionEvent.ACTION_DOWN) {
+                    byte[] data = new byte[2];
+                    data[0] = int2OneByte(2);
+                    data[1] = int2OneByte(getSelectId());
+                    ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_DOWN_SETTING_BUTTON, data));
+
+                } else if (action == MotionEvent.ACTION_UP) {
+                    byte[] data = new byte[1];
+                    data[0] = int2OneByte(2);
+                    ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_UP_SETTING_BUTTON, data));
+                }
+                return true;
+            }
+        });
+
+        motionBtn3.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int action = motionEvent.getAction();
+                if (action == MotionEvent.ACTION_DOWN) {
+                    byte[] data = new byte[2];
+                    data[0] = int2OneByte(3);
+                    data[1] = int2OneByte(getSelectId());
+                    ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_DOWN_SETTING_BUTTON, data));
+
+                } else if (action == MotionEvent.ACTION_UP) {
+                    byte[] data = new byte[1];
+                    data[0] = int2OneByte(3);
+                    ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_UP_SETTING_BUTTON, data));
+                }
+                return true;
+            }
+        });
+
+        motionBtn4.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int action = motionEvent.getAction();
+                if (action == MotionEvent.ACTION_DOWN) {
+                    byte[] data = new byte[2];
+                    data[0] = int2OneByte(4);
+                    data[1] = int2OneByte(getSelectId());
+                    ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_DOWN_SETTING_BUTTON, data));
+
+                } else if (action == MotionEvent.ACTION_UP) {
+                    byte[] data = new byte[1];
+                    data[0] = int2OneByte(4);
+                    ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_UP_SETTING_BUTTON, data));
+                }
+                return true;
+            }
+        });
+
+        motionBtn5.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int action = motionEvent.getAction();
+                if (action == MotionEvent.ACTION_DOWN) {
+                    byte[] data = new byte[2];
+                    data[0] = int2OneByte(5);
+                    data[1] = int2OneByte(getSelectId());
+                    ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_DOWN_SETTING_BUTTON, data));
+
+                } else if (action == MotionEvent.ACTION_UP) {
+                    byte[] data = new byte[1];
+                    data[0] = int2OneByte(5);
+                    ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_UP_SETTING_BUTTON, data));
+                }
+                return true;
+            }
+        });
+
+        motionBtn6.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int action = motionEvent.getAction();
+                if (action == MotionEvent.ACTION_DOWN) {
+                    byte[] data = new byte[2];
+                    data[0] = int2OneByte(6);
+                    data[1] = int2OneByte(getSelectId());
+                    ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_DOWN_SETTING_BUTTON, data));
+
+                } else if (action == MotionEvent.ACTION_UP) {
+                    byte[] data = new byte[1];
+                    data[0] = int2OneByte(6);
+                    ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_UP_SETTING_BUTTON, data));
+                }
+                return true;
+            }
+        });
+
+        motionBtn7.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int action = motionEvent.getAction();
+                if (action == MotionEvent.ACTION_DOWN) {
+                    byte[] data = new byte[2];
+                    data[0] = int2OneByte(7);
+                    data[1] = int2OneByte(getSelectId());
+                    ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_DOWN_SETTING_BUTTON, data));
+
+                } else if (action == MotionEvent.ACTION_UP) {
+                    byte[] data = new byte[1];
+                    data[0] = int2OneByte(7);
+                    ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_UP_SETTING_BUTTON, data));
+                }
+                return true;
+            }
+        });
+
+        motionBtn8.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int action = motionEvent.getAction();
+                if (action == MotionEvent.ACTION_DOWN) {
+                    byte[] data = new byte[2];
+                    data[0] = int2OneByte(8);
+                    data[1] = int2OneByte(getSelectId());
+                    ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_DOWN_SETTING_BUTTON, data));
+
+                } else if (action == MotionEvent.ACTION_UP) {
+                    byte[] data = new byte[1];
+                    data[0] = int2OneByte(8);
+                    ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_UP_SETTING_BUTTON, data));
+                }
+                return true;
+            }
+        });
     }
 
     private void initListView() {
@@ -152,6 +335,10 @@ public class SettingFragment extends BaseFragment {
 //                paramZ.setText("null");
 //                paramA.setText("null");
                 updateRunningStatus(Constant.RunningStatus.NO_CONNECTION);
+                break;
+
+            case MessageEvent.MSG_SOCKET_CONNECTED:
+                updateRunningStatus(Constant.RunningStatus.IDLE);
                 break;
 
             case MessageEvent.MSG_SOCKET_RECEIVE_DATA:
@@ -237,5 +424,9 @@ public class SettingFragment extends BaseFragment {
         int targets = (res[0] & 0xff) | ((res[1] << 8) & 0xff00) // | 表示安位或
                 | ((res[2] << 24) >>> 8) | (res[3] << 24);
         return targets;
+    }
+
+    private byte int2OneByte(int res) {
+        return (byte) (res & 0xff);
     }
 }

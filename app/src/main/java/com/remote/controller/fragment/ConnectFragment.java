@@ -202,7 +202,7 @@ public class ConnectFragment extends BaseFragment {
 
     private void scanDevice() {
 
-        ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_PLAY_TIMES, null));
+        ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_INPUT, null));
 
 
 //        mCurrentPos = -1;
@@ -244,7 +244,7 @@ public class ConnectFragment extends BaseFragment {
     //TODO test code
     private void connectDevice() {
 
-        ControllerManager.getInstance(mContext).connectServer("172.19.6.122", 3000);
+        ControllerManager.getInstance(mContext).connectServer("172.19.6.175", 3000);
     }
 
 

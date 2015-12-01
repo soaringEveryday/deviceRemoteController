@@ -106,6 +106,40 @@ public class EventGenerator {
         return Arrays.copyOf(data, 5 + parameterLength);
     }
 
+    public byte[] generateDataByBytes(int funcCode, byte[] parameterBytes) {
+        reset();
+        data[0] = (byte) (Constant.Type.EVENT_REQ & 0xff);//类型 3
+
+        int parameterLength = 0;
+        parameterLength = parameterBytes.length;
+        L.d("--> parameterLength : " + parameterLength);
+
+        int dataLength = 1 + parameterLength + 1; //1位功能码长度 + 参数长度 + 检验和长度
+
+        data[1] = (byte) (dataLength & 0xff);
+        data[2] = (byte) ((dataLength >> 8) & 0xff);//长度
+
+        //功能码
+        data[3] = (byte) (funcCode & 0xff);
+
+        //参数
+        if (parameterLength > 0) {
+            //TODO 参数字节掉转， 低位在前
+            for (int i = 0; i < parameterLength; i++) {
+                data[i + 4] = parameterBytes[i];
+            }
+        }
+
+        //检验和
+        byte sum = 0;
+        for (int i = 0 ; i < 4 + parameterLength ; i++) {
+            sum += data[i];
+        }
+        data[4 + parameterLength] = sum;
+
+        return Arrays.copyOf(data, 5 + parameterLength);
+    }
+
     public byte[] generateFile(String fileData) {
         resetFile();
         fileBytes[0] = (byte) (Constant.Type.FILE_REQ & 0xff);//类型 2
@@ -199,5 +233,9 @@ public class EventGenerator {
         for (int i = 0 ; i<lengh ; i++) {
             fileBytes[0] = 0x0;
         }
+    }
+
+    private byte int2OneByte(int res) {
+        return (byte) (res & 0xff);
     }
 }

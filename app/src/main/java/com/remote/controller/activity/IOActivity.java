@@ -15,6 +15,8 @@ import com.remote.controller.R;
 import com.remote.controller.bean.FileLineItem;
 import com.remote.controller.constant.Constant;
 import com.remote.controller.message.MessageEvent;
+import com.remote.controller.network.ControllerManager;
+import com.remote.controller.network.EventGenerator;
 
 import java.util.ArrayList;
 
@@ -84,9 +86,20 @@ public class IOActivity extends BaseActivity {
             actionBar.setTitle(R.string.setting_sub_io);
         }
 
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this, 1);
+        }
+
         initViews();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
 
     private void bindViewClicks() {
         //bind view click
@@ -243,10 +256,67 @@ public class IOActivity extends BaseActivity {
             }
         });
 
-
-
         bindViewClicks();
+    }
 
+    public void onEventMainThread(final Message msg) {
+        int msgEvent = msg.what;
+        switch (msgEvent) {
+            case MessageEvent.MSG_SOCKET_RECEIVE_DATA:
+                //收到服务器回应
+                int funcCode = msg.arg1;
+                byte[] data = (byte[]) msg.obj;
+                if (funcCode == Constant.EventCode.READ_INPUT) {
+                    refreshCurrentInputState(data);
+                } else if (funcCode == Constant.EventCode.READ_OUTPUT) {
+                    refreshCurrentInputState(data);
+                }
+                break;
+        }
+    }
+
+    private void refreshCurrentInputState(byte[] data) {
+        byte[] status = new byte[32];
+        for (int i = 0 ; i < 8 ; i++) {
+            //取出data[0] 的 0 ~ 7位， 即0~ 7bit
+            status[i] = (byte)((data[0] >> i) & 0x1);
+        }
+
+        for (int i = 0 ; i < 8 ; i++) {
+            //取出data[1] 的 0 ~ 7位， 即8~ 15bit
+            status[8 + i] = (byte)((data[1] >> i) & 0x1);
+        }
+
+        for (int i = 0 ; i < 8 ; i++) {
+            //取出data[2] 的 0 ~ 7位， 即16~ 23bit
+            status[16 + i] = (byte)((data[2] >> i) & 0x1);
+        }
+
+        for (int i = 0 ; i < 8 ; i++) {
+            //取出data[3] 的 0 ~ 7位， 即24~ 31bit
+            status[23 + i] = (byte)((data[3] >> i) & 0x1);
+        }
+
+        int pos1 = port1.getSelectedItemPosition();
+        int pos2 = port2.getSelectedItemPosition();
+        int pos3 = port3.getSelectedItemPosition();
+        int pos4 = port4.getSelectedItemPosition();
+
+        if (pos1 != 0) {
+            pcStatus1.setSelection((status[pos1 - 1]) == 1 ? 1 : 2);
+        }
+
+        if (pos2 != 0) {
+            pcStatus2.setSelection((status[pos2 - 1]) == 1 ? 1 : 2);
+        }
+
+        if (pos3 != 0) {
+            pcStatus3.setSelection((status[pos3 - 1]) == 1 ? 1 : 2);
+        }
+
+        if (pos4 != 0) {
+            pcStatus4.setSelection((status[pos4 - 1]) == 1 ? 1 : 2);
+        }
     }
 
     @Override
@@ -254,8 +324,10 @@ public class IOActivity extends BaseActivity {
 
         switch (view.getId()) {
             case R.id.btn_ok:
-                insertIOCmd();
-                finish();
+//                insertIOCmd();
+//                finish();
+                ControllerManager.getInstance(this).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_INPUT, null));
+
                 break;
 
             case R.id.btn_cancel:

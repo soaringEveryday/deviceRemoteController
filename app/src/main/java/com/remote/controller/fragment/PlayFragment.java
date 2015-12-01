@@ -105,29 +105,12 @@ public class PlayFragment extends BaseFragment {
         ids.add(R.id.btn_reset);
         setViewClickListener(ids, view);
         initListView();
+        updateRunningStatus(Constant.RunningStatus.NO_CONNECTION);
         return view;
     }
 
     private void initListView() {
         list.setAdapter(mAdaper);
-        //TODO open
-//        updateRunningStatus(Constant.RunningStatus.NO_CONNECTION);
-    }
-
-    //根据runningStatus设置四个btn的有效性
-    private void refreshActionBtns() {
-
-    }
-
-
-    //TODO get running status from socket engine
-    private void getRunningStatus() {
-
-    }
-
-    //TODO 从PC读取数据返回显示
-    private void refreshDataPane() {
-
     }
 
     public void onEventMainThread(final Message msg) {
@@ -154,7 +137,6 @@ public class PlayFragment extends BaseFragment {
 
             case MessageEvent.MSG_SOCKET_CONNECTED:
                 updateRunningStatus(Constant.RunningStatus.IDLE);
-
                 break;
 
             case MessageEvent.MSG_SOCKET_DISCONNECTED:

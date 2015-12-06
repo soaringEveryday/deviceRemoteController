@@ -57,7 +57,7 @@ public class FileFragment extends BaseFragment {
     TextView fileName;
 
     private ArrayList<FileLineItem> mDatas;
-    private BaseAdapter mAdaper;
+    private BaseAdapter mAdapter;
     private static final int REQUEST_CHOOSER = 1234;
     private boolean isOpenOld = false;
     private String currentFileName = "";
@@ -68,9 +68,9 @@ public class FileFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDatas = new ArrayList<>();
-        mAdaper = new CommonAdapter<FileLineItem>(mContext, mDatas, R.layout.file_list_item) {
+        mAdapter = new CommonAdapter<FileLineItem>(mContext, mDatas, R.layout.file_list_item) {
             @Override
-            public void convert(ViewHolder helper, FileLineItem item, int position) {
+            public void convert(ViewHolder helper, FileLineItem item, int position, View convertView) {
                 helper.setText(R.id.no, String.valueOf(position));
                 helper.setText(R.id.command, item.getCommand());
                 helper.setText(R.id.parameter, item.getParameter());
@@ -106,7 +106,7 @@ public class FileFragment extends BaseFragment {
     }
 
     private void initListView() {
-        listView.setAdapter(mAdaper);
+        listView.setAdapter(mAdapter);
     }
 
     @Override
@@ -159,7 +159,7 @@ public class FileFragment extends BaseFragment {
         } else {
             mDatas.clear();
         }
-        mAdaper.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
 
         currentFileName = "";
         currentFileDesc = "";
@@ -226,7 +226,13 @@ public class FileFragment extends BaseFragment {
             case MessageEvent.MSG_COMMAND_UPDATE:
                 FileLineItem item = (FileLineItem) msg.obj;
                 mDatas.add(item);
-                mAdaper.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
+                break;
+
+            case MessageEvent.MSG_COMMAND_DELETE:
+                int pos = msg.arg1;
+                mDatas.remove(pos);
+                mAdapter.notifyDataSetChanged();
                 break;
         }
     }

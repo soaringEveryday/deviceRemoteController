@@ -6,7 +6,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -67,7 +67,7 @@ public class PlayFragment extends BaseFragment {
 
     private int runningStatus = Constant.RunningStatus.NO_CONNECTION;
     private ArrayList<FileLineItem> mDatas;
-    private BaseAdapter mAdaper;
+    private CommonAdapter mAdapter;
     private boolean isNewFile = true;
 
     public PlayFragment() {
@@ -78,10 +78,18 @@ public class PlayFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDatas = new ArrayList<>();
-        mAdaper = new CommonAdapter<FileLineItem>(mContext, mDatas, R.layout.file_list_item) {
+        mAdapter = new CommonAdapter<FileLineItem>(mContext, mDatas, R.layout.file_list_item) {
             @Override
-            public void convert(ViewHolder helper, FileLineItem item, int position) {
-                helper.setText(R.id.no, String.valueOf(position));
+            public void convert(ViewHolder helper, FileLineItem item, int position, View convertView) {
+                if (convertView != null) {
+                    if (mCurrentItemPos == position) {
+                        convertView.setBackgroundResource(R.drawable.shape_solid_gray);
+                    } else {
+                        convertView.setBackgroundResource(R.drawable.shape_solid_white);
+
+                    }
+                }
+                helper.setText(R.id.no, String.valueOf(position + 1));
                 helper.setText(R.id.command, item.getCommand());
                 helper.setText(R.id.parameter, item.getParameter());
                 helper.setText(R.id.memo, item.getMemo());
@@ -110,7 +118,14 @@ public class PlayFragment extends BaseFragment {
     }
 
     private void initListView() {
-        list.setAdapter(mAdaper);
+        list.setAdapter(mAdapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                mAdapter.setCurrentItemPos(i);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     public void onEventMainThread(final Message msg) {
@@ -121,13 +136,19 @@ public class PlayFragment extends BaseFragment {
             case MessageEvent.MSG_COMMAND_UPDATE:
                 FileLineItem item = (FileLineItem) msg.obj;
                 mDatas.add(item);
-                mAdaper.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
                 isNewFile = true;
+                break;
+
+            case MessageEvent.MSG_COMMAND_DELETE:
+                int pos = msg.arg1;
+                mDatas.remove(pos);
+                mAdapter.notifyDataSetChanged();
                 break;
 
             case MessageEvent.MSG_COMMAND_CLEAR:
                 mDatas.clear();
-                mAdaper.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
                 isNewFile = true;
                 break;
 

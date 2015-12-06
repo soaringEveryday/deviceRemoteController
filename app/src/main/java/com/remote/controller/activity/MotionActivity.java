@@ -200,7 +200,7 @@ public class MotionActivity extends BaseActivity {
         Message msg = Message.obtain();
         msg.what = MessageEvent.MSG_COMMAND_UPDATE;
         command.setNo(1);
-        command.setMemo("none");
+        command.setMemo("");
         msg.obj = command;
         EventBus.getDefault().post(msg);
 

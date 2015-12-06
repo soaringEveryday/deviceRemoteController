@@ -22,16 +22,16 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-//        root.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                startActivity(new Intent(MainActivity.this, RootActivity.class));
-//                finish();
-//            }
-//        }, 3000);
+        root.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(MainActivity.this, RootActivity.class));
+                finish();
+            }
+        }, 3000);
 
-        startActivity(new Intent(MainActivity.this, RootActivity.class));
-        finish();
+//        startActivity(new Intent(MainActivity.this, RootActivity.class));
+//        finish();
 
 
     }

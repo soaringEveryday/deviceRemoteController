@@ -20,5 +20,7 @@ public class MessageEvent {
     public static final int MSG_SOCKET_DISCONNECTED =  106;              //断开成功
     public static final int MSG_SCAN_PAIR = 107;                    //扫描匹配成功
     public static final int MSG_FILE_SAVED =  108;                  //保存文件成功
+    public static final int MSG_COMMAND_DELETE = 109;               //指令数据集删除一条
+
 
 }

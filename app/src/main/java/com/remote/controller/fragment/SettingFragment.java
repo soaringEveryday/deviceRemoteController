@@ -8,9 +8,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -35,6 +34,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 /**
  * 示教主界面
@@ -51,21 +51,21 @@ public class SettingFragment extends BaseFragment {
     @Bind(R.id.btn_delete)
     Button btnDelete;
     @Bind(R.id.motion_btn_1)
-    ImageButton motionBtn1;
+    Button motionBtn1;
     @Bind(R.id.motion_btn_2)
-    ImageButton motionBtn2;
+    Button motionBtn2;
     @Bind(R.id.motion_btn_3)
-    ImageButton motionBtn3;
+    Button motionBtn3;
     @Bind(R.id.motion_btn_4)
-    ImageButton motionBtn4;
+    Button motionBtn4;
     @Bind(R.id.motion_btn_5)
-    ImageButton motionBtn5;
+    Button motionBtn5;
     @Bind(R.id.motion_btn_6)
-    ImageButton motionBtn6;
+    Button motionBtn6;
     @Bind(R.id.motion_btn_7)
-    ImageButton motionBtn7;
+    Button motionBtn7;
     @Bind(R.id.motion_btn_8)
-    ImageButton motionBtn8;
+    Button motionBtn8;
     @Bind(R.id.dis_1)
     RadioButton dis1;
     @Bind(R.id.dis_2)
@@ -88,7 +88,7 @@ public class SettingFragment extends BaseFragment {
     ListView list;
 
     private ArrayList<FileLineItem> mDatas;
-    private BaseAdapter mAdaper;
+    private CommonAdapter mAdapter;
     private int runningStatus = Constant.RunningStatus.NO_CONNECTION;
     public SettingFragment() {
         // Required empty public constructor
@@ -98,10 +98,19 @@ public class SettingFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDatas = new ArrayList<>();
-        mAdaper = new CommonAdapter<FileLineItem>(mContext, mDatas, R.layout.file_list_item) {
+        mAdapter = new CommonAdapter<FileLineItem>(mContext, mDatas, R.layout.file_list_item) {
             @Override
-            public void convert(ViewHolder helper, FileLineItem item, int position) {
-                helper.setText(R.id.no, String.valueOf(position));
+            public void convert(ViewHolder helper, FileLineItem item, int position, View convertView) {
+                if (convertView != null) {
+                    if (mCurrentItemPos == position) {
+                        convertView.setBackgroundResource(R.drawable.shape_solid_gray);
+                    } else {
+                        convertView.setBackgroundResource(R.drawable.shape_solid_white);
+
+                    }
+                }
+
+                helper.setText(R.id.no, String.valueOf(position + 1));
                 helper.setText(R.id.command, item.getCommand());
                 helper.setText(R.id.parameter, item.getParameter());
                 helper.setText(R.id.memo, item.getMemo());
@@ -309,7 +318,14 @@ public class SettingFragment extends BaseFragment {
     }
 
     private void initListView() {
-        list.setAdapter(mAdaper);
+        list.setAdapter(mAdapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                mAdapter.setCurrentItemPos(i);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     public void onEventMainThread(final Message msg) {
@@ -320,12 +336,18 @@ public class SettingFragment extends BaseFragment {
             case MessageEvent.MSG_COMMAND_UPDATE:
                 FileLineItem item = (FileLineItem) msg.obj;
                 mDatas.add(item);
-                mAdaper.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
+                break;
+
+            case MessageEvent.MSG_COMMAND_DELETE:
+                int pos = msg.arg1;
+                mDatas.remove(pos);
+                mAdapter.notifyDataSetChanged();
                 break;
 
             case MessageEvent.MSG_COMMAND_CLEAR:
                 mDatas.clear();
-                mAdaper.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
                 break;
 
             case MessageEvent.MSG_SOCKET_DISCONNECTED:
@@ -403,7 +425,15 @@ public class SettingFragment extends BaseFragment {
                 startActivity(new Intent(mContext, DelayActivity.class));
                 break;
             case R.id.btn_delete:
-
+                int currentPos = mAdapter.getCurrentItemPos();
+                if (currentPos == -1) {
+                    return;
+                }
+                Message msg = Message.obtain();
+                msg.what = MessageEvent.MSG_COMMAND_DELETE;
+                msg.arg1 = mAdapter.getCurrentItemPos();
+                EventBus.getDefault().postSticky(msg);
+                mAdapter.setCurrentItemPos(-1);
                 break;
         }
     }

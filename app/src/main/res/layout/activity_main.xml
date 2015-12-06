@@ -4,23 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:scaleType="fitCenter"-->
-        <!--android:layout_margin="30dp"-->
-        <!--android:src="@drawable/logo_main"/>-->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:scaleType="fitCenter"
+        android:layout_margin="30dp"
+        android:src="@drawable/logo_main"/>
 
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:textColor="@color/dialog_title"-->
-        <!--android:textSize="20sp"-->
-        <!--android:layout_margin="15dp"-->
-        <!--android:text="@string/company_name"/>-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/dialog_title"
+        android:textSize="20sp"
+        android:layout_margin="15dp"
+        android:text="@string/company_name"/>
 
 </RelativeLayout>
 

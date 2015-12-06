@@ -74,47 +74,51 @@
         android:layout_width="match_parent"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_height="150dp">
+        android:layout_height="100dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             >
-            <ImageButton
+            <Button
                 android:id="@+id/motion_btn_1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/motion_1"
-                android:scaleType="fitXY"
+                android:text="X+"
+                android:textSize="20sp"
+                android:textColor="@color/black"
                 android:padding="8dp"
                 />
-            <ImageButton
+            <Button
                 android:id="@+id/motion_btn_2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/motion_2"
-                android:scaleType="fitXY"
+                android:text="Y+"
+                android:textSize="20sp"
+                android:textColor="@color/black"
                 android:padding="8dp"
                 />
-            <ImageButton
+            <Button
                 android:id="@+id/motion_btn_3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/motion_3"
-                android:scaleType="fitXY"
+                android:text="Z+"
+                android:textSize="20sp"
+                android:textColor="@color/black"
                 android:padding="8dp"
                 />
-            <ImageButton
+            <Button
                 android:id="@+id/motion_btn_4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/motion_4"
-                android:scaleType="fitXY"
+                android:text="A+"
+                android:textSize="20sp"
+                android:textColor="@color/black"
                 android:padding="8dp"
                 />
         </LinearLayout>
@@ -123,40 +127,44 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             >
-            <ImageButton
+            <Button
                 android:id="@+id/motion_btn_5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/motion_5"
-                android:scaleType="fitXY"
+                android:text="X-"
+                android:textSize="20sp"
+                android:textColor="@color/black"
                 android:padding="8dp"
                 />
-            <ImageButton
+            <Button
                 android:id="@+id/motion_btn_6"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/motion_6"
-                android:scaleType="fitXY"
+                android:text="Y-"
+                android:textSize="20sp"
+                android:textColor="@color/black"
                 android:padding="8dp"
                 />
-            <ImageButton
+            <Button
                 android:id="@+id/motion_btn_7"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/motion_7"
-                android:scaleType="fitXY"
+                android:text="Z-"
+                android:textSize="20sp"
+                android:textColor="@color/black"
                 android:padding="8dp"
                 />
-            <ImageButton
+            <Button
                 android:id="@+id/motion_btn_8"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/motion_8"
-                android:scaleType="fitXY"
+                android:text="A-"
+                android:textSize="20sp"
+                android:textColor="@color/black"
                 android:padding="8dp"
                 />
         </LinearLayout>

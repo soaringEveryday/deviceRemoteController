@@ -20,6 +20,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
     protected Context mContext;
     protected List<T> mDatas;
     protected final int mItemLayoutId;
+    protected int mCurrentItemPos = -1;
 
     /**
      * 初始化通用Adapter
@@ -38,6 +39,14 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
     public void refresh(List<T> mDatas) {
         this.mDatas = mDatas;
         notifyDataSetChanged();
+    }
+
+    public void setCurrentItemPos(int pos) {
+        this.mCurrentItemPos = pos;
+    }
+
+    public int getCurrentItemPos() {
+        return mCurrentItemPos;
     }
 
     @Override
@@ -60,7 +69,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
         //从ViewHolder中获取控件view，若为空则创建
         final ViewHolder viewHolder = getViewHolder(position, convertView, parent);
 
-        convert(viewHolder, getItem(position), position);
+        convert(viewHolder, getItem(position), position, convertView);
 
         return viewHolder.getConvertView();
 
@@ -73,7 +82,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
      * @param helper holder缓存对象
      * @param item   Bean对象
      */
-    public abstract void convert(ViewHolder helper, T item, int position);
+    public abstract void convert(ViewHolder helper, T item, int position, View convertView);
 
 
     /**

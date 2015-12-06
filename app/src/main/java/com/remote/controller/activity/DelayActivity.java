@@ -92,7 +92,7 @@ public class DelayActivity extends BaseActivity {
         command.setCommand(Constant.Command.DELAY);
         command.setParameter(String.valueOf(time) + "," + String.valueOf(spinnerUnit.getSelectedItemPosition()));
         command.setNo(1);
-        command.setMemo("none");
+        command.setMemo("");
 
         Message msg = Message.obtain();
         msg.what = MessageEvent.MSG_COMMAND_UPDATE;

@@ -15,8 +15,7 @@ import com.remote.controller.R;
 import com.remote.controller.bean.FileLineItem;
 import com.remote.controller.constant.Constant;
 import com.remote.controller.message.MessageEvent;
-import com.remote.controller.network.ControllerManager;
-import com.remote.controller.network.EventGenerator;
+import com.remote.controller.utils.L;
 import com.remote.controller.utils.SPUtils;
 
 import java.util.ArrayList;
@@ -165,23 +164,12 @@ public class IOActivity extends BaseActivity {
         pcStatus3.setAdapter(statusAdapter);
         pcStatus4.setAdapter(statusAdapter);
 
+        pcStatus1.setEnabled(false);
+        pcStatus2.setEnabled(false);
+        pcStatus3.setEnabled(false);
+        pcStatus4.setEnabled(false);
 
-        port1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 0) {
-                    status1.setSelection(0);
-                    pcStatus1.setSelection(0);
-                    status1.setEnabled(false);
-                    pcStatus1.setEnabled(false);
-                }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
         port1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -193,7 +181,7 @@ public class IOActivity extends BaseActivity {
                     pcStatus1.setEnabled(false);
                 } else {
                     status1.setEnabled(true);
-                    pcStatus1.setEnabled(true);
+//                    pcStatus1.setEnabled(true);
                 }
             }
 
@@ -213,7 +201,7 @@ public class IOActivity extends BaseActivity {
                     pcStatus2.setEnabled(false);
                 } else {
                     status2.setEnabled(true);
-                    pcStatus2.setEnabled(true);
+//                    pcStatus2.setEnabled(true);
                 }
             }
 
@@ -233,7 +221,7 @@ public class IOActivity extends BaseActivity {
                     pcStatus3.setEnabled(false);
                 } else {
                     status3.setEnabled(true);
-                    pcStatus3.setEnabled(true);
+//                    pcStatus3.setEnabled(true);
                 }
             }
 
@@ -253,7 +241,7 @@ public class IOActivity extends BaseActivity {
                     pcStatus4.setEnabled(false);
                 } else {
                     status4.setEnabled(true);
-                    pcStatus4.setEnabled(true);
+//                    pcStatus4.setEnabled(true);
                 }
             }
 
@@ -331,10 +319,8 @@ public class IOActivity extends BaseActivity {
 
         switch (view.getId()) {
             case R.id.btn_ok:
-//                insertIOCmd();
-//                finish();
-                ControllerManager.getInstance(this).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.READ_INPUT, null));
-
+                insertIOCmd();
+                finish();
                 break;
 
             case R.id.btn_cancel:
@@ -394,12 +380,17 @@ public class IOActivity extends BaseActivity {
                 param = param + String.valueOf(pos4) + "," + String.valueOf(s4 - 1) + ",";
             }
         }
+        if (param.isEmpty()) {
+            L.e("param is empty");
+            return;
+        }
         //去掉末尾的","
+        L.d("param(before) :" + param);
         param = param.substring(0, param.length() - 1);
-
+        L.d("param(after) :" + param);
         command.setParameter(param);
         command.setNo(1);
-        command.setMemo("none");
+        command.setMemo("");
 
         Message msg = Message.obtain();
         msg.what = MessageEvent.MSG_COMMAND_UPDATE;

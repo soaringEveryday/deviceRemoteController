@@ -177,7 +177,7 @@ public class FileFragment extends BaseFragment {
 
 
     private void saveAsFile() {
-        insertCommand();
+//        insertCommand();
     }
 
     private void showCreateDialog() {

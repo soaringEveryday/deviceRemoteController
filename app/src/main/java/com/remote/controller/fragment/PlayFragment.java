@@ -194,19 +194,6 @@ public class PlayFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_launch:
-                String str = etTimesRunTotal.getText().toString();
-                if (str.isEmpty()) {
-                    showAlertDialog("请输入运行次数");
-                    return;
-                }
-                if (isNewFile) {
-                    showAlertDialog("请先到文件界面保存文件");
-                    return;
-                }
-
-                int runTimes = Integer.parseInt(str);
-                L.d("请求运行" + runTimes + "次");
-                ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.BTN_PLAY_LAUNCH, runTimes));
 
                 //发送文件数据包
                 String path = (String) SPUtils.get(mContext, Constant.SPKEY.FILE_PATH, "");
@@ -226,6 +213,9 @@ public class PlayFragment extends BaseFragment {
                     L.i("file data length : " + data.length);
                     ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateFile(data));
 
+                    L.i("sending launch command");
+                    sendLaunchCommand();
+
                 } else {
                     L.e("create temp file fail");
                 }
@@ -243,6 +233,22 @@ public class PlayFragment extends BaseFragment {
 
                 break;
         }
+    }
+
+    private void sendLaunchCommand() {
+        String str = etTimesRunTotal.getText().toString();
+        if (str.isEmpty()) {
+            showAlertDialog("请输入运行次数");
+            return;
+        }
+        if (isNewFile) {
+            showAlertDialog("请先到文件界面保存文件");
+            return;
+        }
+
+        int runTimes = Integer.parseInt(str);
+        L.d("请求运行" + runTimes + "次");
+        ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.BTN_PLAY_LAUNCH, runTimes));
     }
 
     @Override

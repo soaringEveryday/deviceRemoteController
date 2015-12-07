@@ -42,8 +42,6 @@ public class CSVUtils {
             return;
         }
 
-        L.d("1");
-
         File extDir = Environment.getExternalStorageDirectory();
         File fullFilename;
         if (version == Constant.FileFormat.VERION_CSV) {
@@ -52,21 +50,9 @@ public class CSVUtils {
             fullFilename = new File(extDir, fileName);
         }
 
-        L.d("2");
-
         if (fullFilename.exists()) {
             fullFilename.delete();
         }
-
-        L.d("3");
-
-
-//        try {
-//            fullFilename.createNewFile();
-//            fullFilename.setWritable(Boolean.TRUE);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(fullFilename), Charset.forName("GBK"));
 
@@ -76,13 +62,8 @@ public class CSVUtils {
         entries = new String[]{"版本", String.valueOf(version)};
         writer.writeNext(entries);//写入版本信息，默认1为csv格式
 
-        L.d("4");
-
-
         entries = new String[]{"文件描述", description};
         writer.writeNext(entries);//写入文件描述
-
-        L.d("5");
 
         entries = new String[columns.size()];
         for (int i = 0; i < columns.size(); i++) {
@@ -90,22 +71,66 @@ public class CSVUtils {
         }
         writer.writeNext(entries);//写入栏信息
 
-        L.d("6");
 
         String[] temp = new String[columns.size()];
+        int index = 1;
         for (FileLineItem item : lines) {
-            temp[0] = String.valueOf(item.getNo());
+            temp[0] = String.valueOf(index++);
             temp[1] = item.getCommand();
             temp[2] = item.getParameter();
             temp[3] = item.getMemo();
             writer.writeNext(temp);//写入所有行的指令
         }
-        L.d("7");
 
 
         out.close();
         writer.close();
 
+    }
+
+    public void save(String path, int version, String description, ArrayList<String> columns, ArrayList<FileLineItem> lines) throws IOException {
+
+        if (path == null || path.isEmpty()) {
+            return;
+        }
+
+        L.i("save path : " + path);
+
+        File fullFilename = new File(path);
+
+        if (fullFilename.exists()) {
+            fullFilename.delete();
+        }
+
+        OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(fullFilename), Charset.forName("GBK"));
+
+//        CSVWriter writer = new CSVWriter(new FileWriter(fullFilename), ',');
+        CSVWriter writer = new CSVWriter(out, ',');
+        String[] entries;
+        entries = new String[]{"版本", String.valueOf(version)};
+        writer.writeNext(entries);//写入版本信息，默认1为csv格式
+
+        entries = new String[]{"文件描述", description};
+        writer.writeNext(entries);//写入文件描述
+
+        entries = new String[columns.size()];
+        for (int i = 0; i < columns.size(); i++) {
+            entries[i] = columns.get(i);
+        }
+        writer.writeNext(entries);//写入栏信息
+
+        int index = 1;
+        String[] temp = new String[columns.size()];
+        for (FileLineItem item : lines) {
+            temp[0] = String.valueOf(index++);
+            temp[1] = item.getCommand();
+            temp[2] = item.getParameter();
+            temp[3] = item.getMemo();
+            writer.writeNext(temp);//写入所有行的指令
+        }
+
+        out.close();
+        writer.close();
     }
 
     /**

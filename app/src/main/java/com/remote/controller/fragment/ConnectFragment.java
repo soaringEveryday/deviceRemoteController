@@ -58,7 +58,6 @@ public class ConnectFragment extends BaseFragment {
     private ArrayList<Device> mDatas;
     private CommonAdapter mAdapter;
     private int mCurrentPos = -1;
-    private Device mCurrentDevice = null;
 
     public ConnectFragment() {
         // Required empty public constructor

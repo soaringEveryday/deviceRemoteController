@@ -71,7 +71,7 @@ public class FileFragment extends BaseFragment {
         mAdapter = new CommonAdapter<FileLineItem>(mContext, mDatas, R.layout.file_list_item) {
             @Override
             public void convert(ViewHolder helper, FileLineItem item, int position, View convertView) {
-                helper.setText(R.id.no, String.valueOf(position));
+                helper.setText(R.id.no, String.valueOf(position + 1));
                 helper.setText(R.id.command, item.getCommand());
                 helper.setText(R.id.parameter, item.getParameter());
                 helper.setText(R.id.memo, item.getMemo());
@@ -258,20 +258,14 @@ public class FileFragment extends BaseFragment {
     }
 
     private int saveCsvFile() {
-        return createCsvFile(currentFileName, currentFileDesc);
-    }
+        try {
+            CSVUtils.getInstance().save((String) SPUtils.get(mContext, Constant.SPKEY.FILE_PATH, ""), Constant.FileFormat.VERION_CSV, currentFileDesc, columns, mDatas);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
 
-    private void insertCommand() {
-
-        Message msg = Message.obtain();
-        msg.what = MessageEvent.MSG_COMMAND_UPDATE;
-        FileLineItem command = new FileLineItem();
-        command.setCommand("LineTo");
-        command.setParameter("100,500");
-        command.setNo(1);
-        command.setMemo("无");
-        msg.obj = command;
-        EventBus.getDefault().post(msg);
+        return 0;
     }
 
     @Override
@@ -303,38 +297,42 @@ public class FileFragment extends BaseFragment {
                 if (data == null) {
                     return;
                 }
-//                if (resultCode == RESULT_OK) {
-                final Uri uri = data.getData();
-                // Get the File path from the Uri
-                String path = FileUtils.getPath(mActivity, uri);
-                // Alternatively, use FileUtils.getFile(Context, Uri)
-                if (path != null && FileUtils.isLocal(path)) {
-                    L.d("path :" + path);
-                    ArrayList<FileLineItem> temp = CSVUtils.getInstance().read(mContext, path);
-                    if (temp != null) {
-                        L.d("打开文件" + path + "成功");
-                        Toast.makeText(mActivity, "打开文件" + path + "成功", Toast.LENGTH_SHORT).show();
-                        SPUtils.put(mActivity, Constant.SPKEY.FILE_PATH, path);
-                        mDatas.clear();
+                try {
+                    final Uri uri = data.getData();
+                    // Get the File path from the Uri
+                    String path = FileUtils.getPath(mActivity, uri);
+                    // Alternatively, use FileUtils.getFile(Context, Uri)
+                    if (path != null && FileUtils.isLocal(path)) {
+                        L.d("path :" + path);
+                        ArrayList<FileLineItem> temp = CSVUtils.getInstance().read(mContext, path);
+                        if (temp != null) {
+                            L.d("打开文件" + path + "成功");
+                            Toast.makeText(mActivity, "打开文件" + path + "成功", Toast.LENGTH_SHORT).show();
+                            SPUtils.put(mActivity, Constant.SPKEY.FILE_PATH, path);
+                            mDatas.clear();
 
-                        //发送数据到别的fragment
-                        Message msg = Message.obtain();
-                        msg.what = MessageEvent.MSG_COMMAND_UPDATE;
+                            //发送数据到别的fragment
+                            Message msg = Message.obtain();
+                            msg.what = MessageEvent.MSG_COMMAND_UPDATE;
 
-                        for (FileLineItem item : temp) {
-                            msg.obj = item;
-                            EventBus.getDefault().post(msg);
+                            for (FileLineItem item : temp) {
+                                msg.obj = item;
+                                EventBus.getDefault().post(msg);
+                            }
+                            isOpenOld = true;
+                            currentFileName = (String) SPUtils.get(mContext, Constant.SPKEY.FILE_NAME, "");
+                            currentFileDesc = (String) SPUtils.get(mContext, Constant.SPKEY.FILE_DESC, "");
+
+                            refreshFileInfo();
+                        } else {
+                            Toast.makeText(mActivity, "打开文件" + path + "失败", Toast.LENGTH_SHORT).show();
                         }
-                        isOpenOld = true;
-                        currentFileName = (String) SPUtils.get(mContext, Constant.SPKEY.FILE_NAME, "");
-                        currentFileDesc = (String) SPUtils.get(mContext, Constant.SPKEY.FILE_DESC, "");
-
-                        refreshFileInfo();
-                    } else {
-                        Toast.makeText(mActivity, "打开文件" + path + "失败", Toast.LENGTH_SHORT).show();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(mActivity, "文件格式错误", Toast.LENGTH_SHORT).show();
                 }
-//                }
+
                 break;
         }
     }

@@ -15,6 +15,8 @@ import com.remote.controller.R;
 import com.remote.controller.bean.FileLineItem;
 import com.remote.controller.constant.Constant;
 import com.remote.controller.message.MessageEvent;
+import com.remote.controller.network.ControllerManager;
+import com.remote.controller.network.EventGenerator;
 import com.remote.controller.utils.L;
 import com.remote.controller.utils.SPUtils;
 
@@ -399,6 +401,88 @@ public class IOActivity extends BaseActivity {
     }
 
     private void sendOutput() {
+        int onData = 0x0;
+        int offData = 0x0;
+        int pos1 = port1.getSelectedItemPosition();
+        int pos2 = port2.getSelectedItemPosition();
+        int pos3 = port3.getSelectedItemPosition();
+        int pos4 = port4.getSelectedItemPosition();
+        int s1 = status1.getSelectedItemPosition();
+        int s2 = status2.getSelectedItemPosition();
+        int s3 = status3.getSelectedItemPosition();
+        int s4 = status4.getSelectedItemPosition();
 
+        //on data
+        if (pos1 != 0) {
+            if (s1 == 1) {
+                int mask = 1 << pos1 - 1;
+                onData = onData | mask;
+            }
+        }
+        if (pos2 != 0) {
+            if (s2 == 1) {
+                int mask = 1 << pos2 - 1;
+                onData = onData | mask;
+            }
+        }
+        if (pos3 != 0) {
+            if (s3 == 1) {
+                int mask = 1 << pos3 - 1;
+                onData = onData | mask;            }
+        }
+        if (pos4 != 0) {
+            if (s4 == 1) {
+                int mask = 1 << pos4 - 1;
+                onData = onData | mask;            }
+        }
+
+        //off data
+        if (pos1 != 0) {
+            if (s1 == 2) {
+                int mask = 1 << pos1 - 1;
+                offData = offData | mask;
+            }
+        }
+        if (pos2 != 0) {
+            if (s2 == 2) {
+                int mask = 1 << pos2 - 1;
+                offData = offData | mask;            }
+        }
+        if (pos3 != 0) {
+            if (s3 == 2) {
+                int mask = 1 << pos3 - 1;
+                offData = offData | mask;            }
+        }
+        if (pos4 != 0) {
+            if (s4 == 2) {
+                int mask = 1 << pos4 - 1;
+                offData = offData | mask;            }
+        }
+
+        byte[] onBytes = int2byte(onData);
+        byte[] offBytes = int2byte(offData);
+        byte[] data = new byte[8];
+        for (int i = 0 ; i < 4 ; i++) {
+            data[i] = onBytes[i];
+            data[i + 4] = offBytes[i];
+        }
+
+        ControllerManager.getInstance(this).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_IO_OUTPUT, data));
+
+    }
+
+    private byte[] int2byte(int res) {
+        byte[] targets = new byte[4];
+
+        targets[0] = (byte) (res & 0xff);// 最低位
+        L.d("-- > " + targets[0]);
+        targets[1] = (byte) ((res >> 8) & 0xff);// 次低位
+        L.d("-- > " + targets[1]);
+        targets[2] = (byte) ((res >> 16) & 0xff);// 次高位
+        L.d("-- > " + targets[2]);
+        targets[3] = (byte) (res >>> 24);// 最高位,无符号右移。
+        L.d("-- > " + targets[3]);
+
+        return targets;
     }
 }

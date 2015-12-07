@@ -123,7 +123,7 @@ public class Constant {
         public static final int READ_OUTPUT = 8;
         public static final int BTN_DOWN_SETTING_BUTTON= 9;
         public static final int BTN_UP_SETTING_BUTTON = 10;
-        public static final int BTN_DOWN_IO_OUTPUT = 11;
+        public static final int BTN_IO_OUTPUT = 11;
         public static final int BTN_PLAY_LAUNCH = 12;
         public static final int BTN_PLAY_PAUSE = 13;
         public static final int BTN_PLAY_STOP = 14;

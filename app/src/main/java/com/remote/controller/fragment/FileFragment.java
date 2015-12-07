@@ -102,6 +102,8 @@ public class FileFragment extends BaseFragment {
         columns.add(getString(R.string.file_list_param));
         columns.add(getString(R.string.file_list_memo));
 
+        newFile(false);
+
         return view;
     }
 
@@ -151,7 +153,7 @@ public class FileFragment extends BaseFragment {
         }
     }
 
-    private void newFile() {
+    private void newFile(boolean showHint) {
 
         //清空数据，新建文件仅仅创建一个新的指令集
         if (mDatas == null) {
@@ -165,8 +167,8 @@ public class FileFragment extends BaseFragment {
         currentFileDesc = "";
 
         isOpenOld = false;
-
-        Toast.makeText(mActivity, "新建成功", Toast.LENGTH_SHORT).show();
+        if (showHint)
+            Toast.makeText(mActivity, "新建成功", Toast.LENGTH_SHORT).show();
 
         Message msg = Message.obtain();
         msg.what = MessageEvent.MSG_COMMAND_CLEAR;
@@ -272,7 +274,7 @@ public class FileFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_new:
-                newFile();
+                newFile(true);
                 break;
 
             case R.id.btn_open:

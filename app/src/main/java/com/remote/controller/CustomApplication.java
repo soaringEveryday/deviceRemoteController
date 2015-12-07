@@ -2,15 +2,12 @@ package com.remote.controller;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 
 import com.orm.SugarContext;
 import com.remote.controller.utils.CustomCrashHandler;
 import com.remote.controller.utils.L;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -26,12 +23,6 @@ public class CustomApplication extends Application{
     public static Typeface typefaceRoboto;
 
     private static CustomApplication instance;
-    private RefWatcher refWatcher;
-
-    public static RefWatcher getRefWatcher(Context context) {
-        CustomApplication application = (CustomApplication) context.getApplicationContext();
-        return application.refWatcher;
-    }
 
     public static CustomApplication getInstance() {
         return instance;
@@ -52,8 +43,6 @@ public class CustomApplication extends Application{
 //        CrashReport.initCrashReport(this, "900009289", true);
 
         SugarContext.init(this);
-
-        LeakCanary.install(this);
 
         // 获取crash信息并写日志;
         CustomCrashHandler mCustomCrashHandler = CustomCrashHandler.getInstance();

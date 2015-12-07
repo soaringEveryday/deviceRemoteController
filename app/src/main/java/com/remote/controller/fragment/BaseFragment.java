@@ -14,10 +14,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.remote.controller.CustomApplication;
 import com.remote.controller.R;
 import com.remote.controller.utils.ScreenUtils;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
 
@@ -51,10 +49,6 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         if (mLoadingDialog != null) {
             mLoadingDialog.dismiss();
             mLoadingDialog = null;
-        }
-        RefWatcher refWatcher = CustomApplication.getRefWatcher(getActivity());
-        if (refWatcher != null) {
-            refWatcher.watch(this);
         }
     }
 

@@ -353,16 +353,16 @@ public class IOActivity extends BaseActivity {
 
             if (pos1 != 0 && s1 != 0) {
                 //等待输入状态下，端口位置为0表示无效
-                param = param + String.valueOf(pos1 - 1) + "," + String.valueOf(s1 - 1) + ",";
+                param = param + String.valueOf(pos1 - 1) + "," + String.valueOf(getStatus(s1)) + ",";
             }
             if (pos2 != 0 && s2 != 0) {
-                param = param + String.valueOf(pos2 - 1) + "," + String.valueOf(s2 - 1) + ",";
+                param = param + String.valueOf(pos2 - 1) + "," + String.valueOf(getStatus(s2)) + ",";
             }
             if (pos3 != 0 && s3 != 0) {
-                param = param + String.valueOf(pos3 - 1) + "," + String.valueOf(s3 - 1) + ",";
+                param = param + String.valueOf(pos3 - 1) + "," + String.valueOf(getStatus(s3)) + ",";
             }
             if (pos4 != 0 && s4 != 0) {
-                param = param + String.valueOf(pos4 - 1) + "," + String.valueOf(s4 - 1) + ",";
+                param = param + String.valueOf(pos4 - 1) + "," + String.valueOf(getStatus(s4)) + ",";
             }
 
         } else {
@@ -370,16 +370,16 @@ public class IOActivity extends BaseActivity {
             command.setCommand(Constant.Command.SET_DO);
             if (s1 != 0) {
                 //等待输入状态下，端口位置为0表示无效
-                param = param + String.valueOf(pos1) + "," + String.valueOf(s1 - 1) + ",";
+                param = param + String.valueOf(pos1) + "," + String.valueOf(getStatus(s1)) + ",";
             }
             if (s2 != 0) {
-                param = param + String.valueOf(pos2) + "," + String.valueOf(s2 - 1) + ",";
+                param = param + String.valueOf(pos2) + "," + String.valueOf(getStatus(s2)) + ",";
             }
             if (s3 != 0) {
-                param = param + String.valueOf(pos3) + "," + String.valueOf(s3 - 1) + ",";
+                param = param + String.valueOf(pos3) + "," + String.valueOf(getStatus(s3)) + ",";
             }
             if (s4 != 0) {
-                param = param + String.valueOf(pos4) + "," + String.valueOf(s4 - 1) + ",";
+                param = param + String.valueOf(pos4) + "," + String.valueOf(getStatus(s4)) + ",";
             }
         }
         if (param.isEmpty()) {
@@ -398,6 +398,15 @@ public class IOActivity extends BaseActivity {
         msg.what = MessageEvent.MSG_COMMAND_UPDATE;
         msg.obj = command;
         EventBus.getDefault().post(msg);
+    }
+
+    private int getStatus(int pos) {
+        if (pos == 1) {
+            return 1;
+        } else if (pos == 2) {
+            return 0;
+        }
+        return 0;
     }
 
     private void sendOutput() {

@@ -179,7 +179,7 @@ public class SettingFragment extends BaseFragment {
                     data[0] = int2OneByte(1);
                     ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_UP_SETTING_BUTTON, data));
                 }
-                return true;
+                return false;
             }
         });
 
@@ -198,7 +198,7 @@ public class SettingFragment extends BaseFragment {
                     data[0] = int2OneByte(2);
                     ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_UP_SETTING_BUTTON, data));
                 }
-                return true;
+                return false;
             }
         });
 
@@ -217,7 +217,7 @@ public class SettingFragment extends BaseFragment {
                     data[0] = int2OneByte(3);
                     ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_UP_SETTING_BUTTON, data));
                 }
-                return true;
+                return false;
             }
         });
 
@@ -236,7 +236,7 @@ public class SettingFragment extends BaseFragment {
                     data[0] = int2OneByte(4);
                     ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_UP_SETTING_BUTTON, data));
                 }
-                return true;
+                return false;
             }
         });
 
@@ -255,7 +255,7 @@ public class SettingFragment extends BaseFragment {
                     data[0] = int2OneByte(5);
                     ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_UP_SETTING_BUTTON, data));
                 }
-                return true;
+                return false;
             }
         });
 
@@ -274,7 +274,7 @@ public class SettingFragment extends BaseFragment {
                     data[0] = int2OneByte(6);
                     ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_UP_SETTING_BUTTON, data));
                 }
-                return true;
+                return false;
             }
         });
 
@@ -293,7 +293,7 @@ public class SettingFragment extends BaseFragment {
                     data[0] = int2OneByte(7);
                     ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_UP_SETTING_BUTTON, data));
                 }
-                return true;
+                return false;
             }
         });
 
@@ -312,7 +312,7 @@ public class SettingFragment extends BaseFragment {
                     data[0] = int2OneByte(8);
                     ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateDataByBytes(Constant.EventCode.BTN_UP_SETTING_BUTTON, data));
                 }
-                return true;
+                return false;
             }
         });
     }

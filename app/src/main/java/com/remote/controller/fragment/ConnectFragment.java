@@ -213,7 +213,7 @@ public class ConnectFragment extends BaseFragment {
         udpThread.start();
 
     }
-
+//
 //    private void connectDevice() {
 //        if (mDatas.size() < 1) {
 //            new AlertDialog.Builder(mContext).setTitle(R.string.no_host_hint).setMessage(R.string.no_host_hint)

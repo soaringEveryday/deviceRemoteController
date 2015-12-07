@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -57,7 +56,7 @@ public class ConnectFragment extends BaseFragment {
     TextView connectDesc;
 
     private ArrayList<Device> mDatas;
-    private BaseAdapter mAdaper;
+    private CommonAdapter mAdapter;
     private int mCurrentPos = -1;
     private Device mCurrentDevice = null;
 
@@ -93,14 +92,17 @@ public class ConnectFragment extends BaseFragment {
 
     private void refreshList() {
 
-//        //TODO test code
-//        mDatas.add(new Device("192.168.1.1", "device 1", "desc"));
-//        mDatas.add(new Device("192.168.1.2", "device 2", "desc"));
-//        mDatas.add(new Device("192.168.1.3", "device 3", "desc"));
-
-        listView.setAdapter(mAdaper = new CommonAdapter<Device>(mContext, mDatas, R.layout.connect_list) {
+        listView.setAdapter(mAdapter = new CommonAdapter<Device>(mContext, mDatas, R.layout.connect_list) {
             @Override
             public void convert(ViewHolder helper, Device item, int position, View convertView) {
+                if (convertView != null) {
+                    if (mCurrentItemPos == position) {
+                        convertView.setBackgroundResource(R.drawable.shape_solid_gray);
+                    } else {
+                        convertView.setBackgroundResource(R.drawable.shape_solid_white);
+
+                    }
+                }
                 //normal
                 helper.setText(R.id.no, String.valueOf(position));
                 helper.setText(R.id.ip, mDatas.get(position).getIp());
@@ -112,6 +114,8 @@ public class ConnectFragment extends BaseFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                mAdapter.setCurrentItemPos(i);
+                mAdapter.notifyDataSetChanged();
                 listView.setSelection(i);
                 mCurrentPos = i;
             }
@@ -125,9 +129,9 @@ public class ConnectFragment extends BaseFragment {
         switch (msgEvent) {
             case MessageEvent.MSG_SCAN_PAIR:
                 String ip = (String) msg.obj;
-                if (!ip.isEmpty()) {
+                if (!ip.isEmpty() && !checkDeviceDuplicate(ip)) {
                     mDatas.add(new Device(ip, "", ""));
-                    mAdaper.notifyDataSetChanged();
+                    mAdapter.notifyDataSetChanged();
                 }
                 break;
 
@@ -179,6 +183,20 @@ public class ConnectFragment extends BaseFragment {
         }
     }
 
+    private boolean checkDeviceDuplicate(String ip) {
+        if (mDatas == null) {
+            return false;
+        }
+        int size = mDatas.size();
+        for (int i = 0 ; i < size ; i++) {
+            Device device = mDatas.get(i);
+            if (device.getIp().equals(ip)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     @Override
     public void onClick(View view) {
@@ -207,7 +225,7 @@ public class ConnectFragment extends BaseFragment {
 
         mCurrentPos = -1;
         mDatas.clear();
-        mAdaper.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
 
         BroadCastUdpThread udpThread = new BroadCastUdpThread(Constant.ScanText.REQ);
         udpThread.start();

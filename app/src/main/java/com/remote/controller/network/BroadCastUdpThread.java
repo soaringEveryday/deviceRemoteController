@@ -18,7 +18,7 @@ import de.greenrobot.event.EventBus;
  */
 public class BroadCastUdpThread extends Thread {
 
-    private static int DEFAULT_PORT = 45454;
+    private int scanTimes = 5;
     private String dataString;
     DatagramSocket udpSocket;
     byte[] buffer = null;
@@ -50,37 +50,47 @@ public class BroadCastUdpThread extends Thread {
             L.e("1" + e.toString());
         }
 
-        try {
-            if (dataPacket == null) {
-                L.e("data packet is null");
-                return;
+        while (scanTimes > 0) {
+            try {
+                if (dataPacket == null) {
+                    L.e("data packet is null");
+                    return;
+                }
+                udpSocket.send(dataPacket);
+
+                L.i("udp socket sent");
+
+                DatagramPacket dpIn = null;
+                byte[] bufferIn = new byte[256];
+                dpIn = new DatagramPacket(bufferIn, bufferIn.length);
+                L.i("before receive");
+                udpSocket.receive(dpIn);
+                L.i("after receive");
+                String address = dpIn.getAddress().getHostAddress();
+                L.i("address : " + address);
+                String resStr = new String(bufferIn, 0, buffer.length).trim();
+                L.d("recv : " + resStr);
+
+                if (resStr.equals(Constant.ScanText.RES)) {
+                    Message msg = Message.obtain();
+                    msg.what = MessageEvent.MSG_SCAN_PAIR;
+                    msg.obj = address;
+                    EventBus.getDefault().postSticky(msg);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                L.e("2" + e.toString());
             }
-            udpSocket.send(dataPacket);
 
-            L.i("udp socket sent");
-
-            DatagramPacket dpIn = null;
-            byte[] bufferIn = new byte[256];
-            dpIn = new DatagramPacket(bufferIn, bufferIn.length);
-            L.i("before receive");
-            udpSocket.receive(dpIn);
-            L.i("after receive");
-            String address = dpIn.getAddress().getHostAddress();
-            L.i("address : " + address);
-            String resStr = new String(bufferIn, 0, buffer.length).trim();
-            L.d("recv : " + resStr);
-
-            if (resStr.equals(Constant.ScanText.RES)) {
-                Message msg = Message.obtain();
-                msg.what = MessageEvent.MSG_SCAN_PAIR;
-                msg.obj = address;
-                EventBus.getDefault().postSticky(msg);
+            scanTimes--;
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            L.e("2" + e.toString());
         }
+
         if (udpSocket != null)
             udpSocket.close();
     }

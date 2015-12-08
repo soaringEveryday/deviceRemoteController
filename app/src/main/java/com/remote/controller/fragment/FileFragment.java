@@ -55,6 +55,8 @@ public class FileFragment extends BaseFragment {
     TextView fileDesc;
     @Bind(R.id.file_name)
     TextView fileName;
+    @Bind(R.id.file_path)
+    TextView filePath;
 
     private ArrayList<FileLineItem> mDatas;
     private BaseAdapter mAdapter;
@@ -180,6 +182,7 @@ public class FileFragment extends BaseFragment {
 
     private void saveAsFile() {
 //        insertCommand();
+        showCreateDialog();
     }
 
     private void showCreateDialog() {
@@ -199,6 +202,11 @@ public class FileFragment extends BaseFragment {
     private void refreshFileInfo() {
         fileDesc.setText(currentFileDesc);
         fileName.setText(currentFileName);
+        if (currentFileName.isEmpty()) {
+            filePath.setText("");
+        }else {
+            filePath.setText((String) SPUtils.get(mContext, Constant.SPKEY.FILE_PATH, ""));
+        }
     }
 
     public void onEvent(final Message msg) {

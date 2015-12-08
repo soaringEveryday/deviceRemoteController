@@ -223,6 +223,7 @@ public class PlayFragment extends BaseFragment {
                 break;
             case R.id.btn_pause:
                 ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.BTN_PLAY_PAUSE, null));
+                break;
 
             case R.id.btn_stop:
                 ControllerManager.getInstance(mContext).sendData(EventGenerator.getInstance().generateData(Constant.EventCode.BTN_PLAY_STOP, null));

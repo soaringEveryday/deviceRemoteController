@@ -36,7 +36,7 @@ public class CSVUtils {
         return instance;
     }
 
-    public void create(String fileName, int version, String description, ArrayList<String> columns, ArrayList<FileLineItem> lines) throws IOException {
+    public void create(Context context, String fileName, int version, String description, ArrayList<String> columns, ArrayList<FileLineItem> lines) throws IOException {
 
         if (fileName == null || fileName.isEmpty()) {
             return;
@@ -82,6 +82,9 @@ public class CSVUtils {
             writer.writeNext(temp);//写入所有行的指令
         }
 
+        String fullName = fullFilename.getName();
+        SPUtils.put(context, Constant.SPKEY.FILE_NAME, StrUtils.getFileNameNoEx(fullName));
+        SPUtils.put(context, Constant.SPKEY.FILE_PATH, fullFilename.getAbsolutePath());
 
         out.close();
         writer.close();

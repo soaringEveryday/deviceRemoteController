@@ -199,7 +199,7 @@ public class PlayFragment extends BaseFragment {
                 String path = (String) SPUtils.get(mContext, Constant.SPKEY.FILE_PATH, "");
                 if (path == null || path.isEmpty()) {
                     L.e("file path is empty");
-                    showAlertDialog("文件路径保存有误");
+                    showAlertDialog("尚未保存文件");
                     return;
                 }
 

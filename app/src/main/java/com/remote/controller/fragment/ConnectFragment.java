@@ -1,6 +1,8 @@
 package com.remote.controller.fragment;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -230,50 +232,50 @@ public class ConnectFragment extends BaseFragment {
         udpThread.start();
 
     }
-//
-//    private void connectDevice() {
-//        if (mDatas.size() < 1) {
-//            new AlertDialog.Builder(mContext).setTitle(R.string.no_host_hint).setMessage(R.string.no_host_hint)
-//                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            dialogInterface.dismiss();
-//                        }
-//                    }).show();
-//
-//            return;
-//        }
-//
-//        if (mCurrentPos < 0) {
-//            new AlertDialog.Builder(mContext).setTitle(R.string.not_select_hint).setMessage(R.string.not_select_hint)
-//                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            dialogInterface.dismiss();
-//                        }
-//                    }).show();
-//
-//            return;
-//        }
-//
-//        if (ControllerManager.getInstance(mContext).isConnected()) {
-//            showAlertDialog("已连接设备，请先断开");
-//            return;
-//        }
-//
-//        Device device = mDatas.get(mCurrentPos);
-//        if (device != null) {
-//            ControllerManager.getInstance(mContext).connectServer(device.getIp(), 3000);
-//        }
-//
-////        ControllerManager.getInstance(mContext).connectServer("192.168.1.100", 3000);
-//    }
 
-    //TODO test code
     private void connectDevice() {
+        if (mDatas.size() < 1) {
+            new AlertDialog.Builder(mContext).setTitle(R.string.no_host_hint).setMessage(R.string.no_host_hint)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).show();
 
-        ControllerManager.getInstance(mContext).connectServer("172.19.6.200", 3000);
+            return;
+        }
+
+        if (mCurrentPos < 0) {
+            new AlertDialog.Builder(mContext).setTitle(R.string.not_select_hint).setMessage(R.string.not_select_hint)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).show();
+
+            return;
+        }
+
+        if (ControllerManager.getInstance(mContext).isConnected()) {
+            showAlertDialog("已连接设备，请先断开");
+            return;
+        }
+
+        Device device = mDatas.get(mCurrentPos);
+        if (device != null) {
+            ControllerManager.getInstance(mContext).connectServer(device.getIp(), 3000);
+        }
+
+//        ControllerManager.getInstance(mContext).connectServer("192.168.1.100", 3000);
     }
+
+//    //TODO test code
+//    private void connectDevice() {
+//
+//        ControllerManager.getInstance(mContext).connectServer("172.19.6.143", 3000);
+//    }
 
 
     private void refreshRemoteDeviceInfo() {

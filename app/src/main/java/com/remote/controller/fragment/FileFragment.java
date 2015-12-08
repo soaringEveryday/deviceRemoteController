@@ -222,6 +222,12 @@ public class FileFragment extends BaseFragment {
                     Message m = Message.obtain();
                     m.what = MessageEvent.MSG_FILE_SAVED;
                     EventBus.getDefault().postSticky(m);
+
+                    isOpenOld = true;
+                    currentFileName = (String) SPUtils.get(mContext, Constant.SPKEY.FILE_NAME, "");
+                    currentFileDesc = (String) SPUtils.get(mContext, Constant.SPKEY.FILE_DESC, "");
+
+                    refreshFileInfo();
                 }
                 break;
 
@@ -250,7 +256,7 @@ public class FileFragment extends BaseFragment {
         L.d("文件描述：" + desc);
 
         try {
-            CSVUtils.getInstance().create(fileName, Constant.FileFormat.VERION_CSV, desc, columns, mDatas);
+            CSVUtils.getInstance().create(mContext, fileName, Constant.FileFormat.VERION_CSV, desc, columns, mDatas);
         } catch (Exception e) {
             e.printStackTrace();
             return -1;

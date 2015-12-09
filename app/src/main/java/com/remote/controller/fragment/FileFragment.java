@@ -209,6 +209,7 @@ public class FileFragment extends BaseFragment {
         }
     }
 
+
     public void onEvent(final Message msg) {
         int msgEvent = msg.what;
         switch (msgEvent) {

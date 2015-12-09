@@ -85,6 +85,7 @@ public class CSVUtils {
         String fullName = fullFilename.getName();
         SPUtils.put(context, Constant.SPKEY.FILE_NAME, StrUtils.getFileNameNoEx(fullName));
         SPUtils.put(context, Constant.SPKEY.FILE_PATH, fullFilename.getAbsolutePath());
+        SPUtils.put(context, Constant.SPKEY.FILE_DESC, description);
 
         out.close();
         writer.close();
